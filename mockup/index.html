@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>snap to buy · prototype</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F1EDE4; --card:#FBF9F4; --ink:#161513; --mute:#7A756C; --line:#D9D2C4;
+  --accent:#C8452C; --accent-soft:#F4DDD5; --ok:#2F6B4F;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:#E6E1D6;color:var(--ink);
+  -webkit-font-smoothing:antialiased;word-break:keep-all;letter-spacing:-0.01em}
+.serif{font-family:"Instrument Serif",Georgia,serif;font-weight:400}
+.mono{font-family:"JetBrains Mono",ui-monospace,Consolas,monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+/* stage: caption + phone */
+.stage{min-height:100%;display:grid;grid-template-columns:minmax(260px,380px) auto;gap:72px;align-items:center;justify-content:center;padding:40px 24px}
+.side .brand{font-size:44px;line-height:.9;letter-spacing:-0.03em}
+.side .brand i{color:var(--accent)}
+.side .tag{margin-top:10px;color:var(--mute);font-size:14px}
+.steps{margin-top:40px;list-style:none;border-top:1px solid #CFC8BA}
+.steps li{display:grid;grid-template-columns:34px 1fr;padding:12px 0;border-bottom:1px solid #CFC8BA;color:#A49E93;cursor:pointer;transition:color .2s}
+.steps li .n{font-family:"Instrument Serif",serif;font-style:italic;font-size:20px;line-height:1}
+.steps li b{display:block;font-size:15px;font-weight:600}
+.steps li span.d{display:none;font-size:13px;line-height:1.55;margin-top:4px;color:#4A4640}
+.steps li.on{color:var(--ink)}
+.steps li.on .n{color:var(--accent)}
+.steps li.on span.d{display:block}
+.hint{margin-top:22px;color:var(--mute)}
+
+.phone{width:390px;height:800px;background:var(--paper);border-radius:52px;position:relative;overflow:hidden;
+  box-shadow:0 0 0 10px #161513,0 0 0 11px #3a3733,0 40px 80px -20px rgba(22,21,19,.45)}
+.notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:118px;height:32px;background:#161513;border-radius:20px;z-index:50}
+.status{height:52px;padding:18px 30px 0;display:flex;justify-content:space-between;font-size:14px;font-weight:600;position:relative;z-index:40}
+.screen{position:absolute;inset:52px 0 0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transform:translateX(24px);transition:opacity .35s ease,transform .35s ease}
+.screen.on{opacity:1;pointer-events:auto;transform:none}
+.screen.back{transform:translateX(-24px)}
+.scroll{flex:1;overflow-y:auto;padding:6px 20px 120px;scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+.top{display:flex;align-items:center;justify-content:space-between;padding:6px 20px 10px}
+.top .t{font-weight:700;font-size:16px}
+.iconbtn{width:36px;height:36px;border-radius:50%;display:grid;place-items:center}
+.iconbtn:hover{background:rgba(0,0,0,.05)}
+.cta{position:absolute;left:0;right:0;bottom:0;padding:14px 20px 30px;background:linear-gradient(to top,var(--paper) 70%,rgba(241,237,228,0))}
+.btn{width:100%;height:56px;border-radius:16px;background:var(--ink);color:var(--paper);font-weight:600;font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .1s}
+.btn:active{transform:scale(.98)}
+.btn.accent{background:var(--accent);color:#fff}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink);height:48px;margin-top:8px}
+
+/* 1. home */
+.hello{padding:4px 0 18px}
+.hello h1{font-size:26px;letter-spacing:-0.035em;line-height:1.25;font-weight:700}
+.hello h1 em{font-style:normal;color:var(--accent)}
+.src{display:flex;gap:8px;margin-bottom:16px}
+.chip{height:32px;padding:0 12px;border-radius:99px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500}
+.chip.on{background:var(--ink);color:var(--paper);box-shadow:none}
+.dotg{width:6px;height:6px;border-radius:50%;background:var(--ok)}
+.grid{columns:2;column-gap:10px}
+.tile{break-inside:avoid;margin-bottom:10px;border-radius:16px;overflow:hidden;position:relative;cursor:pointer;transition:transform .15s}
+.tile:hover{transform:translateY(-2px)}
+.tile .lbl{position:absolute;left:8px;bottom:8px;background:rgba(251,249,244,.92);padding:3px 7px;border-radius:6px}
+.tile.pick{box-shadow:0 0 0 2.5px var(--accent)}
+.tile.pick:after{content:"탭해서 시작";position:absolute;top:8px;right:8px;background:var(--accent);color:#fff;font-size:11px;font-weight:600;padding:4px 8px;border-radius:99px;animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.55}}
+.upload{border-radius:16px;border:1.5px dashed #BDB5A6;height:118px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--mute);font-size:13px;margin-bottom:10px;break-inside:avoid}
+
+/* 2. analyze */
+.photo{position:relative;border-radius:22px;overflow:hidden;margin:4px 0 0}
+.photo svg{display:block;width:100%;height:auto}
+.scan{position:absolute;left:0;right:0;height:90px;top:-90px;background:linear-gradient(to bottom,rgba(200,69,44,0),rgba(200,69,44,.28));border-bottom:2px solid var(--accent);animation:scan 1.6s ease-in-out infinite}
+@keyframes scan{to{top:100%}}
+.box{position:absolute;border:1.5px solid #fff;border-radius:10px;opacity:0;transform:scale(.92);transition:all .35s ease;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+.box.on{opacity:1;transform:none}
+.box span{position:absolute;top:-11px;left:8px;background:#fff;color:var(--ink);font-size:11px;font-weight:600;padding:2px 7px;border-radius:99px}
+.log{margin-top:18px;font-family:"JetBrains Mono",monospace;font-size:12px;line-height:2;color:var(--mute)}
+.log div{opacity:0;transition:opacity .3s}
+.log div.on{opacity:1}
+.log b{color:var(--ink);font-weight:500}
+
+/* 3. breakdown */
+.mini{display:flex;gap:12px;align-items:center;padding:4px 0 16px}
+.mini .th{width:64px;border-radius:12px;overflow:hidden;flex:none}
+.mini .th svg{display:block;width:100%;height:auto}
+.mini h2{font-size:20px;letter-spacing:-0.03em}
+.mini p{font-size:13px;color:var(--mute);margin-top:2px}
+.item{background:var(--card);border-radius:18px;padding:14px;display:grid;grid-template-columns:64px 1fr;gap:12px;margin-bottom:10px;box-shadow:inset 0 0 0 1px var(--line);position:relative}
+.item .pic{width:64px;height:64px;border-radius:12px;background:#ECE6DA;display:grid;place-items:center}
+.item .b{font-size:11px;color:var(--mute);font-weight:600;letter-spacing:.02em}
+.item .nm{font-size:14.5px;font-weight:600;margin-top:1px}
+.item .row{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.item .pr{font-weight:700;font-size:15px}
+.item .pr s{color:#A9A398;font-weight:500;font-size:12.5px;margin-right:6px}
+.size{font-size:11.5px;font-weight:600;background:var(--accent-soft);color:var(--accent);padding:3px 8px;border-radius:99px}
+.size.plain{background:#ECE6DA;color:#4A4640}
+.why{grid-column:1/-1;font-size:12px;color:#4A4640;background:#F3EEE4;border-radius:10px;padding:8px 10px;line-height:1.5}
+.owned{opacity:.75}
+.owned .pr{color:var(--ok);font-size:13px}
+.sum{background:var(--ink);color:var(--paper);border-radius:18px;padding:16px;margin-top:6px}
+.sum .r{display:flex;justify-content:space-between;font-size:13.5px;padding:3px 0;color:#CFC8BA}
+.sum .r.big{color:var(--paper);font-size:17px;font-weight:700;padding-top:10px;margin-top:6px;border-top:1px solid #3a3733}
+.over{color:#F0A18C!important}
+.bar{height:6px;border-radius:9px;background:#3a3733;margin-top:10px;overflow:hidden;position:relative}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--accent);border-radius:9px;transition:width .5s ease}
+.bar.fit i{background:#7FBF9B}
+
+/* 4. budget */
+.budget{background:var(--card);border-radius:18px;padding:16px;box-shadow:inset 0 0 0 1px var(--line);margin-bottom:14px}
+.budget .h{display:flex;justify-content:space-between;align-items:baseline}
+.budget .v{font-size:26px;font-weight:700;letter-spacing:-0.03em}
+input[type=range]{width:100%;margin-top:10px;accent-color:var(--accent)}
+.sw{background:var(--card);border-radius:18px;margin-bottom:10px;box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
+.sw .opt{display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:center;padding:12px 14px;cursor:pointer;transition:background .2s}
+.sw .opt+.opt{border-top:1px dashed var(--line)}
+.sw .opt .pic{width:52px;height:52px;border-radius:10px;background:#ECE6DA;display:grid;place-items:center}
+.sw .opt .nm{font-size:13.5px;font-weight:600}
+.sw .opt .meta{font-size:11.5px;color:var(--mute);margin-top:2px}
+.sw .opt .pr{font-weight:700;font-size:14px;text-align:right}
+.radio{width:20px;height:20px;border-radius:50%;box-shadow:inset 0 0 0 1.5px #BDB5A6;margin-left:auto;margin-top:6px}
+.sw .opt.sel{background:#FFF}
+.sw .opt.sel .radio{box-shadow:inset 0 0 0 6px var(--accent)}
+.match{display:inline-block;font-size:11px;font-weight:600;color:var(--accent);margin-left:4px}
+.tagk{font-size:10.5px;font-weight:600;color:var(--mute);padding:6px 14px 0;letter-spacing:.02em}
+.reason{font-size:12px;color:#4A4640;padding:0 14px 12px 78px;line-height:1.5}
+
+/* 5. checkout */
+.perm{background:var(--card);border-radius:18px;padding:16px;box-shadow:inset 0 0 0 1px var(--line);margin-bottom:12px}
+.perm .h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px}
+.badge{font-size:10.5px;font-weight:600;background:var(--ink);color:var(--paper);padding:3px 7px;border-radius:6px;letter-spacing:.02em}
+.ck{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:center;font-size:13.5px;padding:9px 0;border-top:1px solid #EEE8DC}
+.ck:first-of-type{border-top:0}
+.ck .m{color:var(--mute);font-size:12.5px}
+.tick{width:20px;height:20px;border-radius:50%;background:var(--ok);display:grid;place-items:center}
+.shop{display:flex;justify-content:space-between;font-size:13.5px;padding:9px 0;border-top:1px solid #EEE8DC}
+.shop:first-of-type{border-top:0}
+.shop small{display:block;color:var(--mute);font-size:12px}
+.slide{position:relative;height:60px;border-radius:18px;background:var(--ink);overflow:hidden;user-select:none;touch-action:none}
+.slide .txt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#CFC8BA;font-weight:600;font-size:15px;padding-left:40px}
+.slide .fill{position:absolute;left:0;top:0;bottom:0;background:var(--accent);width:60px;border-radius:18px}
+.slide .knob{position:absolute;left:4px;top:4px;width:52px;height:52px;border-radius:14px;background:var(--paper);display:grid;place-items:center;cursor:grab}
+.slide.done .txt{color:#fff;padding-left:0}
+
+/* 6. done */
+.done-hero{text-align:center;padding:26px 0 18px}
+.ring{width:84px;height:84px;border-radius:50%;background:var(--accent);margin:0 auto 18px;display:grid;place-items:center;animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{from{transform:scale(.3);opacity:0}}
+.done-hero h2{font-size:24px;letter-spacing:-0.035em}
+.done-hero p{color:var(--mute);font-size:14px;margin-top:6px;line-height:1.5}
+.saved{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.saved > div{background:var(--card);border-radius:16px;padding:14px;box-shadow:inset 0 0 0 1px var(--line)}
+.saved .v{font-size:20px;font-weight:700;letter-spacing:-0.03em;margin-top:4px}
+.saved .v.a{color:var(--accent)}
+.order{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;padding:11px 0;border-top:1px solid #EEE8DC}
+.order:first-child{border-top:0}
+.pill{font-size:11px;font-weight:600;color:var(--ok);background:#E1EEE6;padding:3px 8px;border-radius:99px}
+.watch{display:flex;gap:12px;align-items:center;background:var(--ink);color:var(--paper);border-radius:18px;padding:14px 16px;margin-top:12px;font-size:13px;line-height:1.5}
+.watch b{display:block;font-size:14px}
+
+.spin{width:22px;height:22px;border-radius:50%;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+@media (max-width:860px){
+  body{background:var(--paper)}
+  .stage{display:block;padding:0}
+  .side{display:none}
+  .phone{width:100%;height:100dvh;border-radius:0;box-shadow:none}
+  .notch,.status{display:none}
+  .screen{inset:env(safe-area-inset-top,0) 0 0}
+}
+</style>
+</head>
+<body>
+<div class="stage">
+  <aside class="side">
+    <div class="brand serif">snap to <i>buy.</i></div>
+    <p class="tag">저장만 해두던 룩을, 오늘 주문하는 옷으로.</p>
+    <ol class="steps" id="steps"></ol>
+    <p class="hint mono">← → 키로 이동 · R 처음부터</p>
+  </aside>
+
+  <div class="phone" id="phone">
+    <div class="notch"></div>
+    <div class="status"><span>9:41</span><span class="mono" style="font-size:11px">5G ▮▮▮</span></div>
+
+    <!-- 1 HOME -->
+    <section class="screen on" data-s="0">
+      <div class="top">
+        <span class="serif" style="font-size:24px;letter-spacing:-0.02em">snap to <i style="color:var(--accent)">buy.</i></span>
+        <span class="iconbtn" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
+      </div>
+      <div class="scroll">
+        <div class="hello"><h1>저장해둔 룩이<br><em>24개</em> 있어요.</h1></div>
+        <div class="src">
+          <span class="chip on"><span class="dotg"></span>Pinterest 연동됨</span>
+          <span class="chip">캡처 앨범</span>
+          <span class="chip">Instagram</span>
+        </div>
+        <div class="grid" id="grid"></div>
+      </div>
+    </section>
+
+    <!-- 2 ANALYZE -->
+    <section class="screen" data-s="1">
+      <div class="top">
+        <button class="iconbtn" data-go="0" aria-label="뒤로"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <span class="t">룩 분석 중</span><span style="width:36px"></span>
+      </div>
+      <div class="scroll">
+        <div class="photo" id="photo">
+          <div id="lookBig"></div>
+          <div class="scan" id="scan"></div>
+          <div class="box" style="left:30%;top:24%;width:42%;height:20%"><span>니트</span></div>
+          <div class="box" style="left:27%;top:44%;width:48%;height:40%"><span>데님</span></div>
+          <div class="box" style="left:30%;top:86%;width:42%;height:9%"><span>로퍼</span></div>
+          <div class="box" style="left:66%;top:36%;width:24%;height:15%"><span>가방</span></div>
+        </div>
+        <div class="log" id="log">
+          <div>› 아이템 <b>4개</b> 인식</div>
+          <div>› 쇼핑몰 <b>38곳</b>에서 같은·비슷한 상품 검색</div>
+          <div>› 내 사이즈 기록 · 반품 이력 <b>2건</b> 반영</div>
+          <div>› 내 옷장과 비교: 가방 <b>이미 있음</b></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 BREAKDOWN -->
+    <section class="screen" data-s="2">
+      <div class="top">
+        <button class="iconbtn" data-go="0" aria-label="뒤로"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <span class="t">룩 분해</span><span style="width:36px"></span>
+      </div>
+      <div class="scroll">
+        <div class="mini"><div class="th" id="lookThumb"></div><div><h2>원본 상품을 다 찾았어요</h2><p>LOOK #024 · Pinterest</p></div></div>
+        <div id="items"></div>
+        <div class="sum">
+          <div class="r"><span>원본 그대로 구매</span><span id="origTotal"></span></div>
+          <div class="r"><span>내 예산</span><span id="budgetLbl"></span></div>
+          <div class="r big"><span>예산 초과</span><span class="over" id="overLbl"></span></div>
+          <div class="bar"><i id="overBar" style="width:100%"></i></div>
+        </div>
+      </div>
+      <div class="cta">
+        <button class="btn accent" data-go="3">예산에 맞춰줘</button>
+      </div>
+    </section>
+
+    <!-- 4 BUDGET -->
+    <section class="screen" data-s="3">
+      <div class="top">
+        <button class="iconbtn" data-go="2" aria-label="뒤로"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <span class="t">예산 맞춤</span><span style="width:36px"></span>
+      </div>
+      <div class="scroll">
+        <div class="budget">
+          <div class="h"><span style="font-size:13px;color:var(--mute);font-weight:600">이 룩에 쓸 예산</span><span class="v" id="bVal"></span></div>
+          <input type="range" id="bRange" min="100000" max="400000" step="10000" value="150000" aria-label="예산">
+          <div class="bar fit" style="background:#E4DED2"><i id="fitBar"></i></div>
+          <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-top:8px"><span style="color:var(--mute)">선택한 조합</span><b id="selTotal"></b></div>
+        </div>
+        <p style="font-size:13px;color:#4A4640;margin:0 2px 12px;line-height:1.55">존재감이 큰 <b>로퍼는 원본</b>으로 두고, 비슷한 대체품이 많은 <b>니트와 데님</b>을 내 취향에 맞는 아이템으로 바꿨어요.</p>
+        <div id="swaps"></div>
+      </div>
+      <div class="cta"><button class="btn" id="toCheckout" data-go="4">이 조합으로 결제 준비</button></div>
+    </section>
+
+    <!-- 5 CHECKOUT -->
+    <section class="screen" data-s="4">
+      <div class="top">
+        <button class="iconbtn" data-go="3" aria-label="뒤로"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <span class="t">에이전트 결제</span><span style="width:36px"></span>
+      </div>
+      <div class="scroll">
+        <div class="perm">
+          <div class="h">위임 권한 확인 <span class="badge">AIR AGENT</span></div>
+          <div style="margin-top:10px">
+            <div class="ck"><span class="tick">✓</span><span>이번 결제 <b id="ckAmt"></b></span><span class="m">한도 300,000원</span></div>
+            <div class="ck"><span class="tick">✓</span><span>허용한 쇼핑몰만</span><span class="m" id="ckShops"></span></div>
+            <div class="ck"><span class="tick">✓</span><span>판매자가 에이전트 신원 확인</span><span class="m">검증됨</span></div>
+            <div class="ck"><span class="tick">✓</span><span>공유 정보</span><span class="m">사이즈 · 배송지만</span></div>
+          </div>
+        </div>
+        <div class="perm">
+          <div class="h">쇼핑몰별 주문</div>
+          <div style="margin-top:6px" id="shops"></div>
+        </div>
+        <div class="perm" style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-weight:700">총 결제</span><span style="font-size:22px;font-weight:700;letter-spacing:-0.03em" id="payTotal"></span>
+        </div>
+      </div>
+      <div class="cta">
+        <div class="slide" id="slide"><div class="fill" id="sFill"></div><div class="txt" id="sTxt">밀어서 한 번에 결제</div>
+          <div class="knob" id="knob"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#161513" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div></div>
+      </div>
+    </section>
+
+    <!-- 6 DONE -->
+    <section class="screen" data-s="5">
+      <div class="scroll" style="padding-top:20px">
+        <div class="done-hero">
+          <div class="ring"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+          <h2>룩 하나, 결제 한 번.</h2>
+          <p id="doneSub"></p>
+        </div>
+        <div class="saved">
+          <div><span class="mono" style="color:var(--mute)">원본 대비</span><div class="v a" id="saveAmt"></div></div>
+          <div><span class="mono" style="color:var(--mute)">걸린 시간</span><div class="v">38초</div></div>
+        </div>
+        <div class="perm"><div id="orders"></div></div>
+        <div class="watch">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F0A18C" stroke-width="1.8" style="flex:none"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <div><b>원본 니트 가격도 지켜볼게요</b>20% 이상 내려가면 바로 알려드려요. 사이즈가 안 맞으면 교환도 대신 신청해요.</div>
+        </div>
+        <button class="btn ghost" data-go="0" style="margin-top:14px">다른 룩 보러 가기</button>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+/* ---------- illustrations ---------- */
+function lookSVG(v){
+  // v: palette variant for the moodboard tiles
+  const p = Object.assign({bg1:'#D8CBB6',bg2:'#BBA88C',top:'#EFE6D4',btm:'#6F86A6',shoe:'#5A3A26',bag:'#1E1C1A',hair:'#2A211B',skin:'#E2C2A4',h:420}, v||{});
+  return `<svg viewBox="0 0 300 ${p.h}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs><linearGradient id="g${p.id||0}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${p.bg1}"/><stop offset="1" stop-color="${p.bg2}"/></linearGradient></defs>
+  <rect width="300" height="${p.h}" fill="url(#g${p.id||0})"/>
+  <rect x="0" y="${p.h*0.78}" width="300" height="${p.h*0.22}" fill="#000" opacity=".06"/>
+  <g transform="translate(0,${(p.h-420)/2})">
+  <ellipse cx="150" cy="408" rx="70" ry="7" fill="#000" opacity=".12"/>
+  <path d="M132 44c0-16 10-26 22-26s22 10 22 26c0 6-2 12-4 16l-36 0c-2-4-4-10-4-16z" fill="${p.hair}"/>
+  <ellipse cx="154" cy="58" rx="17" ry="21" fill="${p.skin}"/>
+  <path d="M136 46c4-14 30-18 36 2-8-6-24-8-36-2z" fill="${p.hair}"/>
+  <rect x="147" y="76" width="14" height="14" fill="${p.skin}"/>
+  <path d="M112 96c10-10 26-12 42-12s32 2 42 12l10 70-16 4-6-40-2 56H122l-2-56-6 40-16-4z" fill="${p.top}"/>
+  <path d="M138 100v80M154 98v82M170 100v80" stroke="#000" stroke-opacity=".08" stroke-width="5"/>
+  <path d="M100 168l-6 26 10 2 8-26zM208 168l6 26-10 2-8-26z" fill="${p.skin}"/>
+  <path d="M120 180h68l14 176h-38l-10-120-10 120h-38z" fill="${p.btm}"/>
+  <path d="M154 190v40" stroke="#000" stroke-opacity=".15" stroke-width="1.5"/>
+  <path d="M118 352h40l2 14c-14 6-34 6-46 2zM150 352h42l4 14c-14 6-36 6-46 2z" fill="${p.shoe}"/>
+  <path d="M196 98c14 14 20 40 16 62" stroke="${p.bag}" stroke-width="3" fill="none"/>
+  <rect x="198" y="152" width="44" height="40" rx="10" fill="${p.bag}"/>
+  </g></svg>`;
+}
+const icon = {
+  knit:(c)=>`<svg width="40" height="40" viewBox="0 0 40 40"><path d="M8 12c4-4 8-5 12-5s8 1 12 5l3 16-6 1-1-9v12H12V20l-1 9-6-1z" fill="${c}"/><path d="M16 12v20M20 11v21M24 12v20" stroke="#000" stroke-opacity=".1" stroke-width="2"/></svg>`,
+  denim:(c)=>`<svg width="40" height="40" viewBox="0 0 40 40"><path d="M11 5h18l4 31h-9l-4-20-4 20H7z" fill="${c}"/><path d="M20 7v8" stroke="#000" stroke-opacity=".2"/></svg>`,
+  loafer:(c)=>`<svg width="40" height="40" viewBox="0 0 40 40"><path d="M5 26c0-5 4-9 10-9h6c5 0 10 4 14 7v5H5z" fill="${c}"/><rect x="5" y="29" width="30" height="3" rx="1.5" fill="#2a1d14"/><path d="M14 20h8" stroke="#fff" stroke-opacity=".35" stroke-width="2"/></svg>`,
+  bag:(c)=>`<svg width="40" height="40" viewBox="0 0 40 40"><path d="M13 16c0-6 3-9 7-9s7 3 7 9" stroke="${c}" stroke-width="2.4" fill="none"/><rect x="8" y="15" width="24" height="19" rx="5" fill="${c}"/></svg>`
+};
+
+/* ---------- data ---------- */
+const ITEMS = [
+  { key:'knit', cat:'니트', size:'L', sizeNote:'M → L', why:'이 브랜드 M은 작았어요 (지난 3월 반품). L로 골랐어요.',
+    orig:{brand:'ATELIER NOON', name:'크롭 케이블 니트', price:189000, shop:'ondo', color:'#EFE6D4'},
+    alt:{brand:'HAZE', name:'케이블 크롭 니트', price:42000, shop:'nami', match:92, color:'#EDE3CF', reason:'꽈배기 패턴 · 크롭 기장 · 아이보리. 자주 산 니트와 핏이 같아요.'} },
+  { key:'denim', cat:'데님', size:'27', sizeNote:'27 그대로', why:'최근 산 와이드 데님 3벌 모두 27이었어요.',
+    orig:{brand:'BLUE HOUR', name:'와이드 데님 팬츠', price:129000, shop:'bluehour', color:'#6F86A6'},
+    alt:{brand:'DAILY LAB', name:'와이드 워시드 데님', price:39900, shop:'lowtide', match:88, color:'#7890AE', reason:'라이트 워싱 · 하이웨이스트 · 롱 기장. 원본과 실루엣이 거의 같아요.'} },
+  { key:'loafer', cat:'로퍼', size:'245', sizeNote:'245', why:'룩의 포인트라 원본을 추천해요. 대체품은 인상이 달라져요.',
+    orig:{brand:'KORDE', name:'페니 로퍼', price:59000, shop:'korde', color:'#5A3A26'},
+    alt:{brand:'MOSS', name:'스퀘어토 로퍼', price:45000, shop:'nami', match:71, color:'#4E3526', reason:'코 모양이 달라 룩 인상이 바뀔 수 있어요.'} },
+];
+const BAG = {brand:'내 옷장', name:'블랙 숄더백', color:'#1E1C1A'};
+const state = { step:0, budget:150000, choice:{knit:'alt', denim:'alt', loafer:'orig'} };
+
+const won = n => n.toLocaleString('ko-KR') + '원';
+const origTotal = ITEMS.reduce((s,i)=>s+i.orig.price,0);
+const pick = i => state.choice[i.key]==='alt' ? i.alt : i.orig;
+const selTotal = () => ITEMS.reduce((s,i)=>s+pick(i).price,0);
+
+/* ---------- side steps ---------- */
+const STEPS = [
+  ['영감 수집','핀터레스트 좋아요와 캡처가 자동으로 모인다. 사용자는 사고 싶은 룩을 탭하기만 하면 된다.'],
+  ['룩 분해','사진 속 아이템 4개를 인식하고, 38개 쇼핑몰에서 같은 상품과 비슷한 상품을 찾는다. 이미 가진 가방은 뺀다.'],
+  ['사이즈 맞춤','반품 이력과 구매 기록으로 브랜드별 사이즈를 고른다. 원본 그대로 사면 예산을 22만 원 넘는다.'],
+  ['예산 맞춤','취향 일치도로 대체품을 고른다. 포인트 아이템은 원본으로 둔다. 예산을 바꾸면 조합이 다시 바뀐다.'],
+  ['위임 결제','AIR Agent로 정한 한도와 허용 쇼핑몰 안에서만 결제. 판매자는 에이전트 신원을 확인한다.'],
+  ['완료','쇼핑몰 3곳, 결제 한 번. 원본 가격 하락과 교환도 에이전트가 계속 챙긴다.'],
+];
+document.getElementById('steps').innerHTML = STEPS.map((s,i)=>
+  `<li data-i="${i}"><span class="n">0${i+1}</span><div><b>${s[0]}</b><span class="d">${s[1]}</span></div></li>`).join('');
+document.querySelectorAll('#steps li').forEach(li=>li.onclick=()=>go(+li.dataset.i));
+
+/* ---------- home grid ---------- */
+const tiles = [
+  {id:1,bg1:'#C9D2CF',bg2:'#9FB0AC',top:'#2B2B2B',btm:'#C9BBA4',shoe:'#1b1b1b',bag:'#8A5A3B',h:360},
+  {id:2,bg1:'#D8CBB6',bg2:'#BBA88C',h:420,pick:true},
+  {id:3,bg1:'#E4D3CC',bg2:'#C9ADA2',top:'#7C2E2A',btm:'#2E2C2A',shoe:'#1b1b1b',bag:'#D9CBB2',h:400},
+  {id:4,bg1:'#D6D9E0',bg2:'#B0B6C4',top:'#F2F0EA',btm:'#3E4A5E',shoe:'#EDEDED',bag:'#6B6B6B',h:340},
+];
+tiles.unshift(tiles.splice(1,1)[0]);
+document.getElementById('grid').innerHTML =
+  tiles.map(t=>`<div class="tile ${t.pick?'pick':''}" data-pick="${t.pick?1:0}">${lookSVG(t)}<span class="lbl mono">${t.pick?'LOOK #024':'saved'}</span></div>`).join('') +
+  `<div class="upload"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="15" rx="3"/><circle cx="12" cy="12.5" r="3.5"/><path d="M8 5l1.5-2h5L16 5"/></svg>캡처 올리기</div>`;
+document.querySelectorAll('.tile').forEach(t=>t.onclick=()=>{ if(t.dataset.pick==='1') go(1); });
+
+document.getElementById('lookBig').innerHTML = lookSVG({id:9});
+document.getElementById('lookThumb').innerHTML = lookSVG({id:8});
+
+/* ---------- render: breakdown ---------- */
+function renderItems(){
+  document.getElementById('items').innerHTML = ITEMS.map(i=>`
+    <div class="item">
+      <div class="pic">${icon[i.key](i.orig.color)}</div>
+      <div><div class="b">${i.orig.brand} · ${i.orig.shop}</div><div class="nm">${i.orig.name}</div>
+        <div class="row"><span class="pr">${won(i.orig.price)}</span><span class="size">${i.sizeNote}</span></div></div>
+      <div class="why">${i.why}</div>
+    </div>`).join('') + `
+    <div class="item owned">
+      <div class="pic">${icon.bag(BAG.color)}</div>
+      <div><div class="b">${BAG.brand}</div><div class="nm">${BAG.name}</div>
+        <div class="row"><span class="pr">이미 있어요 · 구매 제외</span></div></div>
+    </div>`;
+  document.getElementById('origTotal').textContent = won(origTotal);
+  document.getElementById('budgetLbl').textContent = won(state.budget);
+  const over = origTotal - state.budget;
+  document.getElementById('overLbl').textContent = over>0 ? '+'+won(over) : '없음';
+}
+
+/* ---------- render: budget ---------- */
+function autoPick(){
+  // keep loafer original (point item), then swap cheapest-to-swap until within budget
+  state.choice = {knit:'orig', denim:'orig', loafer:'orig'};
+  const order = ['knit','denim','loafer'];
+  for(const k of order){ if(selTotal() <= state.budget) break; state.choice[k]='alt'; }
+}
+function renderSwaps(){
+  document.getElementById('bVal').textContent = won(state.budget);
+  const t = selTotal();
+  document.getElementById('selTotal').textContent = won(t) + (t>state.budget?' · 초과':'');
+  document.getElementById('selTotal').style.color = t>state.budget ? 'var(--accent)' : 'var(--ok)';
+  const fb = document.getElementById('fitBar');
+  fb.style.width = Math.min(100, t/state.budget*100) + '%';
+  fb.style.background = t>state.budget ? 'var(--accent)' : '#5E9C7B';
+  document.getElementById('swaps').innerHTML = ITEMS.map(i=>{
+    const c = state.choice[i.key];
+    return `<div class="sw">
+      <div class="tagk">${i.cat} · ${i.size}</div>
+      <div class="opt ${c==='orig'?'sel':''}" data-k="${i.key}" data-c="orig">
+        <div class="pic">${icon[i.key](i.orig.color)}</div>
+        <div><div class="nm">${i.orig.name}</div><div class="meta">원본 · ${i.orig.brand}</div></div>
+        <div><div class="pr">${won(i.orig.price)}</div><div class="radio"></div></div>
+      </div>
+      <div class="opt ${c==='alt'?'sel':''}" data-k="${i.key}" data-c="alt">
+        <div class="pic">${icon[i.key](i.alt.color)}</div>
+        <div><div class="nm">${i.alt.name}</div><div class="meta">${i.alt.brand}<span class="match">취향 ${i.alt.match}%</span></div></div>
+        <div><div class="pr">${won(i.alt.price)}</div><div class="radio"></div></div>
+      </div>
+      ${c==='alt'?`<div class="reason">${i.alt.reason}</div>`:''}
+    </div>`;}).join('');
+  document.querySelectorAll('.sw .opt').forEach(o=>o.onclick=()=>{ state.choice[o.dataset.k]=o.dataset.c; renderSwaps(); });
+  const btn = document.getElementById('toCheckout');
+  btn.textContent = t>state.budget ? `예산보다 ${won(t-state.budget)} 많아요 · 그래도 진행` : '이 조합으로 결제 준비';
+}
+document.getElementById('bRange').oninput = e=>{ state.budget=+e.target.value; autoPick(); renderSwaps(); renderItems(); };
+
+/* ---------- render: checkout & done ---------- */
+function groupShops(){
+  const m = {};
+  ITEMS.forEach(i=>{ const p=pick(i); (m[p.shop] ||= []).push({...p, size:i.size}); });
+  return m;
+}
+function renderCheckout(){
+  const t = selTotal(), g = groupShops(), n = Object.keys(g).length;
+  document.getElementById('ckAmt').textContent = won(t);
+  document.getElementById('ckShops').textContent = n + '곳';
+  document.getElementById('payTotal').textContent = won(t);
+  document.getElementById('shops').innerHTML = Object.entries(g).map(([s,arr])=>
+    `<div class="shop"><span>${s}<small>${arr.map(a=>a.name+' · '+a.size).join(', ')}</small></span><b>${won(arr.reduce((x,a)=>x+a.price,0))}</b></div>`).join('');
+  document.getElementById('doneSub').innerHTML = `쇼핑몰 ${n}곳 주문이 동시에 끝났어요.<br>배송은 모두 11월 25일 도착 예정이에요.`;
+  document.getElementById('saveAmt').textContent = '-' + won(origTotal - t);
+  document.getElementById('orders').innerHTML = Object.entries(g).map(([s,arr])=>
+    `<div class="order"><span>${s} · ${arr.length}개</span><span class="pill">주문 완료</span></div>`).join('');
+}
+
+/* ---------- slide to pay ---------- */
+(function(){
+  const slide=document.getElementById('slide'), knob=document.getElementById('knob'), fill=document.getElementById('sFill'), txt=document.getElementById('sTxt');
+  let drag=false, x0=0, max=0, done=false;
+  const set = x => { knob.style.left = (4+x)+'px'; fill.style.width = (60+x)+'px'; };
+  window.resetSlide = ()=>{ done=false; slide.classList.remove('done'); set(0); txt.textContent='밀어서 한 번에 결제'; knob.style.display=''; };
+  const finish = ()=>{
+    done=true; slide.classList.add('done'); set(max); knob.style.display='none';
+    txt.innerHTML='<span class="spin"></span>';
+    setTimeout(()=>{ txt.textContent='결제 완료'; setTimeout(()=>go(5),450); }, 1100);
+  };
+  knob.addEventListener('pointerdown',e=>{ if(done) return; drag=true; x0=e.clientX; max=slide.clientWidth-60; knob.setPointerCapture(e.pointerId); });
+  knob.addEventListener('pointermove',e=>{ if(!drag) return; set(Math.max(0,Math.min(max,e.clientX-x0))); });
+  knob.addEventListener('pointerup',e=>{ if(!drag) return; drag=false; const x=e.clientX-x0; if(x>max*0.8) finish(); else set(0); });
+  slide.addEventListener('click',e=>{ if(e.target===knob||done) return; max=slide.clientWidth-60; finish(); }); // click fallback for presenting
+})();
+
+/* ---------- analyze animation ---------- */
+let timers=[];
+function runAnalyze(){
+  timers.forEach(clearTimeout); timers=[];
+  const boxes=[...document.querySelectorAll('#photo .box')], logs=[...document.querySelectorAll('#log div')];
+  boxes.forEach(b=>b.classList.remove('on')); logs.forEach(l=>l.classList.remove('on'));
+  document.getElementById('scan').style.display='';
+  boxes.forEach((b,i)=>timers.push(setTimeout(()=>b.classList.add('on'), 500+i*380)));
+  logs.forEach((l,i)=>timers.push(setTimeout(()=>l.classList.add('on'), 700+i*520)));
+  timers.push(setTimeout(()=>document.getElementById('scan').style.display='none', 2900));
+  timers.push(setTimeout(()=>{ if(state.step===1) go(2); }, 3700));
+}
+
+/* ---------- navigation ---------- */
+function go(n){
+  n = Math.max(0, Math.min(5, n));
+  const prev = state.step; state.step = n;
+  document.querySelectorAll('.screen').forEach(s=>{
+    const i=+s.dataset.s; s.classList.toggle('on', i===n); s.classList.toggle('back', i<n);
+    if(i===n) s.querySelector('.scroll').scrollTop = 0;
+  });
+  document.querySelectorAll('#steps li').forEach(li=>li.classList.toggle('on', +li.dataset.i===n));
+  if(n===1) runAnalyze(); else { timers.forEach(clearTimeout); }
+  if(n===3) renderSwaps();
+  if(n===4){ renderCheckout(); resetSlide(); }
+  if(n===5) renderCheckout();
+}
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(+b.dataset.go)));
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT') return;
+  if(e.key==='ArrowRight') go(state.step+1);
+  if(e.key==='ArrowLeft') go(state.step-1);
+  if(e.key==='r'||e.key==='R'){ state.budget=150000; document.getElementById('bRange').value=150000; autoPick(); renderItems(); go(0); }
+});
+
+/* fit the phone frame on short laptop screens */
+function fit(){
+  const ph=document.getElementById('phone');
+  if(innerWidth<=860){ ph.style.transform=''; ph.style.margin=''; return; }
+  const s=Math.min(1,(innerHeight-48)/822);
+  ph.style.transform=`scale(${s})`; ph.style.margin=`${(s-1)*400}px ${(s-1)*195}px`;
+}
+addEventListener('resize',fit); fit();
+
+autoPick(); renderItems(); go(0);
+</script>
+</body>
+</html>
