@@ -244,6 +244,91 @@ body{ font-family:"Pretendard",system-ui,-apple-system,"Segoe UI",sans-serif; }
 .altc .pic{ width:124px; height:186px; }
 .altc .ab,.altc .an,.altc .ap,.altc .am{ padding:0 6px; }
 .size{ font-weight:400; }
+
+/* ===== features: my page, detail sheet, per-item controls, ads ===== */
+.banner{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12.5px;color:var(--ink);border:1px solid var(--line);padding:10px 12px;margin:-4px 0 14px;cursor:pointer}
+.banner u{text-underline-offset:3px;white-space:nowrap;font-weight:600}
+.panel{position:absolute;inset:52px 0 0;background:#fff;z-index:70;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.panel.on{transform:none}
+.panel .scroll{padding-bottom:110px}
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.35);z-index:65;opacity:0;pointer-events:none;transition:opacity .3s}
+.dim.on{opacity:1;pointer-events:auto}
+.sheet{top:120px;border-top:1px solid var(--ink)}
+.grp{border-top:1px solid var(--ink);padding:14px 0 16px}
+.grp h4{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;display:flex;justify-content:space-between}
+.grp h4 small{font-weight:400;letter-spacing:0;text-transform:none;color:var(--mute);font-size:11.5px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fld{border-bottom:1px solid var(--ink);display:flex;align-items:baseline;justify-content:space-between;padding:6px 0}
+.fld span{font-size:12px;color:var(--mute)}
+.fld input{border:0;outline:0;font:inherit;font-size:18px;width:70px;text-align:right;background:none}
+.fld em{font-style:normal;font-size:12px;color:var(--mute);margin-left:4px}
+.lbl2{font-size:12px;color:var(--mute);margin:12px 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{height:32px;padding:0 12px;border:1px solid var(--line);font-size:12.5px;color:var(--ink);background:#fff}
+.chips button.on{border-color:var(--ink);background:var(--ink);color:#fff}
+.chips.sm button{height:28px;padding:0 9px;font-size:12px}
+.kwbar{display:grid;grid-template-columns:92px 1fr 30px;gap:8px;align-items:center;font-size:12px;margin:6px 0}
+.kwbar i{display:block;height:4px;background:var(--soft);position:relative}
+.kwbar i b{position:absolute;left:0;top:0;bottom:0;background:var(--ink)}
+.kwbar.neg i b{background:var(--accent)}
+.kwbar span:last-child{text-align:right;color:var(--mute)}
+.note{font-size:11.5px;color:var(--mute);line-height:1.5;margin-top:8px}
+.toggle{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:6px 0}
+.sw-t{width:40px;height:22px;background:var(--ink);border-radius:11px;position:relative}
+.sw-t:after{content:"";position:absolute;right:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff}
+/* per-item controls */
+.ctl{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;align-items:center;padding:10px 0 4px;font-size:12px}
+.ctl > span{color:var(--mute)}
+.ctl select{font:inherit;font-size:12.5px;border:1px solid var(--line);padding:5px 8px;background:#fff;width:max-content}
+.fitnote{grid-column:1/-1;font-size:11.5px;color:var(--accent)}
+.capwarn{font-size:11.5px;color:var(--accent);padding:2px 0 6px}
+.hint2{font-size:12px;color:var(--mute);margin:0 0 12px;line-height:1.55}
+/* detail sheet */
+.gal{display:flex;gap:2px;overflow-x:auto;margin:0 -20px;padding:0 20px;scrollbar-width:none}
+.gal::-webkit-scrollbar{display:none}
+.gal div{flex:none;width:150px;height:225px;background:var(--soft);display:grid;place-items:center;position:relative}
+.gal div span{position:absolute;left:8px;bottom:8px;font-size:10.5px;letter-spacing:.06em;color:#555}
+.dh{padding:14px 0 12px}
+.dh .b{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.dh h3{font-size:17px;font-weight:400;margin-top:3px}
+.dh .p{display:flex;justify-content:space-between;align-items:baseline;margin-top:6px;font-size:16px}
+.dh .p small{font-size:12px;color:var(--accent);font-weight:600}
+.adtag{display:inline-block;font-size:10px;border:1px solid var(--ink);padding:1px 5px;margin-left:6px;letter-spacing:.04em;vertical-align:2px}
+.scale{display:grid;grid-template-columns:54px 1fr;align-items:center;gap:10px;font-size:12px;margin:7px 0}
+.scale .dots{display:grid;grid-template-columns:repeat(4,1fr);gap:3px}
+.scale .dots i{height:4px;background:var(--soft)}
+.scale .dots i.on{background:var(--ink)}
+.scale .ends{grid-column:2;display:flex;justify-content:space-between;font-size:10.5px;color:var(--mute);margin-top:-4px}
+table.meas{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}
+table.meas th{font-weight:400;color:var(--mute);text-align:right;padding:5px 0;border-bottom:1px solid var(--line)}
+table.meas th:first-child,table.meas td:first-child{text-align:left}
+table.meas td{text-align:right;padding:6px 0;border-bottom:1px solid var(--line)}
+.diff{font-size:11px;color:var(--mute)}
+.rate{display:flex;align-items:baseline;gap:8px}
+.rate b{font-size:22px;font-weight:600}
+.dist{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:10px;font-size:11px;text-align:center}
+.dist div i{display:block;height:4px;background:var(--soft);margin-bottom:4px;position:relative}
+.dist div i b{position:absolute;inset:0 auto 0 0;background:var(--ink)}
+.kws{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.kws span{font-size:12px;padding:4px 8px;border:1px solid var(--line)}
+.kws span.y{border-color:var(--ok);color:var(--ok)}
+.kws span.n{border-color:var(--accent);color:var(--accent)}
+.rv{border-top:1px solid var(--line);padding:10px 0;font-size:12.5px;line-height:1.55}
+.rv small{display:block;font-size:11px;color:var(--mute);margin-bottom:2px}
+/* ads */
+.ads{border-top:1px solid var(--line);padding:12px 0 14px}
+.ads .adh{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
+.ads .adh b{font-size:10.5px;border:1px solid var(--ink);padding:1px 6px;letter-spacing:.06em;font-weight:500}
+.ads .adh small{font-size:12px;color:var(--mute)}
+.adlist{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.adc{display:grid;grid-template-columns:48px 1fr;gap:8px;align-items:center;cursor:pointer}
+.adc .pic{width:48px;height:72px;background:var(--soft);display:grid;place-items:center}
+.adc .pic svg{width:34px;height:34px}
+.adc .b{font-size:10px;letter-spacing:.08em;color:var(--mute);text-transform:uppercase}
+.adc .nm{font-size:12px;font-weight:300;line-height:1.35}
+.adc .pr{font-size:12px;margin-top:2px}
+.secl{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-top:1px solid var(--ink);padding:12px 0 2px}
+@media (max-width:860px){ .panel{inset:0} .sheet{top:90px} }
 </style>
 </head>
 <body>
@@ -263,10 +348,11 @@ body{ font-family:"Pretendard",system-ui,-apple-system,"Segoe UI",sans-serif; }
     <section class="screen on" data-s="0">
       <div class="top">
         <span class="iconbtn" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 7h18M3 12h18M3 17h18"/></svg></span><span class="serif" style="font-size:25px;letter-spacing:-0.02em">snap to <i>buy</i></span>
-        <span class="iconbtn" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
+        <button class="iconbtn" id="openMy" aria-label="마이페이지"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></button>
       </div>
       <div class="scroll">
         <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>룩 사진으로 찾기<span class="cam"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="3"/><circle cx="12" cy="13" r="3.5"/><path d="M8.5 6l1.5-2.5h4L15.5 6"/></svg></span></div>
+        <div class="banner" id="myBanner"><span>체형·선호 브랜드를 입력하면 사이즈와 추천이 더 정확해져요</span><u>입력하기</u></div>
         <div class="hello"><h1>저장해둔 룩 <em>24개</em>,<br>오늘 하나 입어볼까요?</h1></div>
         <div class="src">
           <span class="chip on"><span class="dotg"></span>Pinterest</span>
@@ -298,6 +384,7 @@ body{ font-family:"Pretendard",system-ui,-apple-system,"Segoe UI",sans-serif; }
           <div>› 아이템 <b>4개</b> 인식</div>
           <div>› 쇼핑몰 <b>38곳</b>에서 같은·비슷한 상품 검색</div>
           <div>› 내 사이즈 기록 · 반품 이력 <b>2건</b> 반영</div>
+          <div>› 상품 리뷰 <b>1,240건</b>에서 핏·소재 키워드 분석</div>
           <div>› 내 옷장과 비교: 가방 <b>이미 있음</b></div>
         </div>
       </div>
@@ -310,8 +397,8 @@ body{ font-family:"Pretendard",system-ui,-apple-system,"Segoe UI",sans-serif; }
         <span class="t">룩 분해</span><span style="width:36px"></span>
       </div>
       <div class="scroll">
-        <div class="mini"><div class="th" id="lookThumb"></div><div><h2>원본 상품을<br>모두 찾았어요</h2><p>LOOK #024 · Pinterest · 163cm 기준</p><div class="tags"><span>#크롭니트</span><span>#와이드데님</span><span>#로퍼</span><span>#데일리룩</span></div></div></div>
-        <div id="items"></div>
+        <div class="mini"><div class="th" id="lookThumb"></div><div><h2>원본 상품을<br>모두 찾았어요</h2><p id="lookMeta">LOOK #024 · Pinterest · 163cm 기준</p><div class="tags"><span>#크롭니트</span><span>#와이드데님</span><span>#로퍼</span><span>#데일리룩</span></div></div></div>
+        <div id="ads"></div><div class="secl">이 룩의 아이템</div><div id="items"></div>
         <div class="sum">
           <div class="r"><span>원본 그대로 구매</span><span id="origTotal"></span></div>
           <div class="r"><span>내 예산</span><span id="budgetLbl"></span></div>
@@ -337,7 +424,7 @@ body{ font-family:"Pretendard",system-ui,-apple-system,"Segoe UI",sans-serif; }
           <div class="bar fit" style="background:#E4DED2"><i id="fitBar"></i></div>
           <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-top:8px"><span style="color:var(--mute)">선택한 조합</span><b id="selTotal"></b></div>
         </div>
-        <p style="font-size:13px;color:#4A4640;margin:0 2px 12px;line-height:1.55">존재감이 큰 <b>로퍼는 원본</b>으로 두고, 비슷한 대체품이 많은 <b>니트와 데님</b>을 내 취향에 맞는 아이템으로 바꿨어요.</p>
+        <p class="hint2">아이템마다 <b>최대 금액·사이즈·핏</b>을 따로 정할 수 있어요. 후보를 누르면 핏·리뷰·상세 이미지를 볼 수 있어요.</p>
         <div id="swaps"></div>
       </div>
       <div class="cta"><button class="btn" id="toCheckout" data-go="4">이 조합으로 결제 준비</button></div>
@@ -398,6 +485,71 @@ body{ font-family:"Pretendard",system-ui,-apple-system,"Segoe UI",sans-serif; }
         <button class="btn ghost" data-go="0" style="margin-top:14px">다른 룩 보러 가기</button>
       </div>
     </section>
+  
+    <div class="dim" id="dim"></div>
+
+    <!-- MY PAGE -->
+    <div class="panel" id="mypage">
+      <div class="top">
+        <button class="iconbtn" data-close aria-label="닫기"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        <span class="t">마이페이지</span><span style="width:36px"></span>
+      </div>
+      <div class="scroll">
+        <div class="grp" style="border-top:0;padding-top:4px">
+          <h4>신체 정보 <small>사이즈 추천에만 써요</small></h4>
+          <div class="row2">
+            <label class="fld"><span>키</span><span><input type="number" id="pfH" value="163"><em>cm</em></span></label>
+            <label class="fld"><span>몸무게</span><span><input type="number" id="pfW" value="52"><em>kg</em></span></label>
+          </div>
+          <div class="lbl2">평소 상의 사이즈</div><div class="chips sm" data-single data-k="top"><button>XS</button><button>S</button><button class="on">M</button><button>L</button><button>XL</button></div>
+          <div class="lbl2">평소 하의 사이즈</div><div class="chips sm" data-single data-k="bottom"><button>25</button><button>26</button><button class="on">27</button><button>28</button><button>29</button></div>
+          <div class="lbl2">신발 사이즈</div><div class="chips sm" data-single data-k="shoe"><button>235</button><button>240</button><button class="on">245</button><button>250</button></div>
+        </div>
+        <div class="grp">
+          <h4>체형</h4>
+          <div class="lbl2" style="margin-top:0">어깨</div><div class="chips" data-single><button>좁은 편</button><button class="on">보통</button><button>넓은 편</button></div>
+          <div class="lbl2">골격 타입</div><div class="chips" data-single><button>스트레이트</button><button class="on">웨이브</button><button>내추럴</button><button>잘 모르겠어요</button></div>
+          <div class="lbl2">선호 핏</div><div class="chips" data-single><button>정핏</button><button class="on">세미오버</button><button>오버핏</button></div>
+        </div>
+        <div class="grp">
+          <h4>선호 스타일 <small>여러 개 선택</small></h4>
+          <div class="chips"><button class="on">미니멀</button><button class="on">캐주얼</button><button>클래식</button><button>스트릿</button><button>러블리</button><button>아메카지</button><button>고프코어</button></div>
+        </div>
+        <div class="grp">
+          <h4>선호 브랜드 <small>여러 개 선택</small></h4>
+          <div class="chips"><button class="on">ATELIER NOON</button><button>HAZE</button><button class="on">BLUE HOUR</button><button>KORDE</button><button class="on">ROWEN</button><button>DAILY LAB</button><button>+ 추가</button></div>
+        </div>
+        <div class="grp">
+          <h4>리뷰로 본 내 취향 <small>구매 후기 14개 · 관심 상품 리뷰 1,240개</small></h4>
+          <div class="lbl2" style="margin-top:0">좋아하는 포인트</div>
+          <div class="kwbar"><span>도톰한 소재</span><i><b style="width:92%"></b></i><span>92</span></div>
+          <div class="kwbar"><span>안 비치는</span><i><b style="width:88%"></b></i><span>88</span></div>
+          <div class="kwbar"><span>부드러운 촉감</span><i><b style="width:85%"></b></i><span>85</span></div>
+          <div class="kwbar"><span>정사이즈</span><i><b style="width:79%"></b></i><span>79</span></div>
+          <div class="lbl2">피하는 포인트</div>
+          <div class="kwbar neg"><span>까슬한 소재</span><i><b style="width:81%"></b></i><span>81</span></div>
+          <div class="kwbar neg"><span>얇은 원단</span><i><b style="width:74%"></b></i><span>74</span></div>
+          <div class="kwbar neg"><span>통 좁은 바지</span><i><b style="width:62%"></b></i><span>62</span></div>
+          <p class="note">내가 남긴 후기, 반품 사유, 오래 본 상품의 리뷰에서 자주 나온 표현을 뽑았어요. 대체 후보를 고를 때 이 점수를 함께 써요.</p>
+        </div>
+        <div class="grp">
+          <h4>정보 공유 <small>AIR Identity</small></h4>
+          <div class="toggle"><span>쇼핑몰에는 사이즈·배송지만 공유</span><span class="sw-t"></span></div>
+          <div class="toggle"><span>키·몸무게는 공유하지 않기</span><span class="sw-t"></span></div>
+        </div>
+      </div>
+      <div class="cta"><button class="btn" id="saveMy">저장하기</button></div>
+    </div>
+
+    <!-- PRODUCT DETAIL -->
+    <div class="panel sheet" id="detail">
+      <div class="top">
+        <span style="width:36px"></span><span class="t">상품 상세</span>
+        <button class="iconbtn" data-close aria-label="닫기"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <div class="scroll" id="detailBody"></div>
+      <div class="cta"><button class="btn" id="detailBtn">이 상품으로 선택</button></div>
+    </div>
   </div>
 </div>
 
@@ -457,8 +609,23 @@ const ITEMS = [
     ]},
 ];
 const BAG = {brand:'내 옷장', name:'블랙 숄더백', color:'#1E1C1A'};
+const SIZES = { knit:['S','M','L','XL'], denim:['25','26','27','28','29'], loafer:['235','240','245','250'] };
+const FITS  = { knit:['정핏','오버핏'], denim:['정핏','여유 있게'] };
+const CAPS  = [0,30000,50000,70000,100000,150000,200000];
+const KW = {
+  knit:  {orig:['도톰해요','고급스러워요','살짝 까슬해요'], 0:['도톰해요','핏 예뻐요','보풀 조금'], 1:['부드러워요','기장 길어요','안 비쳐요'], 2:['얇아요','가성비 좋아요','살짝 비쳐요']},
+  denim: {orig:['핏 예뻐요','두꺼워요','기장 길어요'], 0:['허리 딱 맞음','기장 넉넉','물빠짐 조금'], 1:['원본이랑 거의 같아요','도톰해요','허리 커요'], 2:['통 좁아요','부드러워요','가벼워요']},
+  loafer:{orig:['가죽 좋아요','정사이즈','발볼 좁아요'], 0:['편해요','정사이즈','광택 적어요'], 1:['발볼 넓어요','코가 각져요','가벼워요']},
+};
+const MY = { like:['도톰','부드러','안 비쳐','핏 예뻐','정사이즈','허리 딱','거의 같아요','편해요'], dislike:['까슬','비쳐요','얇아요','통 좁'] };
+const ADS = [
+  {key:'knit', brand:'MUSE STUDIO', name:'울 블렌드 라운드 니트', price:79000, shop:'muse', match:86, color:'#E9DFCF', ad:true},
+  {key:'loafer', brand:'NOVA', name:'레더 페니 로퍼', price:69000, shop:'nova', match:80, color:'#4A3324', ad:true},
+];
+const sizeOf = i => state.size[i.key];
 // choice: 'orig' or index of alts
-const state = { step:0, budget:150000, choice:{knit:0, denim:0, loafer:'orig'}, pay:'all', payPick:{knit:true, denim:true, loafer:true} };
+const state = { step:0, budget:150000, choice:{knit:0, denim:0, loafer:'orig'}, pay:'all', payPick:{knit:true, denim:true, loafer:true},
+  caps:{knit:0, denim:0, loafer:0}, size:{knit:'L', denim:'27', loafer:'245'}, fit:{knit:'정핏', denim:'정핏'}, height:163 };
 
 const won = n => n.toLocaleString('ko-KR') + '원';
 const origTotal = ITEMS.reduce((s,i)=>s+i.orig.price,0);
@@ -469,10 +636,10 @@ const payTotal = () => payItems().reduce((s,i)=>s+pick(i).price,0);
 
 /* ---------- side steps ---------- */
 const STEPS = [
-  ['영감 수집','핀터레스트 좋아요와 캡처가 자동으로 모인다. 사용자는 사고 싶은 룩을 탭하기만 하면 된다.'],
+  ['영감 수집','핀터레스트 좋아요와 캡처가 자동으로 모인다. 처음엔 마이페이지(오른쪽 위)에서 체형·선호 브랜드·스타일을 입력한다.'],
   ['룩 분해','사진 속 아이템 4개를 인식하고, 38개 쇼핑몰에서 같은 상품과 비슷한 상품을 찾는다. 이미 가진 가방은 뺀다.'],
-  ['사이즈 맞춤','반품 이력과 구매 기록으로 브랜드별 사이즈를 고른다. 원본 그대로 사면 예산을 22만 원 넘는다.'],
-  ['예산 맞춤','아이템마다 대체 후보 2–3개를 취향 일치도, 가격, 같은 몰 묶음배송 기준으로 제안한다. 포인트 아이템은 원본으로 둔다.'],
+  ['사이즈 맞춤','반품 이력과 구매 기록으로 브랜드별 사이즈를 고른다. 위에는 "광고" 표시된 추천 상품 자리, 그 아래 원본 아이템이 나온다.'],
+  ['예산 맞춤','룩 전체 예산과 아이템별 최대 금액, 사이즈, 핏(오버핏이면 한 치수 업)을 정한다. 후보를 누르면 핏·실측·리뷰 요약·상세 이미지를 본다.'],
   ['결제 방식 선택','한 번에 결제, 골라서 결제, 장바구니에만 담기, 가격 내려가면 사기 중 고른다. 어떤 방식이든 AIR Agent 한도 안에서만 움직인다.'],
   ['완료','고른 방식대로 끝낸다. 사지 않은 아이템과 원본 가격은 에이전트가 계속 지켜본다.'],
 ];
@@ -498,6 +665,9 @@ document.getElementById('lookThumb').innerHTML = lookSVG({id:8}) + '<span class=
 
 /* ---------- render: breakdown ---------- */
 function renderItems(){
+  document.getElementById('ads').innerHTML = `<div class="ads"><div class="adh"><b>광고</b><small>이 룩과 어울리는 추천 상품</small></div><div class="adlist">${ADS.map((a,k)=>`
+    <div class="adc" data-ad="${k}"><div class="pic">${icon[a.key](a.color)}</div><div><div class="b">${a.brand}</div><div class="nm">${a.name}</div><div class="pr">${won(a.price)}</div></div></div>`).join('')}</div></div>`;
+  document.querySelectorAll('.adc').forEach(el=>el.onclick=()=>{ const a=ADS[+el.dataset.ad]; openDetail(a.key, 'ad', a); });
   document.getElementById('items').innerHTML = ITEMS.map(i=>`
     <div class="item">
       <div class="pic">${icon[i.key](i.orig.color)}</div>
@@ -518,10 +688,23 @@ function renderItems(){
 
 /* ---------- render: budget ---------- */
 function autoPick(){
-  // keep loafer original (point item), then swap cheapest-to-swap until within budget
-  state.choice = {knit:'orig', denim:'orig', loafer:'orig'};
-  const order = ['knit','denim','loafer'];
-  for(const k of order){ if(selTotal() <= state.budget) break; state.choice[k]=0; }
+  // brute force: per item pick original or a candidate, respecting per-item caps and the look budget,
+  // maximizing taste score (originals score highest; the loafer is the look's point item)
+  const opts = ITEMS.map(i=>{
+    const all = [{c:'orig', p:i.orig.price, s:100+(i.key==='loafer'?15:0)}].concat(i.alts.map((a,ix)=>({c:ix, p:a.price, s:a.match})));
+    const cap = state.caps[i.key];
+    const ok = cap ? all.filter(o=>o.p<=cap) : all;
+    return ok.length ? ok : [all.reduce((m,o)=>o.p<m.p?o:m)];
+  });
+  let best=null;
+  const walk=(k,acc)=>{
+    if(k===ITEMS.length){ const p=acc.reduce((s,o)=>s+o.p,0), s=acc.reduce((x,o)=>x+o.s,0);
+      const fits=p<=state.budget;
+      if(!best || (fits && (!best.fits || s>best.s)) || (!fits && !best.fits && p<best.p)) best={acc:[...acc],p,s,fits}; return; }
+    for(const o of opts[k]){ acc.push(o); walk(k+1,acc); acc.pop(); }
+  };
+  walk(0,[]);
+  ITEMS.forEach((i,k)=>state.choice[i.key]=best.acc[k].c);
 }
 function renderSwaps(){
   document.getElementById('bVal').textContent = won(state.budget);
@@ -532,29 +715,120 @@ function renderSwaps(){
   fb.style.width = Math.min(100, t/state.budget*100) + '%';
   fb.style.background = t>state.budget ? 'var(--accent)' : '#5E9C7B';
   document.getElementById('swaps').innerHTML = ITEMS.map(i=>{
-    const c = state.choice[i.key];
+    const c = state.choice[i.key], cap = state.caps[i.key];
+    const capFail = cap && pick(i).price>cap;
+    const fits = FITS[i.key];
+    const base = i.size, cur = sizeOf(i);
     return `<div class="sw">
-      <div class="tagk" style="display:flex;justify-content:space-between"><span>${i.cat} · ${i.size}</span><span>대체 후보 ${i.alts.length}개</span></div>
+      <div class="tagk" style="display:flex;justify-content:space-between"><span>${i.cat} · ${cur}</span><span>대체 후보 ${i.alts.length}개</span></div>
+      <div class="ctl">
+        <span>최대 금액</span>
+        <select data-cap="${i.key}">${CAPS.map(v=>`<option value="${v}" ${v===cap?'selected':''}>${v?won(v)+'까지':'제한 없음'}</option>`).join('')}</select>
+        <span>사이즈</span>
+        <div class="chips sm">${SIZES[i.key].map(s=>`<button data-size="${i.key}" class="${s===cur?'on':''}">${s}</button>`).join('')}</div>
+        ${fits?`<span>핏</span><div class="chips sm">${fits.map(fv=>`<button data-fit="${i.key}" class="${state.fit[i.key]===fv?'on':''}">${fv}</button>`).join('')}</div>`:''}
+        ${cur!==base?`<div class="fitnote">${state.fit[i.key]&&state.fit[i.key]!=='정핏'?state.fit[i.key]+'으로 입으려고 ':''}추천 사이즈 ${base} → ${cur}로 바꿨어요</div>`:''}
+      </div>
+      ${capFail?`<div class="capwarn">${won(cap)} 안의 후보가 없어서 가장 저렴한 상품을 골랐어요</div>`:''}
       <div class="opt ${c==='orig'?'sel':''}" data-k="${i.key}" data-c="orig">
         <div class="pic">${icon[i.key](i.orig.color)}</div>
         <div><div class="nm">${i.orig.name}</div><div class="meta">원본 · ${i.orig.brand}</div></div>
         <div><div class="pr">${won(i.orig.price)}</div><div class="radio"></div></div>
       </div>
       <div class="alts">${i.alts.map((a,ix)=>`
-        <div class="altc ${c===ix?'sel':''}" data-k="${i.key}" data-c="${ix}">
+        <div class="altc ${c===ix?'sel':''}" data-k="${i.key}" data-c="${ix}" style="${cap&&a.price>cap?'opacity:.4':''}">
           <span class="atag ${a.tag==='추천'?'rec':''}">${a.tag}</span>
           <div class="pic">${icon[i.key](a.color)}</div>
           <div class="ab">${a.brand}</div><div class="an">${a.name}</div>
-          <div class="ap">${won(a.price)}</div><div class="am">취향 ${a.match}%</div>
+          <div class="ap">${won(a.price)}</div><div class="am">취향 ${a.match}% · 상세 ›</div>
         </div>`).join('')}</div>
-      ${c!=='orig'?`<div class="reason" style="padding-left:14px">${i.alts[c].reason}</div>`:''}
+      ${c!=='orig'?`<div class="reason">${i.alts[c].reason}</div>`:''}
     </div>`;}).join('');
-  document.querySelectorAll('.sw .opt, .sw .altc').forEach(o=>o.onclick=()=>{
-    const v=o.dataset.c; state.choice[o.dataset.k]= v==='orig' ? 'orig' : +v; renderSwaps(); });
+  document.querySelectorAll('.sw .opt').forEach(o=>o.onclick=()=>{ state.choice[o.dataset.k]='orig'; renderSwaps(); });
+  document.querySelectorAll('.sw .altc').forEach(o=>o.onclick=()=>openDetail(o.dataset.k, +o.dataset.c));
+  document.querySelectorAll('[data-cap]').forEach(s=>s.onchange=()=>{ state.caps[s.dataset.cap]=+s.value; autoPick(); renderSwaps(); });
+  document.querySelectorAll('[data-size]').forEach(b=>b.onclick=()=>{ state.size[b.dataset.size]=b.textContent; renderSwaps(); });
+  document.querySelectorAll('[data-fit]').forEach(b=>b.onclick=()=>{
+    const k=b.dataset.fit, it=ITEMS.find(x=>x.key===k), list=SIZES[k], bi=list.indexOf(it.size);
+    state.fit[k]=b.textContent;
+    state.size[k]= b.textContent==='정핏' ? it.size : list[Math.min(list.length-1, bi+1)];
+    renderSwaps(); });
   const btn = document.getElementById('toCheckout');
   btn.textContent = t>state.budget ? `예산보다 ${won(t-state.budget)} 많아요 · 그래도 진행` : '이 조합으로 결제 준비';
 }
 document.getElementById('bRange').oninput = e=>{ state.budget=+e.target.value; autoPick(); renderSwaps(); renderItems(); };
+
+/* ---------- panels: my page & product detail ---------- */
+function openPanel(id){ document.getElementById('dim').classList.add('on'); document.getElementById(id).classList.add('on'); document.querySelector('#'+id+' .scroll').scrollTop=0; }
+function closeAll(){ document.getElementById('dim').classList.remove('on'); document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on')); }
+document.getElementById('dim').onclick = closeAll;
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=closeAll);
+document.getElementById('openMy').onclick = ()=>openPanel('mypage');
+document.getElementById('myBanner').onclick = ()=>openPanel('mypage');
+document.querySelectorAll('#mypage .chips').forEach(g=>g.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+  if(g.hasAttribute('data-single')) g.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+  b.classList.toggle('on', g.hasAttribute('data-single') ? true : !b.classList.contains('on')); }));
+document.getElementById('saveMy').onclick = ()=>{
+  state.height = +document.getElementById('pfH').value || state.height;
+  document.getElementById('lookMeta').textContent = `LOOK #024 · Pinterest · ${state.height}cm 기준`;
+  const b=document.getElementById('myBanner'); b.innerHTML='<span>내 정보가 저장됐어요. 사이즈 추천에 반영할게요</span><u>수정</u>';
+  closeAll(); };
+
+const MEAS = {
+  knit:  {rows:['어깨','가슴','총장','소매'], base:[44,52,48,56], mine:[45,54,49,57]},
+  denim: {rows:['허리','엉덩이','허벅지','총장'], base:[35,49,32,104], mine:[35,50,33,102]},
+  loafer:{rows:['발길이','발볼','굽 높이'], base:[245,92,2.5], mine:[245,95,3]},
+};
+const REVIEWS = {
+  knit:  [['162cm 50kg · 평소 M · L 구매','도톰하고 크롭 기장이 예뻐요. 평소 M인데 L이 어깨가 편해요.'],['165cm 54kg · 평소 M · M 구매','핏은 좋은데 오래 입으면 목 부분이 살짝 까슬해요.']],
+  denim: [['163cm 52kg · 평소 27 · 27 구매','허리 딱 맞고 기장이 바닥에 살짝 닿아요. 로퍼랑 잘 어울려요.'],['160cm 49kg · 평소 26 · 26 구매','와이드 핏이 예쁜데 키가 작으면 수선이 필요해요.']],
+  loafer:[['발볼 보통 · 245 구매','정사이즈로 맞아요. 처음 며칠은 뒤꿈치가 살짝 까여요.'],['발볼 넓음 · 250 구매','발볼 넓으면 반 치수 크게 추천해요.']],
+};
+let detailCtx=null;
+function openDetail(key, c, ad){
+  const i = ITEMS.find(x=>x.key===key);
+  const p = ad || (c==='orig' ? i.orig : i.alts[c]);
+  detailCtx = {key, c, ad:!!ad};
+  const sz = sizeOf(i), m = MEAS[key], sh = ad ? 0 : (c==='orig'?0:(c+1));
+  const si = SIZES[key].indexOf(sz) - SIZES[key].indexOf(i.size);   // size steps away from the recommended size
+  const step = k => key==='knit' ? 2*si : key==='denim' ? (k<3 ? 1.5*si : 0) : (k===0 ? 5*si : 0);
+  const vals = m.base.map((v,k)=> +(v + step(k) + (k===m.base.length-1?0:(sh%2?1:-0.5)) ).toFixed(1));
+  const kw = ad ? ['신상품','핏 예뻐요','도톰해요'] : KW[key][c];
+  const cls = w => MY.like.some(l=>w.includes(l)) ? 'y' : MY.dislike.some(l=>w.includes(l)) ? 'n' : '';
+  const rating = (4.3 + ((p.match||95)%7)/20).toFixed(1), cnt = 180 + ((p.price/100)%900|0);
+  const small = 10 + (sh*7)%15, big = 8 + (sh*5)%12, true_ = 100-small-big;
+  const yes = kw.filter(w=>cls(w)==='y').length, no = kw.filter(w=>cls(w)==='n').length;
+  const thick = key==='loafer'?null:[3,3,2,1][sh] || 2;
+  document.getElementById('detailBody').innerHTML = `
+    <div class="gal">${['앞','뒤','디테일','소재','착용'].map((l,k)=>`<div style="background:${['#F3F2EF','#EFEEEA','#F5F4F1','#ECEBE6','#E9E8E4'][k]}">${icon[key](p.color).replace('width="40" height="40"', `width="${[96,96,140,170,80][k]}" height="${[96,96,140,170,80][k]}"`)}<span>${l}</span></div>`).join('')}</div>
+    <div class="dh">
+      <div class="b">${p.brand} · ${p.shop}${ad?'<span class="adtag">광고</span>':''}</div>
+      <h3>${p.name}</h3>
+      <div class="p"><span>${won(p.price)}</span>${p.match?`<small>취향 ${p.match}%</small>`:'<small>원본</small>'}</div>
+    </div>
+    <div class="grp">
+      <h4>핏 정보 <small>내 선택: ${sz}${state.fit[key]&&state.fit[key]!=='정핏'?' · '+state.fit[key]:''}</small></h4>
+      ${thick?`<div class="scale"><span>두께</span><div class="dots">${[0,1,2,3].map(k=>`<i class="${k<=thick?'on':''}"></i>`).join('')}</div><div class="ends"><span>얇음</span><span>도톰</span></div></div>
+      <div class="scale"><span>신축성</span><div class="dots">${[0,1,2,3].map(k=>`<i class="${k<=(sh%3)+1?'on':''}"></i>`).join('')}</div><div class="ends"><span>없음</span><span>좋음</span></div></div>
+      <div class="scale"><span>비침</span><div class="dots">${[0,1,2,3].map(k=>`<i class="${k<=(sh===3?2:0)?'on':''}"></i>`).join('')}</div><div class="ends"><span>없음</span><span>있음</span></div></div>`:''}
+      <table class="meas"><tr><th>${sz} 실측(cm)</th><th>이 상품</th><th>내가 잘 입은 옷</th></tr>
+        ${m.rows.map((r,k)=>{const d=+(vals[k]-m.mine[k]).toFixed(1);return `<tr><td>${r}</td><td>${vals[k]}</td><td>${m.mine[k]} <span class="diff">(${d>0?'+':''}${d})</span></td></tr>`;}).join('')}</table>
+      <p class="note">${p.name}의 ${sz} 사이즈는 내가 잘 입은 옷보다 전체적으로 ${vals[1]-m.mine[1]>=1.5?'넉넉해요':vals[1]-m.mine[1]<-1.5?'조금 작아요':'비슷해요'}.</p>
+    </div>
+    <div class="grp">
+      <h4>리뷰 <small>${cnt.toLocaleString()}개 · AI 요약</small></h4>
+      <div class="rate"><b>${rating}</b><span class="note" style="margin:0">/ 5</span></div>
+      <div class="dist"><div><i><b style="width:${small}%"></b></i>작아요 ${small}%</div><div><i><b style="width:${true_}%"></b></i>정사이즈 ${true_}%</div><div><i><b style="width:${big}%"></b></i>커요 ${big}%</div></div>
+      <div class="kws">${kw.map(w=>`<span class="${cls(w)}">${cls(w)==='y'?'✓ ':cls(w)==='n'?'! ':''}${w}</span>`).join('')}</div>
+      <p class="note">내 취향과 맞는 포인트 ${yes}개${no?`, 피하는 포인트 ${no}개`:''}. 리뷰에서 자주 나온 표현을 내 리뷰 취향과 비교했어요.</p>
+      <div class="lbl2">나와 체형이 비슷한 리뷰</div>
+      ${REVIEWS[key].map(r=>`<div class="rv"><small>${r[0]}</small>${r[1]}</div>`).join('')}
+    </div>`;
+  const btn = document.getElementById('detailBtn');
+  btn.textContent = ad ? '관심 상품에 담기' : (state.choice[key]===c ? '선택된 상품이에요' : '이 상품으로 선택');
+  btn.onclick = ()=>{ if(!ad){ state.choice[key]=c; renderSwaps(); } closeAll(); };
+  openPanel('detail');
+}
 
 /* ---------- render: checkout & done ---------- */
 const PAY = {
@@ -566,7 +840,7 @@ const PAY = {
 const target = () => Math.floor(payTotal()*0.85/1000)*1000;
 function groupShops(list){
   const m = {};
-  list.forEach(i=>{ const p=pick(i); (m[p.shop] ||= []).push({...p, size:i.size}); });
+  list.forEach(i=>{ const p=pick(i); (m[p.shop] ||= []).push({...p, size:sizeOf(i)}); });
   return m;
 }
 function renderCheckout(){
@@ -579,7 +853,7 @@ function renderCheckout(){
   document.getElementById('shopsTitle').textContent = mode==='some' ? '살 아이템 고르기' : mode==='cart' ? '담을 장바구니' : mode==='wait' ? '지켜볼 아이템' : '쇼핑몰별 주문';
   if(mode==='some'){
     document.getElementById('shops').innerHTML = ITEMS.map(i=>{ const p=pick(i), on=state.payPick[i.key];
-      return `<div class="shop pick ${on?'':'off'}" data-k="${i.key}"><span class="cb ${on?'on':''}"></span><span style="flex:1">${p.name}<small>${p.shop} · ${i.size}${on?'':' · 찜해둘게요'}</small></span><b>${won(p.price)}</b></div>`;}).join('');
+      return `<div class="shop pick ${on?'':'off'}" data-k="${i.key}"><span class="cb ${on?'on':''}"></span><span style="flex:1">${p.name}<small>${p.shop} · ${sizeOf(i)}${on?'':' · 찜해둘게요'}</small></span><b>${won(p.price)}</b></div>`;}).join('');
     document.querySelectorAll('.shop.pick').forEach(r=>r.onclick=()=>{ state.payPick[r.dataset.k]=!state.payPick[r.dataset.k]; renderCheckout(); });
   } else {
     document.getElementById('shops').innerHTML = Object.entries(g).map(([s,arr])=>
@@ -643,7 +917,7 @@ function runAnalyze(){
 
 /* ---------- navigation ---------- */
 function go(n){
-  n = Math.max(0, Math.min(5, n));
+  n = Math.max(0, Math.min(5, n)); closeAll();
   const prev = state.step; state.step = n;
   document.querySelectorAll('.screen').forEach(s=>{
     const i=+s.dataset.s; s.classList.toggle('on', i===n); s.classList.toggle('back', i<n);
@@ -658,9 +932,10 @@ function go(n){
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(+b.dataset.go)));
 document.addEventListener('keydown',e=>{
   if(e.target.tagName==='INPUT') return;
+  if(e.key==='Escape') return closeAll();
   if(e.key==='ArrowRight') go(state.step+1);
   if(e.key==='ArrowLeft') go(state.step-1);
-  if(e.key==='r'||e.key==='R'){ state.budget=150000; document.getElementById('bRange').value=150000; autoPick(); renderItems(); go(0); }
+  if(e.key==='r'||e.key==='R'){ state.budget=150000; document.getElementById('bRange').value=150000; state.caps={knit:0,denim:0,loafer:0}; state.size={knit:'L',denim:'27',loafer:'245'}; state.fit={knit:'정핏',denim:'정핏'}; autoPick(); renderItems(); go(0); }
 });
 
 /* fit the phone frame on short laptop screens */
