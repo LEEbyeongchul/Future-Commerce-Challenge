@@ -153,6 +153,7 @@ input[type=range]{width:100%;margin-top:10px;accent-color:var(--accent)}
 .done-hero p{color:var(--mute);font-size:14px;margin-top:6px;line-height:1.5}
 .saved{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
 .saved > div{background:var(--card);border-radius:16px;padding:14px;box-shadow:inset 0 0 0 1px var(--line)}
+.saved .mono{font-family:"Pretendard",system-ui,sans-serif;letter-spacing:0;font-size:12px;font-weight:600}
 .saved .v{font-size:20px;font-weight:700;letter-spacing:-0.03em;margin-top:4px}
 .saved .v.a{color:var(--accent)}
 .order{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;padding:11px 0;border-top:1px solid #EEE8DC}
@@ -161,6 +162,33 @@ input[type=range]{width:100%;margin-top:10px;accent-color:var(--accent)}
 .watch{display:flex;gap:12px;align-items:center;background:var(--ink);color:var(--paper);border-radius:18px;padding:14px 16px;margin-top:12px;font-size:13px;line-height:1.5}
 .watch b{display:block;font-size:14px}
 
+/* alt candidates */
+.alts{display:flex;gap:8px;overflow-x:auto;padding:10px 14px 12px;border-top:1px dashed var(--line);scrollbar-width:none}
+.alts::-webkit-scrollbar{display:none}
+.altc{flex:none;width:118px;border-radius:14px;padding:10px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line);cursor:pointer;position:relative;transition:box-shadow .2s}
+.altc.sel{background:#fff;box-shadow:inset 0 0 0 2px var(--accent)}
+.altc .pic{width:44px;height:44px;border-radius:10px;background:#ECE6DA;display:grid;place-items:center;margin-top:16px}
+.altc .pic svg{width:32px;height:32px}
+.atag{position:absolute;top:8px;left:8px;font-size:10px;font-weight:600;background:#ECE6DA;color:#4A4640;padding:2px 6px;border-radius:99px;white-space:nowrap;max-width:102px;overflow:hidden;text-overflow:ellipsis}
+.atag.rec{background:var(--accent);color:#fff}
+.altc .ab{font-size:10.5px;color:var(--mute);font-weight:600;margin-top:8px}
+.altc .an{font-size:12.5px;font-weight:600;line-height:1.3;height:32px;overflow:hidden}
+.altc .ap{font-weight:700;font-size:13.5px;margin-top:4px}
+.altc .am{font-size:11px;color:var(--accent);font-weight:600}
+/* pay options */
+.popt{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;padding:10px 0;border-top:1px solid #EEE8DC;cursor:pointer}
+.popt:first-child{border-top:0}
+.popt .radio{margin:1px 0 0}
+.popt.sel .radio{box-shadow:inset 0 0 0 6px var(--accent)}
+.popt b{display:block;font-size:14px}
+.popt span{font-size:12px;color:var(--mute);line-height:1.45}
+.shop.pick{display:flex;gap:10px;align-items:center;cursor:pointer}
+.shop.pick.off{opacity:.55}
+.cb{width:20px;height:20px;border-radius:6px;box-shadow:inset 0 0 0 1.5px #BDB5A6;flex:none;display:grid;place-items:center}
+.cb.on{background:var(--ink);box-shadow:none}
+.cb.on:after{content:"";width:9px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translate(1px,-1px)}
+.pill.wait{color:#8A5A1E;background:#F5E7CF}
+.slide.disabled{opacity:.4;pointer-events:none}
 .spin{width:22px;height:22px;border-radius:50%;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;animation:sp .8s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
 
@@ -272,9 +300,18 @@ input[type=range]{width:100%;margin-top:10px;accent-color:var(--accent)}
     <section class="screen" data-s="4">
       <div class="top">
         <button class="iconbtn" data-go="3" aria-label="뒤로"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg></button>
-        <span class="t">에이전트 결제</span><span style="width:36px"></span>
+        <span class="t">결제 방식</span><span style="width:36px"></span>
       </div>
       <div class="scroll">
+        <div class="perm">
+          <div class="h">어떻게 살까요?</div>
+          <div style="margin-top:8px" id="payOpts"></div>
+        </div>
+        <div class="perm">
+          <div class="h" id="shopsTitle">쇼핑몰별 주문</div>
+          <div style="margin-top:6px" id="shops"></div>
+          <div id="waitNote" class="why" style="margin-top:8px;display:none"></div>
+        </div>
         <div class="perm">
           <div class="h">위임 권한 확인 <span class="badge">AIR AGENT</span></div>
           <div style="margin-top:10px">
@@ -284,12 +321,8 @@ input[type=range]{width:100%;margin-top:10px;accent-color:var(--accent)}
             <div class="ck"><span class="tick">✓</span><span>공유 정보</span><span class="m">사이즈 · 배송지만</span></div>
           </div>
         </div>
-        <div class="perm">
-          <div class="h">쇼핑몰별 주문</div>
-          <div style="margin-top:6px" id="shops"></div>
-        </div>
         <div class="perm" style="display:flex;justify-content:space-between;align-items:center">
-          <span style="font-weight:700">총 결제</span><span style="font-size:22px;font-weight:700;letter-spacing:-0.03em" id="payTotal"></span>
+          <span style="font-weight:700" id="totalLbl">총 결제</span><span style="font-size:22px;font-weight:700;letter-spacing:-0.03em" id="payTotal"></span>
         </div>
       </div>
       <div class="cta">
@@ -303,11 +336,11 @@ input[type=range]{width:100%;margin-top:10px;accent-color:var(--accent)}
       <div class="scroll" style="padding-top:20px">
         <div class="done-hero">
           <div class="ring"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
-          <h2>룩 하나, 결제 한 번.</h2>
+          <h2 id="doneTitle">룩 하나, 결제 한 번.</h2>
           <p id="doneSub"></p>
         </div>
         <div class="saved">
-          <div><span class="mono" style="color:var(--mute)">원본 대비</span><div class="v a" id="saveAmt"></div></div>
+          <div><span class="mono" style="color:var(--mute)" id="saveLbl">원본 대비</span><div class="v a" id="saveAmt"></div></div>
           <div><span class="mono" style="color:var(--mute)">걸린 시간</span><div class="v">38초</div></div>
         </div>
         <div class="perm"><div id="orders"></div></div>
@@ -357,30 +390,44 @@ const icon = {
 const ITEMS = [
   { key:'knit', cat:'니트', size:'L', sizeNote:'M → L', why:'이 브랜드 M은 작았어요 (지난 3월 반품). L로 골랐어요.',
     orig:{brand:'ATELIER NOON', name:'크롭 케이블 니트', price:189000, shop:'ondo', color:'#EFE6D4'},
-    alt:{brand:'HAZE', name:'케이블 크롭 니트', price:42000, shop:'nami', match:92, color:'#EDE3CF', reason:'꽈배기 패턴 · 크롭 기장 · 아이보리. 자주 산 니트와 핏이 같아요.'} },
+    alts:[
+      {brand:'HAZE', name:'케이블 크롭 니트', price:42000, shop:'nami', match:92, tag:'추천', color:'#EDE3CF', reason:'꽈배기 패턴 · 크롭 기장 · 아이보리. 자주 산 니트와 핏이 같아요.'},
+      {brand:'ROWEN', name:'코튼 케이블 니트', price:58000, shop:'ondo', match:89, tag:'원본과 같은 몰', color:'#F2EBDD', reason:'면 소재라 덜 따가워요. 기장이 3cm 길어요.'},
+      {brand:'B.SIMPLE', name:'베이직 크롭 니트', price:29900, shop:'lowtide', match:81, tag:'최저가', color:'#E8DCC6', reason:'꽈배기 패턴이 없어 더 심플한 인상이에요.'},
+    ]},
   { key:'denim', cat:'데님', size:'27', sizeNote:'27 그대로', why:'최근 산 와이드 데님 3벌 모두 27이었어요.',
     orig:{brand:'BLUE HOUR', name:'와이드 데님 팬츠', price:129000, shop:'bluehour', color:'#6F86A6'},
-    alt:{brand:'DAILY LAB', name:'와이드 워시드 데님', price:39900, shop:'lowtide', match:88, color:'#7890AE', reason:'라이트 워싱 · 하이웨이스트 · 롱 기장. 원본과 실루엣이 거의 같아요.'} },
+    alts:[
+      {brand:'DAILY LAB', name:'와이드 워시드 데님', price:39900, shop:'lowtide', match:88, tag:'추천', color:'#7890AE', reason:'라이트 워싱 · 하이웨이스트 · 롱 기장. 원본과 실루엣이 거의 같아요.'},
+      {brand:'NORTHLINE', name:'원턱 와이드 데님', price:49000, shop:'bluehour', match:90, tag:'핏 가장 비슷', color:'#6A80A0', reason:'원본과 같은 원턱 디테일. 원본 쇼핑몰이라 교환이 쉬워요.'},
+      {brand:'HAZE', name:'세미와이드 데님', price:34000, shop:'nami', match:84, tag:'니트와 묶음배송', color:'#8399B5', reason:'통이 조금 좁아요. 니트와 같은 몰이라 배송비가 빠져요.'},
+    ]},
   { key:'loafer', cat:'로퍼', size:'245', sizeNote:'245', why:'룩의 포인트라 원본을 추천해요. 대체품은 인상이 달라져요.',
     orig:{brand:'KORDE', name:'페니 로퍼', price:59000, shop:'korde', color:'#5A3A26'},
-    alt:{brand:'MOSS', name:'스퀘어토 로퍼', price:45000, shop:'nami', match:71, color:'#4E3526', reason:'코 모양이 달라 룩 인상이 바뀔 수 있어요.'} },
+    alts:[
+      {brand:'ROWEN', name:'클래식 페니 로퍼', price:52000, shop:'ondo', match:83, tag:'추천', color:'#563827', reason:'형태는 비슷하지만 광택이 덜해요.'},
+      {brand:'MOSS', name:'스퀘어토 로퍼', price:45000, shop:'nami', match:71, tag:'최저가', color:'#4E3526', reason:'코 모양이 달라 룩 인상이 바뀔 수 있어요.'},
+    ]},
 ];
 const BAG = {brand:'내 옷장', name:'블랙 숄더백', color:'#1E1C1A'};
-const state = { step:0, budget:150000, choice:{knit:'alt', denim:'alt', loafer:'orig'} };
+// choice: 'orig' or index of alts
+const state = { step:0, budget:150000, choice:{knit:0, denim:0, loafer:'orig'}, pay:'all', payPick:{knit:true, denim:true, loafer:true} };
 
 const won = n => n.toLocaleString('ko-KR') + '원';
 const origTotal = ITEMS.reduce((s,i)=>s+i.orig.price,0);
-const pick = i => state.choice[i.key]==='alt' ? i.alt : i.orig;
+const pick = i => state.choice[i.key]==='orig' ? i.orig : i.alts[state.choice[i.key]];
 const selTotal = () => ITEMS.reduce((s,i)=>s+pick(i).price,0);
+const payItems = () => ITEMS.filter(i => state.pay!=='some' || state.payPick[i.key]);
+const payTotal = () => payItems().reduce((s,i)=>s+pick(i).price,0);
 
 /* ---------- side steps ---------- */
 const STEPS = [
   ['영감 수집','핀터레스트 좋아요와 캡처가 자동으로 모인다. 사용자는 사고 싶은 룩을 탭하기만 하면 된다.'],
   ['룩 분해','사진 속 아이템 4개를 인식하고, 38개 쇼핑몰에서 같은 상품과 비슷한 상품을 찾는다. 이미 가진 가방은 뺀다.'],
   ['사이즈 맞춤','반품 이력과 구매 기록으로 브랜드별 사이즈를 고른다. 원본 그대로 사면 예산을 22만 원 넘는다.'],
-  ['예산 맞춤','취향 일치도로 대체품을 고른다. 포인트 아이템은 원본으로 둔다. 예산을 바꾸면 조합이 다시 바뀐다.'],
-  ['위임 결제','AIR Agent로 정한 한도와 허용 쇼핑몰 안에서만 결제. 판매자는 에이전트 신원을 확인한다.'],
-  ['완료','쇼핑몰 3곳, 결제 한 번. 원본 가격 하락과 교환도 에이전트가 계속 챙긴다.'],
+  ['예산 맞춤','아이템마다 대체 후보 2–3개를 취향 일치도, 가격, 같은 몰 묶음배송 기준으로 제안한다. 포인트 아이템은 원본으로 둔다.'],
+  ['결제 방식 선택','한 번에 결제, 골라서 결제, 장바구니에만 담기, 가격 내려가면 사기 중 고른다. 어떤 방식이든 AIR Agent 한도 안에서만 움직인다.'],
+  ['완료','고른 방식대로 끝낸다. 사지 않은 아이템과 원본 가격은 에이전트가 계속 지켜본다.'],
 ];
 document.getElementById('steps').innerHTML = STEPS.map((s,i)=>
   `<li data-i="${i}"><span class="n">0${i+1}</span><div><b>${s[0]}</b><span class="d">${s[1]}</span></div></li>`).join('');
@@ -427,7 +474,7 @@ function autoPick(){
   // keep loafer original (point item), then swap cheapest-to-swap until within budget
   state.choice = {knit:'orig', denim:'orig', loafer:'orig'};
   const order = ['knit','denim','loafer'];
-  for(const k of order){ if(selTotal() <= state.budget) break; state.choice[k]='alt'; }
+  for(const k of order){ if(selTotal() <= state.budget) break; state.choice[k]=0; }
 }
 function renderSwaps(){
   document.getElementById('bVal').textContent = won(state.budget);
@@ -440,42 +487,79 @@ function renderSwaps(){
   document.getElementById('swaps').innerHTML = ITEMS.map(i=>{
     const c = state.choice[i.key];
     return `<div class="sw">
-      <div class="tagk">${i.cat} · ${i.size}</div>
+      <div class="tagk" style="display:flex;justify-content:space-between"><span>${i.cat} · ${i.size}</span><span>대체 후보 ${i.alts.length}개</span></div>
       <div class="opt ${c==='orig'?'sel':''}" data-k="${i.key}" data-c="orig">
         <div class="pic">${icon[i.key](i.orig.color)}</div>
         <div><div class="nm">${i.orig.name}</div><div class="meta">원본 · ${i.orig.brand}</div></div>
         <div><div class="pr">${won(i.orig.price)}</div><div class="radio"></div></div>
       </div>
-      <div class="opt ${c==='alt'?'sel':''}" data-k="${i.key}" data-c="alt">
-        <div class="pic">${icon[i.key](i.alt.color)}</div>
-        <div><div class="nm">${i.alt.name}</div><div class="meta">${i.alt.brand}<span class="match">취향 ${i.alt.match}%</span></div></div>
-        <div><div class="pr">${won(i.alt.price)}</div><div class="radio"></div></div>
-      </div>
-      ${c==='alt'?`<div class="reason">${i.alt.reason}</div>`:''}
+      <div class="alts">${i.alts.map((a,ix)=>`
+        <div class="altc ${c===ix?'sel':''}" data-k="${i.key}" data-c="${ix}">
+          <span class="atag ${a.tag==='추천'?'rec':''}">${a.tag}</span>
+          <div class="pic">${icon[i.key](a.color)}</div>
+          <div class="ab">${a.brand}</div><div class="an">${a.name}</div>
+          <div class="ap">${won(a.price)}</div><div class="am">취향 ${a.match}%</div>
+        </div>`).join('')}</div>
+      ${c!=='orig'?`<div class="reason" style="padding-left:14px">${i.alts[c].reason}</div>`:''}
     </div>`;}).join('');
-  document.querySelectorAll('.sw .opt').forEach(o=>o.onclick=()=>{ state.choice[o.dataset.k]=o.dataset.c; renderSwaps(); });
+  document.querySelectorAll('.sw .opt, .sw .altc').forEach(o=>o.onclick=()=>{
+    const v=o.dataset.c; state.choice[o.dataset.k]= v==='orig' ? 'orig' : +v; renderSwaps(); });
   const btn = document.getElementById('toCheckout');
   btn.textContent = t>state.budget ? `예산보다 ${won(t-state.budget)} 많아요 · 그래도 진행` : '이 조합으로 결제 준비';
 }
 document.getElementById('bRange').oninput = e=>{ state.budget=+e.target.value; autoPick(); renderSwaps(); renderItems(); };
 
 /* ---------- render: checkout & done ---------- */
-function groupShops(){
+const PAY = {
+  all:  {t:'한 번에 결제', d:'에이전트가 쇼핑몰 여러 곳을 한 번에 결제해요', slide:'밀어서 한 번에 결제', ok:'결제 완료'},
+  some: {t:'골라서 결제', d:'사고 싶은 아이템만 체크해요. 나머지는 찜해둘게요', slide:'밀어서 고른 아이템 결제', ok:'결제 완료'},
+  cart: {t:'장바구니에만 담기', d:'사이즈까지 맞춰 각 쇼핑몰 장바구니에 담아요. 결제는 직접', slide:'밀어서 장바구니에 담기', ok:'담기 완료'},
+  wait: {t:'가격 내려가면 사기', d:'목표 금액 이하가 되면 에이전트가 대신 결제해요', slide:'밀어서 자동 구매 예약', ok:'예약 완료'},
+};
+const target = () => Math.floor(payTotal()*0.85/1000)*1000;
+function groupShops(list){
   const m = {};
-  ITEMS.forEach(i=>{ const p=pick(i); (m[p.shop] ||= []).push({...p, size:i.size}); });
+  list.forEach(i=>{ const p=pick(i); (m[p.shop] ||= []).push({...p, size:i.size}); });
   return m;
 }
 function renderCheckout(){
-  const t = selTotal(), g = groupShops(), n = Object.keys(g).length;
-  document.getElementById('ckAmt').textContent = won(t);
+  const mode = state.pay, list = payItems(), t = payTotal(), g = groupShops(list), n = Object.keys(g).length;
+  document.getElementById('payOpts').innerHTML = Object.entries(PAY).map(([k,v])=>`
+    <div class="popt ${k===mode?'sel':''}" data-p="${k}"><div class="radio"></div>
+      <div><b>${v.t}</b><span>${v.d}</span></div></div>`).join('');
+  document.querySelectorAll('.popt').forEach(o=>o.onclick=()=>{ state.pay=o.dataset.p; renderCheckout(); resetSlide(); });
+  // item list (checkable in "some" mode)
+  document.getElementById('shopsTitle').textContent = mode==='some' ? '살 아이템 고르기' : mode==='cart' ? '담을 장바구니' : mode==='wait' ? '지켜볼 아이템' : '쇼핑몰별 주문';
+  if(mode==='some'){
+    document.getElementById('shops').innerHTML = ITEMS.map(i=>{ const p=pick(i), on=state.payPick[i.key];
+      return `<div class="shop pick ${on?'':'off'}" data-k="${i.key}"><span class="cb ${on?'on':''}"></span><span style="flex:1">${p.name}<small>${p.shop} · ${i.size}${on?'':' · 찜해둘게요'}</small></span><b>${won(p.price)}</b></div>`;}).join('');
+    document.querySelectorAll('.shop.pick').forEach(r=>r.onclick=()=>{ state.payPick[r.dataset.k]=!state.payPick[r.dataset.k]; renderCheckout(); });
+  } else {
+    document.getElementById('shops').innerHTML = Object.entries(g).map(([s,arr])=>
+      `<div class="shop"><span>${s}<small>${arr.map(a=>a.name+' · '+a.size).join(', ')}</small></span><b>${won(arr.reduce((x,a)=>x+a.price,0))}</b></div>`).join('');
+  }
+  document.getElementById('ckAmt').textContent = won(mode==='wait'?target():t);
   document.getElementById('ckShops').textContent = n + '곳';
-  document.getElementById('payTotal').textContent = won(t);
-  document.getElementById('shops').innerHTML = Object.entries(g).map(([s,arr])=>
-    `<div class="shop"><span>${s}<small>${arr.map(a=>a.name+' · '+a.size).join(', ')}</small></span><b>${won(arr.reduce((x,a)=>x+a.price,0))}</b></div>`).join('');
-  document.getElementById('doneSub').innerHTML = `쇼핑몰 ${n}곳 주문이 동시에 끝났어요.<br>배송은 모두 11월 25일 도착 예정이에요.`;
-  document.getElementById('saveAmt').textContent = '-' + won(origTotal - t);
+  document.getElementById('totalLbl').textContent = mode==='cart' ? '담을 금액' : mode==='wait' ? '목표 금액' : '총 결제';
+  document.getElementById('payTotal').innerHTML = mode==='wait' ? `${won(target())} <small style="font-size:13px;color:var(--mute);font-weight:500">이하</small>` : won(t);
+  document.getElementById('waitNote').style.display = mode==='wait' ? '' : 'none';
+  document.getElementById('waitNote').innerHTML = `지금 ${won(t)} → <b>${won(target())}</b> 이하가 되면 자동 결제 · 최대 14일 대기 · 품절 임박이면 먼저 물어볼게요`;
+  const slide=document.getElementById('slide'); slide.classList.toggle('disabled', list.length===0);
+
+  // done screen
+  const D = {
+    all:  ['룩 하나, 결제 한 번.', `쇼핑몰 ${n}곳 주문이 동시에 끝났어요.<br>배송은 모두 11월 25일 도착 예정이에요.`, '주문 완료'],
+    some: [`${list.length}개만 골라서 샀어요.`, `나머지 ${ITEMS.length-list.length}개는 찜해두고 가격을 지켜볼게요.`, '주문 완료'],
+    cart: ['장바구니에 다 담았어요.', `쇼핑몰 ${n}곳 장바구니에 사이즈까지 맞춰 담았어요.<br>쿠폰이 생기면 결제 전에 알려드려요.`, '장바구니'],
+    wait: ['가격이 내려가면 살게요.', `${won(target())} 이하가 되는 순간 대신 결제할게요.<br>한도와 쇼핑몰 조건은 그대로 지켜요.`, '대기 중'],
+  }[mode];
+  document.getElementById('doneTitle').textContent = D[0];
+  document.getElementById('doneSub').innerHTML = D[1];
+  document.getElementById('saveLbl').textContent = mode==='wait' ? '예상 추가 절약' : '원본 대비';
+  document.getElementById('saveAmt').textContent = '-' + won(mode==='wait' ? t-target() : origTotal - selTotal());
   document.getElementById('orders').innerHTML = Object.entries(g).map(([s,arr])=>
-    `<div class="order"><span>${s} · ${arr.length}개</span><span class="pill">주문 완료</span></div>`).join('');
+    `<div class="order"><span>${s} · ${arr.length}개</span><span class="pill ${mode==='wait'||mode==='cart'?'wait':''}">${D[2]}</span></div>`).join('')
+    + ITEMS.filter(i=>!list.includes(i)).map(i=>`<div class="order"><span>${pick(i).name}</span><span class="pill wait">찜 · 가격 지켜보는 중</span></div>`).join('');
 }
 
 /* ---------- slide to pay ---------- */
@@ -483,13 +567,14 @@ function renderCheckout(){
   const slide=document.getElementById('slide'), knob=document.getElementById('knob'), fill=document.getElementById('sFill'), txt=document.getElementById('sTxt');
   let drag=false, x0=0, max=0, done=false;
   const set = x => { knob.style.left = (4+x)+'px'; fill.style.width = (60+x)+'px'; };
-  window.resetSlide = ()=>{ done=false; slide.classList.remove('done'); set(0); txt.textContent='밀어서 한 번에 결제'; knob.style.display=''; };
+  window.resetSlide = ()=>{ done=false; slide.classList.remove('done'); set(0); txt.textContent=PAY[state.pay].slide; knob.style.display=''; };
   const finish = ()=>{
+    if(slide.classList.contains('disabled')) return;
     done=true; slide.classList.add('done'); set(max); knob.style.display='none';
     txt.innerHTML='<span class="spin"></span>';
-    setTimeout(()=>{ txt.textContent='결제 완료'; setTimeout(()=>go(5),450); }, 1100);
+    setTimeout(()=>{ txt.textContent=PAY[state.pay].ok; setTimeout(()=>go(5),450); }, 1100);
   };
-  knob.addEventListener('pointerdown',e=>{ if(done) return; drag=true; x0=e.clientX; max=slide.clientWidth-60; knob.setPointerCapture(e.pointerId); });
+  knob.addEventListener('pointerdown',e=>{ if(done||slide.classList.contains('disabled')) return; drag=true; x0=e.clientX; max=slide.clientWidth-60; knob.setPointerCapture(e.pointerId); });
   knob.addEventListener('pointermove',e=>{ if(!drag) return; set(Math.max(0,Math.min(max,e.clientX-x0))); });
   knob.addEventListener('pointerup',e=>{ if(!drag) return; drag=false; const x=e.clientX-x0; if(x>max*0.8) finish(); else set(0); });
   slide.addEventListener('click',e=>{ if(e.target===knob||done) return; max=slide.clientWidth-60; finish(); }); // click fallback for presenting
