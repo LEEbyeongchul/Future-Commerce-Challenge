@@ -200,6 +200,50 @@ input[type=range]{width:100%;margin-top:10px;accent-color:#000}
   .notch,.status{display:none}
   .screen{inset:env(safe-area-inset-top,0) 0 0}
 }
+
+/* ===== measured design tokens (2026-11-21, public pages, computed styles) =====
+   Zara      : Arial 300, labels 11-13px uppercase, letter-spacing normal, #000 on #fff,
+               product grid 2 cols edge-to-edge, image ratio 2:3 (h/w 1.5), radius 0
+   StyleHint : system-ui, text #1B1B1B, section title 18px/500, "더 보기" 13px link,
+               hashtag 15px/500 white over photo, mute #8D8D8D / #BABABA, styling photo h/w ~1.35
+   Pinterest : radius 16px (pins, buttons, search), chip bg #E5E5E0, brand red #E60023,
+               text #211922, headings 700, controls 48px tall                                  */
+:root{ --ink:#1B1B1B; --mute:#8D8D8D; --faint:#BABABA; --chip:#E5E5E0; --pin:#E60023; }
+body{ font-family:"Pretendard",system-ui,-apple-system,"Segoe UI",sans-serif; }
+.mono,.cap,.top .t,.perm .h,.tagk,.item .b,.altc .ab,.saved .mono,.pill,.badge{ letter-spacing:.03em; font-weight:400; }
+.top .t{ font-size:12px; }
+.btn{ background:#000; font-weight:400; font-size:13px; letter-spacing:.03em; height:48px; }
+.btn.ghost{ height:48px; }
+/* Pinterest: home */
+.search{ height:48px; border-radius:16px; background:var(--chip); color:#5F5F5F; }
+.hello h1{ font-weight:700; color:#211922; }
+.chip{ font-size:14px; color:#5F5F5F; font-weight:500; }
+.chip.on{ color:#211922; font-weight:700; }
+.dotg{ background:var(--pin); }
+.grid{ column-gap:8px; }
+.tile{ margin-bottom:30px; }
+.tile .lbl{ font-size:12px; color:#211922; font-weight:500; }
+.sechead{ display:flex; justify-content:space-between; align-items:baseline; margin:4px 0 12px; }
+.sechead h3{ font-size:18px; font-weight:500; color:var(--ink); letter-spacing:-0.02em; }
+.sechead a{ font-size:13px; color:var(--ink); text-decoration:underline; text-underline-offset:3px; }
+/* StyleHint: breakdown */
+.mini .th{ position:relative; width:100px; }
+.mini .th .ov{ position:absolute; left:8px; bottom:8px; color:#fff; font-size:12px; font-weight:500; text-shadow:0 1px 4px rgba(0,0,0,.35); }
+.mini h2{ font-size:18px; font-weight:500; }
+.mini p{ color:var(--mute); font-size:13px; }
+.tags span{ background:none; padding:0; font-size:13px; color:var(--ink); text-decoration:underline; text-underline-offset:3px; margin-right:6px; }
+.why{ color:var(--mute); }
+/* Zara: product imagery 2:3, radius 0, light type */
+.item .pic{ width:72px; height:108px; }
+.item .nm,.sw .opt .nm,.altc .an{ font-weight:300; }
+.item .pr,.sw .opt .pr,.altc .ap{ font-weight:400; }
+.item .b,.altc .ab{ font-size:11px; color:var(--ink); }
+.sw .opt .pic{ width:52px; height:78px; }
+.alts{ gap:2px; }
+.altc{ width:124px; }
+.altc .pic{ width:124px; height:186px; }
+.altc .ab,.altc .an,.altc .ap,.altc .am{ padding:0 6px; }
+.size{ font-weight:400; }
 </style>
 </head>
 <body>
@@ -230,6 +274,7 @@ input[type=range]{width:100%;margin-top:10px;accent-color:#000}
           <span class="chip">Instagram</span>
           <span class="chip">내 옷장</span>
         </div>
+        <div class="sechead"><h3>저장한 룩</h3><a>더 보기</a></div>
         <div class="grid" id="grid"></div>
       </div>
     </section>
@@ -449,7 +494,7 @@ document.getElementById('grid').innerHTML =
 document.querySelectorAll('.tile').forEach(t=>t.onclick=()=>{ if(t.dataset.pick==='1') go(1); });
 
 document.getElementById('lookBig').innerHTML = lookSVG({id:9});
-document.getElementById('lookThumb').innerHTML = lookSVG({id:8});
+document.getElementById('lookThumb').innerHTML = lookSVG({id:8}) + '<span class="ov">#LOOK024</span>';
 
 /* ---------- render: breakdown ---------- */
 function renderItems(){
