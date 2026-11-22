@@ -354,6 +354,8 @@ table.meas td{text-align:right;padding:6px 0;border-bottom:1px solid var(--line)
 .pushb button{flex:1;height:32px;font-size:11.5px;border:1px solid var(--ink);background:#fff}
 .pushb button:first-child{background:var(--ink);color:#fff}
 .push small{display:block;margin-top:8px;font-size:10.5px;color:var(--mute)}
+.who{text-decoration:none;font-size:9.5px;font-weight:600;letter-spacing:.04em;border:1px solid var(--line);color:var(--mute);padding:1px 5px;margin-left:4px;vertical-align:1px}
+.who.m{border-color:var(--ink);color:var(--ink)}
 </style>
 </head>
 <body>
@@ -478,7 +480,7 @@ table.meas td{text-align:right;padding:6px 0;border-bottom:1px solid var(--line)
                 <div class="chips sm" id="lsAct"><button data-a="alert" class="on">알림만</button><button data-a="buy">1만 원 더 비싸도 사기</button></div></div>
             </div>
             <div class="push">
-              <div class="pushh"><b>snap to buy</b><span>지금</span></div>
+              <div class="pushh"><b>snap to buy</b><span>Minds가 지켜보는 중 · 지금</span></div>
               <p id="pushMsg"></p>
               <div class="pushb"><button data-push="now">지금 사기</button><button data-push="wait">계속 기다리기</button><button data-push="alt">비슷한 후보로</button></div>
               <small>품절 임박 알림 예시</small>
@@ -486,13 +488,13 @@ table.meas td{text-align:right;padding:6px 0;border-bottom:1px solid var(--line)
           </div>
         </div>
         <div class="perm">
-          <div class="h">안심하고 맡기는 결제 <span class="badge">AIR · AP2</span></div>
+          <div class="h">안심하고 맡기는 결제 <span class="badge">MINDS · AIR</span></div>
           <ol class="flow5" id="flow5">
-            <li><i>1</i><div><b>의도 정리</b><span id="ckSplit"></span></div></li>
-            <li><i>2</i><div><b>위임장 발급</b><span>한도 <em id="ckAmt"></em> · 허용 쇼핑몰 <em id="ckShops"></em> · 15분만 유효</span></div></li>
-            <li><i>3</i><div><b>재고·가격 재확인</b><span>결제 직전에 각 쇼핑몰 재고와 가격을 다시 확인해요</span></div></li>
-            <li><i>4</i><div><b>검증</b><span>위임장 범위를 벗어난 주문은 자동으로 막아요</span></div></li>
-            <li><i>5</i><div><b id="ckPayT">결제</b><span id="ckPay">국내 카드로 결제해요</span></div></li>
+            <li><i>1</i><div><b>의도 정리 <u class="who">snap to buy</u></b><span id="ckSplit"></span></div></li>
+            <li><i>2</i><div><b>위임장 발급 <u class="who">AIR</u></b><span>한도 <em id="ckAmt"></em> · 허용 쇼핑몰 <em id="ckShops"></em> · 15분만 유효</span></div></li>
+            <li><i>3</i><div><b>재고·가격 재확인 <u class="who m">Minds</u></b><span>결제 직전에 각 쇼핑몰 재고와 가격을 다시 확인해요</span></div></li>
+            <li><i>4</i><div><b>검증 <u class="who">AIR</u></b><span>위임장 범위를 벗어난 주문은 자동으로 막아요</span></div></li>
+            <li><i>5</i><div><b><span id="ckPayT">결제</span> <u class="who m">Minds → 카드사</u></b><span id="ckPay">국내 카드로 결제해요</span></div></li>
           </ol>
           <div class="cred"><b>쇼핑몰이 받는 정보</b><span>"L 사이즈 적합: 네" · 배송지</span><small>키·몸무게 같은 원본 정보는 넘기지 않아요 (AIR 자격증명)</small></div>
         </div>
@@ -521,7 +523,7 @@ table.meas td{text-align:right;padding:6px 0;border-bottom:1px solid var(--line)
         <div class="perm"><div id="orders"></div></div>
         <div class="watch">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F0A18C" stroke-width="1.8" style="flex:none"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-          <div><b>원본 니트 가격도 지켜볼게요</b>20% 이상 내려가면 바로 알려드려요. 사이즈가 안 맞으면 교환도 대신 신청해요.</div>
+          <div><b>원본 니트 가격도 지켜볼게요 <span style="font-weight:400;font-size:11px;opacity:.7">· Minds</span></b>20% 이상 내려가면 바로 알려드려요. 사이즈가 안 맞으면 교환도 대신 신청해요.</div>
         </div>
         <button class="btn ghost" data-go="0" style="margin-top:14px">다른 룩 보러 가기</button>
       </div>
@@ -685,7 +687,7 @@ const STEPS = [
   ['룩 분해','사진 속 아이템 4개를 인식하고, 38개 쇼핑몰에서 같은 상품과 비슷한 상품을 찾는다. 이미 가진 가방은 뺀다.'],
   ['사이즈 맞춤','반품 이력과 구매 기록으로 브랜드별 사이즈를 고른다. 위에는 "광고" 표시된 추천 상품 자리, 그 아래 원본 아이템이 나온다.'],
   ['예산 맞춤','룩 전체 예산과 아이템별 최대 금액, 사이즈, 핏(오버핏이면 한 치수 업)을 정한다. 후보를 누르면 핏·실측·리뷰 요약·상세 이미지를 본다.'],
-  ['결제 방식 선택','네 가지 방식 중 고르고 승인한다. 의도 정리 → 위임장(한도·쇼핑몰·15분) → 재고 재확인 → 검증 → 결제 순서로 진행되고, "가격 내려가면 사기"는 품절 임박 기준과 그때 할 일(알림만 / 조금 비싸도 사기)도 정한다. 쇼핑몰은 원본 신체 정보 대신 "L 사이즈 적합: 네"만 받는다.'],
+  ['결제 방식 선택','네 가지 방식 중 고르고 승인한다. 무엇을 살지는 snap to buy가 정하고, 주문·결제 실행과 가격 감시는 Minds, 권한·신원 확인은 AIR가 맡는다. 의도 정리 → 위임장(한도·쇼핑몰·15분) → 재고 재확인 → 검증 → 결제 순서로 진행되고, "가격 내려가면 사기"는 품절 임박 기준과 그때 할 일(알림만 / 조금 비싸도 사기)도 정한다. 쇼핑몰은 원본 신체 정보 대신 "L 사이즈 적합: 네"만 받는다.'],
   ['완료','고른 방식대로 끝낸다. 사지 않은 아이템과 원본 가격은 에이전트가 계속 지켜본다.'],
 ];
 document.getElementById('steps').innerHTML = STEPS.map((s,i)=>
