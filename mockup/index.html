@@ -329,6 +329,18 @@ table.meas td{text-align:right;padding:6px 0;border-bottom:1px solid var(--line)
 .adc .pr{font-size:12px;margin-top:2px}
 .secl{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-top:1px solid var(--ink);padding:12px 0 2px}
 @media (max-width:860px){ .panel{inset:0} .sheet{top:90px} }
+
+.flow5{list-style:none;margin-top:10px}
+.flow5 li{display:grid;grid-template-columns:24px 1fr;gap:10px;padding:8px 0;border-top:1px solid var(--line);align-items:start}
+.flow5 li:first-child{border-top:0}
+.flow5 i{width:20px;height:20px;border:1px solid var(--ink);border-radius:50%;font-style:normal;font-size:10.5px;display:grid;place-items:center;transition:all .2s}
+.flow5 li.ok i{background:var(--ink);color:#fff}
+.flow5 b{display:block;font-size:13px;font-weight:600}
+.flow5 span{font-size:12px;color:var(--mute);line-height:1.45}
+.flow5 em{font-style:normal;color:var(--ink);font-weight:600}
+.cred{margin-top:8px;background:var(--soft);padding:10px 12px;font-size:12px;display:grid;gap:2px}
+.cred b{font-size:11px;letter-spacing:.06em;font-weight:600}
+.cred small{color:var(--mute);font-size:11px}
 </style>
 </head>
 <body>
@@ -447,13 +459,15 @@ table.meas td{text-align:right;padding:6px 0;border-bottom:1px solid var(--line)
           <div id="waitNote" class="why" style="margin-top:8px;display:none"></div>
         </div>
         <div class="perm">
-          <div class="h">위임 권한 확인 <span class="badge">AIR AGENT</span></div>
-          <div style="margin-top:10px">
-            <div class="ck"><span class="tick">✓</span><span>이번 결제 <b id="ckAmt"></b></span><span class="m">한도 300,000원</span></div>
-            <div class="ck"><span class="tick">✓</span><span>허용한 쇼핑몰만</span><span class="m" id="ckShops"></span></div>
-            <div class="ck"><span class="tick">✓</span><span>판매자가 에이전트 신원 확인</span><span class="m">검증됨</span></div>
-            <div class="ck"><span class="tick">✓</span><span>공유 정보</span><span class="m">사이즈 · 배송지만</span></div>
-          </div>
+          <div class="h">안심하고 맡기는 결제 <span class="badge">AIR · AP2</span></div>
+          <ol class="flow5" id="flow5">
+            <li><i>1</i><div><b>의도 정리</b><span id="ckSplit"></span></div></li>
+            <li><i>2</i><div><b>위임장 발급</b><span>한도 <em id="ckAmt"></em> · 허용 쇼핑몰 <em id="ckShops"></em> · 15분만 유효</span></div></li>
+            <li><i>3</i><div><b>재고·가격 재확인</b><span>결제 직전에 각 쇼핑몰 재고와 가격을 다시 확인해요</span></div></li>
+            <li><i>4</i><div><b>검증</b><span>위임장 범위를 벗어난 주문은 자동으로 막아요</span></div></li>
+            <li><i>5</i><div><b id="ckPayT">결제</b><span id="ckPay">국내 카드로 결제해요</span></div></li>
+          </ol>
+          <div class="cred"><b>쇼핑몰이 받는 정보</b><span>"L 사이즈 적합: 네" · 배송지</span><small>키·몸무게 같은 원본 정보는 넘기지 않아요 (AIR 자격증명)</small></div>
         </div>
         <div class="perm" style="display:flex;justify-content:space-between;align-items:center">
           <span style="font-weight:700" id="totalLbl">총 결제</span><span style="font-size:22px;font-weight:700;letter-spacing:-0.03em" id="payTotal"></span>
@@ -640,7 +654,7 @@ const STEPS = [
   ['룩 분해','사진 속 아이템 4개를 인식하고, 38개 쇼핑몰에서 같은 상품과 비슷한 상품을 찾는다. 이미 가진 가방은 뺀다.'],
   ['사이즈 맞춤','반품 이력과 구매 기록으로 브랜드별 사이즈를 고른다. 위에는 "광고" 표시된 추천 상품 자리, 그 아래 원본 아이템이 나온다.'],
   ['예산 맞춤','룩 전체 예산과 아이템별 최대 금액, 사이즈, 핏(오버핏이면 한 치수 업)을 정한다. 후보를 누르면 핏·실측·리뷰 요약·상세 이미지를 본다.'],
-  ['결제 방식 선택','한 번에 결제, 골라서 결제, 장바구니에만 담기, 가격 내려가면 사기 중 고른다. 어떤 방식이든 AIR Agent 한도 안에서만 움직인다.'],
+  ['결제 방식 선택','네 가지 방식 중 고르고 승인한다. 의도 정리 → 위임장(한도·쇼핑몰·15분) → 재고 재확인 → 검증 → 결제 순서로 진행되고, 쇼핑몰은 원본 신체 정보 대신 "L 사이즈 적합: 네"만 받는다.'],
   ['완료','고른 방식대로 끝낸다. 사지 않은 아이템과 원본 가격은 에이전트가 계속 지켜본다.'],
 ];
 document.getElementById('steps').innerHTML = STEPS.map((s,i)=>
@@ -861,6 +875,10 @@ function renderCheckout(){
   }
   document.getElementById('ckAmt').textContent = won(mode==='wait'?target():t);
   document.getElementById('ckShops').textContent = n + '곳';
+  document.getElementById('ckSplit').textContent = mode==='wait' ? `목표가 ${won(target())} 이하가 되면 쇼핑몰 ${n}곳 주문으로 실행해요` : `룩을 쇼핑몰 ${n}곳 주문으로 나눴어요`;
+  document.getElementById('ckPayT').textContent = mode==='cart' ? '장바구니 담기' : '결제';
+  document.getElementById('ckPay').textContent = mode==='cart' ? '결제 없이 담기만 해요. 결제는 직접 해요' : mode==='wait' ? '조건이 맞는 순간 국내 카드로 결제하고 알려드려요' : '국내 카드로 결제해요';
+  document.querySelectorAll('#flow5 li').forEach(li=>li.classList.remove('ok'));
   document.getElementById('totalLbl').textContent = mode==='cart' ? '담을 금액' : mode==='wait' ? '목표 금액' : '총 결제';
   document.getElementById('payTotal').innerHTML = mode==='wait' ? `${won(target())} <small style="font-size:13px;color:var(--mute);font-weight:500">이하</small>` : won(t);
   document.getElementById('waitNote').style.display = mode==='wait' ? '' : 'none';
@@ -894,7 +912,8 @@ function renderCheckout(){
     if(slide.classList.contains('disabled')) return;
     done=true; slide.classList.add('done'); set(max); knob.style.display='none';
     txt.innerHTML='<span class="spin"></span>';
-    setTimeout(()=>{ txt.textContent=PAY[state.pay].ok; setTimeout(()=>go(5),450); }, 1100);
+    document.querySelectorAll('#flow5 li').forEach((li,k)=>setTimeout(()=>li.classList.add('ok'), 120+k*260));
+    setTimeout(()=>{ txt.textContent=PAY[state.pay].ok; setTimeout(()=>go(5),500); }, 1500);
   };
   knob.addEventListener('pointerdown',e=>{ if(done||slide.classList.contains('disabled')) return; drag=true; x0=e.clientX; max=slide.clientWidth-60; knob.setPointerCapture(e.pointerId); });
   knob.addEventListener('pointermove',e=>{ if(!drag) return; set(Math.max(0,Math.min(max,e.clientX-x0))); });
