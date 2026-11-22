@@ -6,6 +6,7 @@
 param([string[]]$Only = @('shots','slides','deck','docs'))
 
 $ErrorActionPreference = 'Stop'
+$Only = @($Only | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() })   # -Only a,b via powershell -File arrives as one string
 $root = Split-Path -Parent $PSScriptRoot
 $tmp  = Join-Path $env:TEMP 'snap-to-buy-build'
 New-Item -ItemType Directory -Force $tmp | Out-Null
@@ -17,7 +18,7 @@ $browser = @(
   "${env:ProgramFiles(x86)}\Google\Chrome\Application\chrome.exe"
 ) | Where-Object { Test-Path $_ } | Select-Object -First 1
 if (-not $browser) { throw 'Edge or Chrome not found.' }
-$prof = Join-Path $tmp 'profile'
+$prof = Join-Path $tmp ('profile-' + [guid]::NewGuid().ToString('N'))   # fresh profile = no cached pages
 
 function Url($path) { ([System.Uri]::new((Resolve-Path $path).Path)).AbsoluteUri }
 function Run($argv) { Start-Process $browser -ArgumentList (@('--headless=new','--disable-gpu',"--user-data-dir=$prof") + $argv) -Wait -WindowStyle Hidden }

@@ -433,7 +433,6 @@ table.meas td{text-align:right;padding:6px 0;border-bottom:1px solid var(--line)
           <span class="chip on"><span class="dotg"></span>Pinterest</span>
           <span class="chip">업로드</span>
           <span class="chip">Instagram</span>
-          <span class="chip">내 옷장</span>
         </div>
         <div class="sechead"><h3>저장한 룩</h3><a>더 보기</a></div>
         <div class="grid" id="grid"></div>
@@ -453,15 +452,13 @@ table.meas td{text-align:right;padding:6px 0;border-bottom:1px solid var(--line)
           <div class="box" style="left:30%;top:24%;width:42%;height:20%"><span>니트</span></div>
           <div class="box" style="left:27%;top:44%;width:48%;height:40%"><span>데님</span></div>
           <div class="box" style="left:30%;top:86%;width:42%;height:9%"><span>로퍼</span></div>
-          <div class="box" style="left:66%;top:36%;width:24%;height:15%"><span>가방</span></div>
         </div>
         <div class="log" id="log">
-          <div>› 아이템 <b>4개</b> 인식</div>
+          <div>› 아이템 <b>3개</b> 인식</div>
           <div>› 출처 링크 → 국내 → 해외 검색으로 <b>원본</b> 찾기</div>
           <div>› 모은 룩 <b>312장</b>으로 만든 내 취향과 비교</div>
           <div>› 내 사이즈 기록 · 반품 이력 <b>2건</b> 반영</div>
           <div>› 상품 리뷰 <b>1,240건</b>에서 핏·소재 키워드 분석</div>
-          <div>› 내 옷장과 비교: 가방 <b>이미 있음</b></div>
         </div>
       </div>
     </section>
@@ -742,7 +739,7 @@ const ITEMS = [
       {brand:'MOSS', name:'스퀘어토 로퍼', price:45000, shop:'nami', match:71, tag:'최저가', color:'#4E3526', reason:'코 모양이 달라 룩 인상이 바뀔 수 있어요.'},
     ]},
 ];
-const BAG = {brand:'내 옷장', name:'블랙 숄더백', color:'#1E1C1A'};
+
 const SIZES = { knit:['S','M','L','XL'], denim:['25','26','27','28','29'], loafer:['235','240','245','250'] };
 const FITS  = { knit:['정핏','오버핏'], denim:['정핏','여유 있게'] };
 const CAPS  = [0,30000,50000,70000,100000,150000,200000];
@@ -773,7 +770,7 @@ const payTotal = () => payItems().reduce((s,i)=>s+pick(i).price,0);
 /* ---------- side steps ---------- */
 const STEPS = [
   ['룩 모으기','갤러리에 쌓아둔 룩 사진을 한 번에 업로드하고, 핀터레스트·인스타 게시물은 공유하기로 보낸다. 모은 룩이 내 취향 분석의 중심 데이터다.'],
-  ['룩 분해','사진 속 아이템 4개를 인식하고, 출처 링크 → 국내 쇼핑 검색 → 해외 이미지 검색 순서로 원본을 찾는다. 상품 DB 없이 그때그때 찾고, 이미 가진 가방은 뺀다.'],
+  ['룩 분해','사진 속 아이템 3개를 인식하고, 출처 링크 → 국내 쇼핑 검색 → 해외 이미지 검색 순서로 원본을 찾는다. 상품 DB 없이 그때그때 찾는다.'],
   ['사이즈 맞춤','반품 이력과 구매 기록으로 브랜드별 사이즈를 고른다. 위에는 "광고" 표시된 추천 상품 자리, 그 아래 원본 아이템이 나온다.'],
   ['예산 맞춤','룩 전체 예산과 아이템별 최대 금액, 사이즈, 핏(오버핏이면 한 치수 업)을 정한다. 후보를 누르면 핏·실측·리뷰 요약·상세 이미지를 본다.'],
   ['결제 방식 선택','네 가지 방식 중 고르고 승인한다. 무엇을 살지는 snap to buy가 정하고, 주문·결제 실행과 가격 감시는 Minds, 권한·신원 확인은 AIR가 맡는다. 의도 정리 → 위임장(한도·쇼핑몰·15분) → 재고 재확인 → 검증 → 결제 순서로 진행되고, "가격 내려가면 사기"는 품절 임박 기준과 그때 할 일(알림만 / 조금 비싸도 사기)도 정한다. 쇼핑몰은 원본 신체 정보 대신 "L 사이즈 적합: 네"만 받는다.'],
@@ -810,12 +807,7 @@ function renderItems(){
       <div><div class="b">${i.orig.brand} · ${i.orig.shop}</div><div class="nm">${i.orig.name}</div>
         <div class="row"><span class="pr">${won(i.orig.price)}</span><span class="size">${i.sizeNote}</span></div></div>
       <div class="why">${i.why}</div>
-    </div>`).join('') + `
-    <div class="item owned">
-      <div class="pic">${icon.bag(BAG.color)}</div>
-      <div><div class="b">${BAG.brand}</div><div class="nm">${BAG.name}</div>
-        <div class="row"><span class="pr">이미 있어요 · 구매 제외</span></div></div>
-    </div>`;
+    </div>`).join('');
   document.getElementById('origTotal').textContent = won(origTotal);
   document.getElementById('budgetLbl').textContent = won(state.budget);
   const over = origTotal - state.budget;
