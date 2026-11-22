@@ -356,6 +356,10 @@ table.meas td{text-align:right;padding:6px 0;border-bottom:1px solid var(--line)
 .push small{display:block;margin-top:8px;font-size:10.5px;color:var(--mute)}
 .who{text-decoration:none;font-size:9.5px;font-weight:600;letter-spacing:.04em;border:1px solid var(--line);color:var(--mute);padding:1px 5px;margin-left:4px;vertical-align:1px}
 .who.m{border-color:var(--ink);color:var(--ink)}
+.swaprows{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
+.swaprows div{background:#fff;padding:7px 8px;font-size:11px}
+.swaprows span{display:block;color:var(--mute)}
+.swaprows b{display:block;font-size:12.5px;margin-top:2px}
 </style>
 </head>
 <body>
@@ -523,8 +527,9 @@ table.meas td{text-align:right;padding:6px 0;border-bottom:1px solid var(--line)
         <div class="perm"><div id="orders"></div></div>
         <div class="watch">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F0A18C" stroke-width="1.8" style="flex:none"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-          <div><b>원본 니트 가격도 지켜볼게요 <span style="font-weight:400;font-size:11px;opacity:.7">· Minds</span></b>20% 이상 내려가면 바로 알려드려요. 사이즈가 안 맞으면 교환도 대신 신청해요.</div>
+          <div><b>원본 니트 가격도 지켜볼게요 <span style="font-weight:400;font-size:11px;opacity:.7">· Minds</span></b>원본 가격이 내려가면 알려드려요. 반품 기한 안이면 대체품 반품과 원본 구매를 한 번에 도와드려요.</div>
         </div>
+        <div id="swapAlert"></div>
         <button class="btn ghost" data-go="0" style="margin-top:14px">다른 룩 보러 가기</button>
       </div>
     </section>
@@ -971,6 +976,7 @@ function renderCheckout(){
   document.getElementById('saveLbl').textContent = mode==='wait' ? '예상 추가 절약' : '원본 대비';
   const saved = mode==='wait' ? t-target() : origTotal - selTotal();
   document.getElementById('saveAmt').textContent = saved>0 ? '-' + won(saved) : '원본 그대로';
+  renderSwapAlert(mode, list);
   document.getElementById('orders').innerHTML = Object.entries(g).map(([s,arr])=>
     `<div class="order"><span>${s} · ${arr.length}개</span><span class="pill ${mode==='wait'||mode==='cart'?'wait':''}">${D[2]}</span></div>`).join('')
     + ITEMS.filter(i=>!list.includes(i)).map(i=>`<div class="order"><span>${pick(i).name}</span><span class="pill wait">찜 · 가격 지켜보는 중</span></div>`).join('');
@@ -984,6 +990,29 @@ document.querySelectorAll('[data-push]').forEach(b=>b.onclick=()=>{
   else if(a==='alt'){ go(3); }
   else { b.textContent='계속 지켜볼게요'; }
 });
+function renderSwapAlert(mode, list){
+  const box = document.getElementById('swapAlert');
+  const knit = ITEMS.find(i=>i.key==='knit');
+  const bought = (mode==='all'||mode==='some') && list.includes(knit) && state.choice.knit!=='orig';
+  if(!bought){ box.innerHTML=''; return; }
+  const alt = pick(knit), now = 149000, ship = 3000, extra = now - alt.price + ship;
+  box.innerHTML = `<div class="push" style="margin-top:12px">
+      <div class="pushh"><b>snap to buy</b><span>Minds · 3일 뒤 예시</span></div>
+      <p>원본 <b>${knit.orig.name}</b>가 <b>${won(now)}</b>으로 내렸어요 (-${Math.round((1-now/knit.orig.price)*100)}%). 산 대체품을 반품하고 원본으로 바꿀까요?</p>
+      <div class="swaprows">
+        <div><span>반품 기한</span><b>3일 남음</b></div>
+        <div><span>반품 배송비</span><b>${won(ship)}</b></div>
+        <div><span>추가로 드는 돈</span><b>${won(extra)}</b></div>
+      </div>
+      <div class="pushb" id="swapBtns"><button data-swap="go">원본으로 바꾸기</button><button data-swap="keep">그대로 두기</button></div>
+      <small>승인하면 대체품 반품 신청과 원본 주문을 한 번에 처리해요. 손해가 나는 경우에는 알리지 않아요.</small>
+    </div>`;
+  box.querySelectorAll('[data-swap]').forEach(b=>b.onclick=()=>{
+    document.getElementById('swapBtns').outerHTML = b.dataset.swap==='go'
+      ? `<p style="margin-top:10px;font-weight:600">대체품 반품 접수 · 원본 ${knit.size} 주문 완료</p>`
+      : `<p style="margin-top:10px;color:var(--mute)">그대로 둘게요. 원본 가격은 계속 지켜볼게요.</p>`;
+  });
+}
 /* ---------- slide to pay ---------- */
 (function(){
   const slide=document.getElementById('slide'), knob=document.getElementById('knob'), fill=document.getElementById('sFill'), txt=document.getElementById('sTxt');
