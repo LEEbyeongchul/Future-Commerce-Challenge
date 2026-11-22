@@ -538,13 +538,17 @@ table.meas td{text-align:right;padding:6px 0;border-bottom:1px solid var(--line)
       <div class="scroll">
         <div class="grp" style="border-top:0;padding-top:4px">
           <h4>신체 정보 <small>사이즈 추천에만 써요</small></h4>
+          <div class="lbl2" style="margin-top:0">성별 <span style="font-size:11px">· 남녀 사이즈표가 달라서 사이즈 계산에 써요</span></div>
+          <div class="chips" data-single data-k="gender" style="margin-bottom:10px"><button class="on">여성</button><button>남성</button><button>선택 안 함</button></div>
+          <div class="lbl2">보고 싶은 상품</div>
+          <div class="chips sm" data-single data-k="shopFor" style="margin-bottom:6px"><button class="on">여성 상품</button><button>남성 상품</button><button>모두</button></div>
           <div class="row2">
             <label class="fld"><span>키</span><span><input type="number" id="pfH" value="163"><em>cm</em></span></label>
             <label class="fld"><span>몸무게</span><span><input type="number" id="pfW" value="52"><em>kg</em></span></label>
           </div>
-          <div class="lbl2">평소 상의 사이즈</div><div class="chips sm" data-single data-k="top"><button>XS</button><button>S</button><button class="on">M</button><button>L</button><button>XL</button></div>
-          <div class="lbl2">평소 하의 사이즈</div><div class="chips sm" data-single data-k="bottom"><button>25</button><button>26</button><button class="on">27</button><button>28</button><button>29</button></div>
-          <div class="lbl2">신발 사이즈</div><div class="chips sm" data-single data-k="shoe"><button>235</button><button>240</button><button class="on">245</button><button>250</button></div>
+          <div class="lbl2">평소 상의 사이즈 <span class="szt"></span></div><div class="chips sm" data-single data-k="top"><button>XS</button><button>S</button><button class="on">M</button><button>L</button><button>XL</button></div>
+          <div class="lbl2">평소 하의 사이즈 <span class="szt"></span></div><div class="chips sm" data-single data-k="bottom"><button>25</button><button>26</button><button class="on">27</button><button>28</button><button>29</button></div>
+          <div class="lbl2">신발 사이즈 <span class="szt"></span></div><div class="chips sm" data-single data-k="shoe"><button>235</button><button>240</button><button class="on">245</button><button>250</button></div>
         </div>
         <div class="grp">
           <h4>체형</h4>
@@ -809,9 +813,40 @@ document.getElementById('myBanner').onclick = ()=>openPanel('mypage');
 document.querySelectorAll('#mypage .chips').forEach(g=>g.querySelectorAll('button').forEach(b=>b.onclick=()=>{
   if(g.hasAttribute('data-single')) g.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
   b.classList.toggle('on', g.hasAttribute('data-single') ? true : !b.classList.contains('on')); }));
+// gender → size tables + default product gender (user can still change it)
+const SZT = {
+  여성:     {label:'여성 사이즈표', top:['XS','S','M','L','XL'], bottom:['25','26','27','28','29'], shoe:['230','235','240','245','250'], def:['M','27','245']},
+  남성:     {label:'남성 사이즈표', top:['S','M','L','XL','XXL'], bottom:['29','30','31','32','33','34'], shoe:['255','260','265','270','275','280'], def:['L','31','270']},
+  '선택 안 함':{label:'공용 사이즈표', top:['XS','S','M','L','XL','XXL'], bottom:['25','27','29','31','33'], shoe:['230','240','250','260','270','280'], def:['M','27','250']},
+};
+function bindSingle(g){ g.querySelectorAll('button').forEach(b=>b.onclick=()=>{ g.querySelectorAll('button').forEach(x=>x.classList.remove('on')); b.classList.add('on'); }); }
+function setSizeTable(gender){
+  const z = SZT[gender];
+  ['top','bottom','shoe'].forEach((k,ix)=>{
+    const g = document.querySelector('#mypage [data-k="'+k+'"]');
+    g.innerHTML = z[k].map(v=>'<button class="'+(v===z.def[ix]?'on':'')+'">'+v+'</button>').join('');
+    bindSingle(g);
+  });
+  document.querySelectorAll('#mypage .szt').forEach(s=>s.textContent='· '+z.label);
+}
+setSizeTable('여성');
+document.querySelectorAll('[data-k="gender"] button').forEach((b,k)=>b.addEventListener('click',()=>{
+  setSizeTable(b.textContent);
+  document.querySelectorAll('[data-k="shopFor"] button').forEach((x,j)=>x.classList.toggle('on', j===k)); }));
 document.getElementById('saveMy').onclick = ()=>{
   state.height = +document.getElementById('pfH').value || state.height;
-  document.getElementById('lookMeta').textContent = `LOOK #024 · Pinterest · ${state.height}cm 기준`;
+  const on = k => (document.querySelector('#mypage [data-k="'+k+'"] button.on')||{}).textContent;
+  const gender = on('gender') || '여성', z = SZT[gender];
+  const top = on('top') || z.def[0], bottom = on('bottom') || z.def[1], shoe = on('shoe') || z.def[2];
+  const knit = ITEMS.find(i=>i.key==='knit'), denim = ITEMS.find(i=>i.key==='denim'), loafer = ITEMS.find(i=>i.key==='loafer');
+  SIZES.knit = z.top; SIZES.denim = z.bottom; SIZES.loafer = z.shoe;
+  const up = z.top[Math.min(z.top.length-1, z.top.indexOf(top)+1)];   // this brand runs small (return history) → one size up
+  knit.size = up; knit.sizeNote = top===up ? up : top+' → '+up;
+  denim.size = bottom; denim.sizeNote = bottom+' 그대로';
+  loafer.size = shoe; loafer.sizeNote = shoe;
+  state.size = {knit:up, denim:bottom, loafer:shoe}; state.fit = {knit:'정핏', denim:'정핏'};
+  renderItems(); if(state.step===3) renderSwaps();
+  document.getElementById('lookMeta').textContent = `LOOK #024 · Pinterest · ${state.height}cm · ${z.label.replace(' 사이즈표','')} 기준`;
   const b=document.getElementById('myBanner'); b.innerHTML='<span>내 정보가 저장됐어요. 사이즈 추천에 반영할게요</span><u>수정</u>';
   closeAll(); };
 
@@ -999,7 +1034,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape') return closeAll();
   if(e.key==='ArrowRight') go(state.step+1);
   if(e.key==='ArrowLeft') go(state.step-1);
-  if(e.key==='r'||e.key==='R'){ state.budget=150000; document.getElementById('bRange').value=150000; state.caps={knit:0,denim:0,loafer:0}; state.size={knit:'L',denim:'27',loafer:'245'}; state.fit={knit:'정핏',denim:'정핏'}; autoPick(); renderItems(); go(0); }
+  if(e.key==='r'||e.key==='R'){ state.budget=150000; document.getElementById('bRange').value=150000; state.caps={knit:0,denim:0,loafer:0}; state.size=Object.fromEntries(ITEMS.map(i=>[i.key,i.size])); state.fit={knit:'정핏',denim:'정핏'}; autoPick(); renderItems(); go(0); }
 });
 
 /* fit the phone frame on short laptop screens */
