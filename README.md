@@ -1,34 +1,40 @@
 # snap to buy (가칭)
 
-> 저장만 해두던 룩을 오늘 주문하는 옷으로.
+> 저장만 해두던 룩을, 오늘 주문하는 옷으로.
 
-핀터레스트·인스타에서 저장한 룩 사진을 올리면, AI 에이전트가 사진 속 아이템을 찾아 **내 사이즈와 예산에 맞춰** 여러 쇼핑몰 결제를 **한 번에** 끝내주는 패션 쇼핑 에이전트입니다. 예산이 모자라면 내 취향을 학습해 비슷하면서 더 저렴한 대체 아이템을 추천합니다.
+**▶ 발표 자료:** https://leebyeongchul.github.io/Future-Commerce-Challenge/slides/deck.html ([PDF](slides/snap-to-buy_발표자료.pdf))
+**▶ 목업 체험:** https://leebyeongchul.github.io/Future-Commerce-Challenge/mockup/
+**▶ 이어서 작업하려면:** [HANDOVER.md](HANDOVER.md)부터 읽기
 
 **Future Commerce Challenge 2026** · Track A. Future Shopping Experience · 2026.11.22 Google Startup Campus Seoul
+
+> 데모 범위: 목업의 브랜드·상품·가격·리뷰·쇼핑몰 이름은 모두 가상 예시입니다. 실제 AI 모델이나 결제와 연결되지 않은, 사용 경험을 보여주는 화면 시연입니다.
+
+갤러리에 쌓아둔 룩 사진과 핀터레스트·인스타 게시물을 모으면, snap to buy가 그 **모은 룩으로 내 취향을 배웁니다.** 새 룩을 보내면 **원본을 먼저 찾고**, 없으면 **내 감성에 맞는 후보**를 사이즈와 예산에 맞춰 골라, **승인 한 번으로** 여러 쇼핑몰 주문을 대신 끝냅니다. 결제는 AIR 위임장 범위 안에서 Minds가 실행하고, 사지 않은 아이템은 가격과 재고를 계속 지켜봅니다.
+
+## 서비스 흐름
+
+```
+룩 모으기 → 룩 분해·원본 찾기 → 내 감성 후보·사이즈·예산 → 총액 승인 → 대신 주문 → 계속 지켜보기
+ (사용자)      (snap to buy)          (snap to buy)           (사용자)    (AIR·Minds)    (Minds)
+```
 
 ## 문서
 
 | 문서 | 설명 |
 | --- | --- |
-| [기획서 (Markdown)](docs/기획서.md) | 문제, 서비스 흐름, 기능, 차별점, 인프라, 수익 모델, 로드맵, 예상 질문 |
-| [기획서 (PDF)](docs/snap-to-buy_기획서.pdf) | 공유·발표용 A4 6페이지 |
-| [기획서 (HTML 원본)](docs/snap-to-buy_기획서.html) | PDF 디자인 원본. 수정 후 브라우저에서 PDF로 인쇄 |
-| [목업](https://leebyeongchul.github.io/Future-Commerce-Challenge/mockup/) | 클릭형 목업 ([소스](mockup/index.html)) |
-| [기술 가이드](docs/기술_가이드.pdf) ([md](docs/기술_가이드.md)) | 용어, 아키텍처, 데이터 파이프라인, 모델과 알고리즘 |
+| [발표 자료](slides/deck.html) ([PDF](slides/snap-to-buy_발표자료.pdf)) | 3분 발표용 9장 |
+| [제출용 소개](docs/제출용_소개.md) | 구글폼에 넣을 3–5문장 |
+| [기획서 (Markdown)](docs/기획서.md) · [PDF](docs/snap-to-buy_기획서.pdf) | 문제, 흐름, 기능, 차별점, 아키텍처, 결제, 수익, 로드맵, 예상 질문 |
+| [목업](https://leebyeongchul.github.io/Future-Commerce-Challenge/mockup/) ([소스](mockup/index.html)) | 클릭형 목업 |
+| [기술 가이드](docs/기술_가이드.pdf) ([md](docs/기술_가이드.md)) | 용어, 아키텍처, 취향 분석 파이프라인, 모델과 알고리즘 |
 | [쟁점 정리](docs/쟁점_정리.pdf) ([md](docs/쟁점_정리.md)) | 쟁점별 해결법과 한계 |
-| [참고 저장소 분석](docs/참고_저장소_분석.pdf) ([md](docs/참고_저장소_분석.md)) | 공개 쇼핑 에이전트 저장소에서 참고할 점과 반영 계획 |
-| [발표 전 반영안](docs/발표전_반영안.pdf) ([md](docs/발표전_반영안.md)) | README 초안, 데모 범위 고지, 예상 질문 보강 |
-| [당일 체크리스트](docs/내일_체크리스트.md) | 오리엔테이션 질문, 일정, 예상 질문 답변 |
-| [슬라이드: 왜 에이전트인가](slides/왜_에이전트인가.png) ([PDF](slides/왜_에이전트인가.pdf)) | 추천 앱과 에이전트의 차이, 에이전트가 하는 7단계 |
-| [슬라이드: 아키텍처](slides/아키텍처.png) ([PDF](slides/아키텍처.pdf)) | snap to buy · AIR · Minds 역할 분담 구조도 |
+| [참고 저장소 분석](docs/참고_저장소_분석.pdf) ([md](docs/참고_저장소_분석.md)) | 공개 쇼핑 에이전트 저장소에서 참고할 점 |
+| [발표 전 반영안](docs/발표전_반영안.pdf) ([md](docs/발표전_반영안.md)) | 데모 범위 고지, 결제 흐름, 역할 분담, 예상 질문 보강 |
+| [당일 체크리스트](docs/내일_체크리스트.md) | 오리엔테이션·멘토 질문, 일정, 예상 질문 답변 |
+| [슬라이드: 왜 에이전트인가](slides/왜_에이전트인가.png) · [아키텍처](slides/아키텍처.png) | 단독 슬라이드 (PNG · PDF) |
+| [인수인계](HANDOVER.md) | 현재 상태, 결정 사항, 수정·빌드 방법 |
 
-## 서비스 흐름
+## AI 도구 활용
 
-```
-영감 수집 → 룩 분해 → 상품 매칭 → 사이즈 맞춤 → 예산 맞춤 → 한 번에 결제
- (사용자)    (에이전트)  (에이전트)   (에이전트)    (에이전트)    (사용자 확인)
-```
-
-## 핵심 차별점
-
-**렌즈는 검색, 우리는 에이전트.** 기존 이미지 검색은 찾아주는 데서 멈춥니다. snap to buy는 사이즈를 맞추고, 예산을 조정하고, AIR 인프라 기반의 위임 결제까지 대신합니다.
+기획 정리, 문서 작성, 목업·발표 자료 코드 작성에 AI 코딩 도구(Claude Code)를 사용했습니다.

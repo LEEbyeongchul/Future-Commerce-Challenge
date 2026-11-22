@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>snap to buy · 발표 자료</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  /* Monochrome system from the references: Zara (white, black, hairlines, square, light caps),
+     StyleHint (studio looks, hashtags), Pinterest (rounded masonry, red dot) */
+  @page{size:1920px 1080px;margin:0}
+  :root{--ink:#111;--ink2:#1B1B1B;--mute:#8D8D8D;--faint:#BABABA;--line:#E6E6E6;--soft:#F3F2EF;--accent:#C8452C;--pin:#E60023}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{background:#e9e9e7}
+  body{font-family:"Pretendard",system-ui,sans-serif;color:var(--ink);letter-spacing:-0.02em;word-break:keep-all;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .slide{width:1920px;height:1080px;background:#fff;position:relative;overflow:hidden;page-break-after:always;margin:0 auto}
+  .slide:last-child{page-break-after:auto}
+  .pad{position:absolute;inset:96px 120px 90px}
+  .cap{font-size:14px;letter-spacing:.22em;text-transform:uppercase;font-weight:400;color:var(--ink)}
+  .cap.m{color:var(--mute)}
+  .k{font-size:15px;font-weight:600;color:var(--mute);letter-spacing:0}
+  .logo{font-family:"Instrument Serif",serif;font-weight:400;letter-spacing:-0.02em}
+  .logo i{font-style:italic}
+  h1{font-size:84px;font-weight:700;letter-spacing:-0.05em;line-height:1.06}
+  h2{font-size:60px;font-weight:700;letter-spacing:-0.045em;line-height:1.12}
+  h2 .t,h1 .t{font-weight:300}
+  .lead{font-size:26px;font-weight:300;color:#333;margin-top:22px;line-height:1.55}
+  .lead b{font-weight:600;color:var(--ink)}
+  .rule{height:1px;background:var(--ink)}
+  .tags{display:flex;gap:18px;flex-wrap:wrap}
+  .tags span{font-size:20px;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1px}
+  .top{position:absolute;left:120px;right:120px;top:44px;display:flex;justify-content:space-between;align-items:center}
+  .bot{position:absolute;left:120px;right:120px;bottom:40px;display:flex;justify-content:space-between;align-items:center}
+  .ph{border-radius:30px;border:6px solid #111;overflow:hidden;background:#fff}
+  .ph img{display:block;width:100%;height:auto}
+  .tile{border-radius:18px;overflow:hidden;background:var(--soft)}
+  .tile img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+  .num{font-size:15px;font-weight:400;letter-spacing:.2em}
+  .col h3{font-size:28px;font-weight:600;letter-spacing:-0.03em;margin-top:14px}
+  .col p,.col li{font-size:19px;font-weight:300;color:#333;line-height:1.6}
+  .col ul{list-style:none;margin-top:14px}
+  .col li{padding:7px 0;border-top:1px solid var(--line)}
+  .col li b{font-weight:600;color:var(--ink)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;height:56px;padding:0 34px;background:#111;color:#fff;font-size:17px;letter-spacing:.06em}
+  .who{display:inline-block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--ink);padding:2px 7px;margin-top:10px}
+  .who.f{background:#111;color:#fff}
+  .s5 [style*="margin-top:70px"]{margin-top:120px!important}
+  .s5 .col h3{font-size:32px} .s5 .col p{font-size:22px} .s5 h3[style*="font-size:22px"]{font-size:26px!important}
+  .s6 [style*="margin-top:56px"]{margin-top:80px!important} .s6 [style*="margin-top:54px"]{margin-top:96px!important}
+  .s6 .col li{font-size:23px;padding:11px 0} .s6 .col h3{font-size:32px}
+  .s7 [style*="margin-top:24px"]{margin-top:40px!important} .s7 [style*="margin-top:40px"]{margin-top:90px!important}
+  .s7 [style*="padding:22px"]{padding:30px!important;min-height:380px}
+  .s7 [style*="padding:22px"] h3{font-size:30px!important} .s7 [style*="padding:22px"] p[style*="font-size:16px"]{font-size:20px!important}
+  .s7 [style*="padding:14px 14px 0 0"]{font-size:19px!important}
+  @media screen{ .slide{margin:24px auto;box-shadow:0 10px 40px rgba(0,0,0,.12)} }
+</style>
+</head>
+<body>
+
+<!-- 1 COVER : Pinterest masonry + Zara whitespace -->
+<section class="slide">
+  <div class="top"><span class="cap">Future Commerce Challenge 2026</span><span class="cap m">Track A · Future Shopping Experience</span></div>
+  <div style="position:absolute;left:120px;top:250px;width:760px">
+    <p class="logo" style="font-size:170px;line-height:.86">snap to <i>buy</i></p>
+    <p style="font-size:40px;font-weight:300;margin-top:46px;line-height:1.35">저장만 해두던 룩을,<br><b style="font-weight:700">오늘 주문하는 옷</b>으로.</p>
+    <p style="font-size:21px;font-weight:300;color:#555;margin-top:22px;line-height:1.6">모은 룩으로 내 취향을 배우고, 원본을 찾아,<br>사이즈와 예산에 맞춰 대신 사주는 패션 쇼핑 에이전트</p>
+    <div class="tags" style="margin-top:40px"><span>#룩모으기</span><span>#내감성</span><span>#원본찾기</span><span>#대신사기</span></div>
+  </div>
+  <div style="position:absolute;right:120px;top:120px;width:860px;height:860px;columns:3;column-gap:16px">
+    <div class="tile" style="height:380px;margin-bottom:16px"><img src="img/home.png" alt=""></div>
+    <div class="tile" style="height:300px;margin-bottom:16px"><img src="img/analyze.png" alt=""></div>
+    <div class="tile" style="height:150px"><img src="img/budget.png" alt="" style="object-position:0 40%"></div>
+    <div class="tile" style="height:240px;margin-bottom:16px"><img src="img/breakdown.png" alt=""></div>
+    <div class="tile" style="height:420px;margin-bottom:16px"><img src="img/upload.png" alt="" style="object-position:0 12%"></div>
+    <div class="tile" style="height:170px"><img src="img/taste.png" alt=""></div>
+    <div class="tile" style="height:330px;margin-bottom:16px"><img src="img/pay.png" alt="" style="object-position:0 60%"></div>
+    <div class="tile" style="height:500px"><img src="img/swap.png" alt="" style="object-position:0 45%"></div>
+  </div>
+  <div class="bot"><span class="cap m">Demo · leebyeongchul.github.io/Future-Commerce-Challenge/mockup</span><span class="cap m">01</span></div>
+</section>
+
+<!-- 2 PROBLEM -->
+<section class="slide">
+  <div class="top"><span class="cap">Problem</span><span class="logo" style="font-size:26px">snap to <i>buy</i></span></div>
+  <div class="pad" style="display:grid;grid-template-columns:1fr 640px;gap:110px;align-items:start">
+    <div>
+      <h1>제 갤러리에는<br><span class="t">사지 못한 룩 사진만</span><br>쌓여 있습니다.</h1>
+      <p class="lead">핀터레스트에 저장하고, 인스타 룩을 캡처합니다.<br>사고 싶은데, <b>사는 과정이 너무 깁니다.</b></p>
+      <p style="font-size:44px;font-weight:200;margin-top:80px;letter-spacing:-0.03em">“이 옷 어디 거예요?”</p>
+      <p class="k" style="margin-top:10px">인기 룩 게시물마다 달리는 댓글</p>
+    </div>
+    <div class="col" style="margin-top:20px">
+      <div class="rule"></div>
+      <div style="display:grid;grid-template-columns:70px 1fr;padding:28px 0;border-bottom:1px solid var(--line)"><span class="num">01</span><div><h3 style="margin:0">어디 거예요?</h3><p style="margin-top:6px">댓글을 뒤지고, 아이템을 하나씩 따로 검색한다</p></div></div>
+      <div style="display:grid;grid-template-columns:70px 1fr;padding:28px 0;border-bottom:1px solid var(--line)"><span class="num">02</span><div><h3 style="margin:0">결제가 흩어짐</h3><p style="margin-top:6px">한 룩의 옷이 여러 쇼핑몰에 있어 결제를 반복한다</p></div></div>
+      <div style="display:grid;grid-template-columns:70px 1fr;padding:28px 0;border-bottom:1px solid var(--line)"><span class="num">03</span><div><h3 style="margin:0">사이즈 불안</h3><p style="margin-top:6px">브랜드마다, 남녀마다 사이즈가 달라 반품이 잦다</p></div></div>
+      <div style="display:grid;grid-template-columns:70px 1fr;padding:28px 0;border-bottom:1px solid var(--line)"><span class="num">04</span><div><h3 style="margin:0">예산 초과</h3><p style="margin-top:6px">사진 속 룩은 비싸고, 내 감성의 대체품 찾기는 또 일이다</p></div></div>
+    </div>
+  </div>
+  <div class="bot"><span class="cap m">snap to buy</span><span class="cap m">02</span></div>
+</section>
+
+<!-- 3 SOLUTION -->
+<section class="slide">
+  <div class="top"><span class="cap">Solution</span><span class="logo" style="font-size:26px">snap to <i>buy</i></span></div>
+  <div class="pad">
+    <h2>사진은 모으기만 하세요. <span class="t">나머지는 에이전트가.</span></h2>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:44px;margin-top:56px">
+      <div><div class="ph"><img src="img/upload.png" alt=""></div><p class="num" style="margin-top:22px">01</p><h3 style="font-size:24px;margin-top:6px">룩 모으기</h3><p style="font-size:16px;color:#555;font-weight:300;margin-top:6px;line-height:1.5">갤러리 사진 한 번에 업로드,<br>핀·인스타 공유</p></div>
+      <div><div class="ph"><img src="img/breakdown.png" alt=""></div><p class="num" style="margin-top:22px">02</p><h3 style="font-size:24px;margin-top:6px">원본 찾기</h3><p style="font-size:16px;color:#555;font-weight:300;margin-top:6px;line-height:1.5">출처 링크 → 국내 → 해외<br>원본 우선</p></div>
+      <div><div class="ph"><img src="img/budget.png" alt=""></div><p class="num" style="margin-top:22px">03</p><h3 style="font-size:24px;margin-top:6px">내 감성으로 맞춤</h3><p style="font-size:16px;color:#555;font-weight:300;margin-top:6px;line-height:1.5">모은 룩 취향 기준 후보,<br>사이즈·아이템별 예산</p></div>
+      <div><div class="ph"><img src="img/pay.png" alt=""></div><p class="num" style="margin-top:22px">04</p><h3 style="font-size:24px;margin-top:6px">승인 한 번</h3><p style="font-size:16px;color:#555;font-weight:300;margin-top:6px;line-height:1.5">총액 보고 승인하면<br>쇼핑몰 여러 곳에 대신 주문</p></div>
+      <div><div class="ph"><img src="img/swap.png" alt=""></div><p class="num" style="margin-top:22px">05</p><h3 style="font-size:24px;margin-top:6px">계속 지켜보기</h3><p style="font-size:16px;color:#555;font-weight:300;margin-top:6px;line-height:1.5">가격 하락·품절 임박,<br>원본으로 바꾸기</p></div>
+    </div>
+  </div>
+  <div class="bot"><span class="cap m">Mockup · products and prices are fictional</span><span class="cap m">03</span></div>
+</section>
+
+<!-- 4 CORE: TASTE (StyleHint: look + hashtags) -->
+<section class="slide">
+  <div class="top"><span class="cap">Core · Taste from collected looks</span><span class="logo" style="font-size:26px">snap to <i>buy</i></span></div>
+  <div class="pad" style="display:grid;grid-template-columns:1fr 320px 320px;gap:60px">
+    <div>
+      <h2>모은 룩이<br><span class="t">가장 정직한</span> 취향 데이터.</h2>
+      <p class="lead">비슷한 옷을 보여주는 곳은 많습니다. 저희는 사용자가 <b>몇 년째 모아온 룩</b>으로 감성을 배워서, <b>"비슷한 옷"이 아니라 "내 감성의 옷"</b>을 고릅니다.</p>
+      <div style="margin-top:44px" class="col">
+        <div class="rule"></div>
+        <div style="display:grid;grid-template-columns:240px 1fr;padding:18px 0;border-bottom:1px solid var(--line);font-size:21px"><b style="font-weight:600">아무도 안 쓰던 데이터</b><span style="font-weight:300;color:#333">갤러리 캡처는 내 휴대폰에만 있다</span></div>
+        <div style="display:grid;grid-template-columns:240px 1fr;padding:18px 0;border-bottom:1px solid var(--line);font-size:21px"><b style="font-weight:600">가장 솔직한 신호</b><span style="font-weight:300;color:#333">좋아요는 가볍지만, 캡처는 "진짜 갖고 싶다"</span></div>
+        <div style="display:grid;grid-template-columns:240px 1fr;padding:18px 0;border-bottom:1px solid var(--line);font-size:21px"><b style="font-weight:600">첫날부터 분석</b><span style="font-weight:300;color:#333">구매 기록 없이 한 번 업로드로 시작</span></div>
+      </div>
+      <p class="k" style="margin-top:26px;font-weight:400;line-height:1.6">모은 룩 → 패션 사진 거르기 → 룩 분해 → 임베딩·속성(기장·실루엣·색·소재) → 내 취향 벡터 → 구매·반품·리뷰로 보정</p>
+    </div>
+    <div style="padding-top:40px"><div class="ph"><img src="img/taste.png" alt=""></div><p class="num" style="margin-top:20px">My taste</p><p style="font-size:17px;font-weight:300;margin-top:6px">크롭 기장 78% · 와이드 71%<br>아이보리·베이지 64%</p></div>
+    <div style="padding-top:40px"><div class="ph"><img src="img/budget.png" alt=""></div><p class="num" style="margin-top:20px">Why this one</p><p style="font-size:17px;font-weight:300;margin-top:6px">취향 92%<br>"저장 룩 41장과 비슷"</p></div>
+  </div>
+  <div class="bot"><span class="cap m">snap to buy</span><span class="cap m">04</span></div>
+</section>
+
+<!-- 5 WHY AGENT -->
+<section class="slide s5">
+  <div class="top"><span class="cap">Why an agent</span><span class="logo" style="font-size:26px">snap to <i>buy</i></span></div>
+  <div class="pad">
+    <div style="display:grid;grid-template-columns:1fr 560px;gap:80px;align-items:end">
+      <h2>추천 앱은 보여주고 끝.<br><span class="t">에이전트는</span> 대신 끝낸다.</h2>
+      <div class="col" style="font-size:19px">
+        <div class="rule"></div>
+        <div style="display:grid;grid-template-columns:150px 1fr;padding:14px 0;border-bottom:1px solid var(--line)"><span class="k">추천 앱</span><span style="font-weight:300">비슷한 옷을 보여주고 끝</span></div>
+        <div style="display:grid;grid-template-columns:150px 1fr;padding:14px 0;border-bottom:1px solid var(--line)"><span class="k">검색</span><span style="font-weight:300">찾기까지, 맞추고 사는 건 사람 몫</span></div>
+        <div style="display:grid;grid-template-columns:150px 1fr;padding:14px 18px;background:#111;color:#fff;margin:0 -18px"><span style="font-size:15px;font-weight:600">snap to buy</span><span>찾기 → 맞추기 → <b>대신 사기 → 지켜보기</b></span></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);margin-top:70px;border-top:1px solid #111">
+      <div style="padding:18px 16px 0 0"><span class="num">01</span><h3 style="font-size:22px;margin-top:8px">룩 분해</h3><span class="who">판단</span></div>
+      <div style="padding:18px 16px 0 0"><span class="num">02</span><h3 style="font-size:22px;margin-top:8px">원본 찾기</h3><span class="who">판단</span></div>
+      <div style="padding:18px 16px 0 0"><span class="num">03</span><h3 style="font-size:22px;margin-top:8px">내 감성 후보</h3><span class="who">판단</span></div>
+      <div style="padding:18px 16px 0 0"><span class="num">04</span><h3 style="font-size:22px;margin-top:8px">사이즈·예산</h3><span class="who">판단</span></div>
+      <div style="padding:18px 16px 0 0"><span class="num">05</span><h3 style="font-size:22px;margin-top:8px">대신 주문</h3><span class="who f">행동 · Minds</span></div>
+      <div style="padding:18px 16px 0 0"><span class="num">06</span><h3 style="font-size:22px;margin-top:8px">계속 지켜보기</h3><span class="who f">행동 · Minds</span></div>
+      <div style="padding:18px 16px 0 0"><span class="num">07</span><h3 style="font-size:22px;margin-top:8px">예외 처리</h3><span class="who f">행동</span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:40px;margin-top:70px" class="col">
+      <div><div class="rule"></div><h3>연결된 여러 단계</h3><p style="margin-top:8px">니트를 바꾸면 남은 예산과 데님 후보가 함께 바뀐다</p></div>
+      <div><div class="rule"></div><h3>보여주지 않고 행동</h3><p style="margin-top:8px">여러 쇼핑몰에 대신 주문한다. 한도 안에서, 승인 후에만</p></div>
+      <div><div class="rule"></div><h3>앱을 꺼도 일한다</h3><p style="margin-top:8px">가격 하락·품절 임박을 며칠씩 지켜보고 알리거나 산다</p></div>
+      <div><div class="rule"></div><h3>막히면 스스로 푼다</h3><p style="margin-top:8px">품절·결제 실패에도 대체 후보를 찾고, 필요할 때만 묻는다</p></div>
+    </div>
+  </div>
+  <div class="bot"><span class="cap m">Models compute · the agent decides when and acts</span><span class="cap m">05</span></div>
+</section>
+
+<!-- 6 HOW IT WORKS (organizer's 4 boxes) -->
+<section class="slide s6">
+  <div class="top"><span class="cap">How it works · User · AI · Commerce · Payment</span><span class="logo" style="font-size:26px">snap to <i>buy</i></span></div>
+  <div class="pad">
+    <h2>AI에게 <span class="t">어디까지</span> 맡기고, <span class="t">누가</span> 승인하나</h2>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:40px;margin-top:56px" class="col">
+      <div><div class="rule"></div><p class="num" style="margin-top:18px">01 · 신원 · 권한</p><h3>누가 쓰고, 어디까지</h3>
+        <ul><li>핀·인스타로 룩을 모으는 20–30대</li><li>맡기는 일: 찾기 · 맞추기 · 주문 · 감시</li><li><b>위임장: 한도 · 허용 쇼핑몰 · 15분</b> (AIR)</li><li>쇼핑몰엔 "L 사이즈 적합: 네"만</li></ul></div>
+      <div><div class="rule"></div><p class="num" style="margin-top:18px">02 · AI 에이전트</p><h3>AI가 대신 하는 일</h3>
+        <ul><li>룩 분해, 옷장에 있는 건 제외</li><li>원본 찾기: 출처 링크 → 국내 → 해외</li><li><b>모은 룩 취향</b>으로 대체 후보</li><li>사이즈 · 아이템별 예산 조합</li><li>가격 하락 · 품절 임박 감시 (Minds)</li></ul></div>
+      <div><div class="rule"></div><p class="num" style="margin-top:18px">03 · 커머스</p><h3>상품과 주문 처리</h3>
+        <ul><li>MVP는 <b>상품 DB 없이</b> 외부 검색으로</li><li>결제 직전 재고 · 가격 재확인</li><li>쇼핑몰별로 나눠 주문</li><li>원본이 싸지면 반품 + 원본 구매 제안</li><li>제휴가 늘면 상품 피드로 검색 색인</li></ul></div>
+      <div><div class="rule" style="background:var(--accent);height:2px"></div><p class="num" style="margin-top:17px;color:var(--accent)">04 · 결제</p><h3>누가 승인하나</h3>
+        <ul><li><b>사용자가 총액을 보고 "밀어서 결제"</b></li><li>한 번에 · 골라서 · 장바구니만 · 가격 내려가면</li><li>범위 밖 주문은 코드 규칙이 차단</li><li>국내 카드 · PG, 돈을 직접 받지 않음</li></ul></div>
+    </div>
+    <div style="margin-top:54px;border:1px solid #111;padding:22px 28px;font-size:22px;font-weight:300;display:flex;justify-content:space-between;align-items:center">
+      <span>핀 공유 → 룩 분해 → <b style="font-weight:600">모은 룩 취향</b>으로 15만 원 안 조합 → 총액 승인 → 쇼핑몰 3곳 주문 → 남은 아이템 감시</span>
+      <span class="cap m" style="font-size:12px">Example</span>
+    </div>
+  </div>
+  <div class="bot"><span class="cap m">snap to buy</span><span class="cap m">06</span></div>
+</section>
+
+<!-- 7 ARCHITECTURE -->
+<section class="slide s7">
+  <div class="top"><span class="cap">Architecture</span><span class="logo" style="font-size:26px">snap to <i>buy</i></span></div>
+  <div class="pad">
+    <h2>무엇을 살지는 <span class="t">snap to buy,</span> 실행은 <span class="t">Minds,</span> 권한은 <span class="t">AIR</span></h2>
+    <div style="margin-top:30px;border:1px solid var(--line);padding:16px 22px;display:flex;gap:24px;align-items:center;font-size:18px"><b style="font-weight:600">Agent Registry</b><span style="font-weight:300;color:#555">쇼핑몰 구매 에이전트를 A2A 프로토콜로 찾고 일을 맡긴다</span><span class="cap m" style="margin-left:auto;font-size:12px">Google agent stack</span></div>
+    <div style="display:grid;grid-template-columns:1fr 40px 1.5fr 40px 1fr 40px 1fr 40px 1fr;align-items:stretch;margin-top:24px">
+      <div style="border:1px solid #111;padding:22px"><p class="num">01 User</p><h3 style="font-size:24px;margin-top:10px">사용자</h3><p style="font-size:16px;font-weight:300;color:#333;margin-top:10px;line-height:1.6">룩 모으기<br>(업로드 · 핀 · 인스타)<br>결제 수단 연결<br><b style="font-weight:600">총액 보고 승인</b></p></div>
+      <div style="display:grid;place-items:center;font-size:26px;font-weight:200">→</div>
+      <div style="background:#111;color:#fff;padding:22px"><p class="num" style="color:#aaa">02 snap to buy · Google Cloud</p><h3 style="font-size:24px;margin-top:10px">오케스트레이터 에이전트</h3><p style="font-size:14px;color:#aaa;margin-top:4px;letter-spacing:.04em">Cloud Run · ADK · Gemini</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px;font-size:15px">
+          <span style="border:1px solid #444;padding:10px">룩 분해</span><span style="border:1px solid #444;padding:10px">원본 검색<br><small style="color:#aaa">출처→국내→해외</small></span>
+          <span style="border:1px solid #444;padding:10px">모은 룩 취향</span><span style="border:1px solid #444;padding:10px">사이즈 · 예산 조합</span></div></div>
+      <div style="display:grid;place-items:center;font-size:26px;font-weight:200">→</div>
+      <div style="border:1px solid var(--accent);padding:22px"><p class="num" style="color:var(--accent)">03 Trust</p><h3 style="font-size:24px;margin-top:10px">AIR</h3><p style="font-size:16px;font-weight:300;color:#333;margin-top:10px;line-height:1.6">위임장<br>(한도·쇼핑몰·15분)<br>에이전트 신원 검증<br>"L 사이즈 적합: 네"</p></div>
+      <div style="display:grid;place-items:center;font-size:26px;font-weight:200">→</div>
+      <div style="border:1px solid #111;padding:22px"><p class="num">04 Execution</p><h3 style="font-size:24px;margin-top:10px">Minds</h3><p style="font-size:16px;font-weight:300;color:#333;margin-top:10px;line-height:1.6">구매 에이전트<br>재고·가격 재확인<br>감시 에이전트<br>가격·품절·재입고</p></div>
+      <div style="display:grid;place-items:center;font-size:26px;font-weight:200">→</div>
+      <div style="border:1px solid #111;padding:22px"><p class="num">05 External</p><h3 style="font-size:24px;margin-top:10px">쇼핑몰 · PG</h3><p style="font-size:16px;font-weight:300;color:#333;margin-top:10px;line-height:1.6">검색 API · 공식 API<br>(제휴 후 UCP 피드)<br>국내 카드 결제</p></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);margin-top:40px;border-top:1px solid #111">
+      <div style="padding:14px 14px 0 0;font-size:16px;font-weight:300"><span class="num">01</span><br>룩 모으기<br><span class="who">사용자</span></div>
+      <div style="padding:14px 14px 0 0;font-size:16px;font-weight:300"><span class="num">02</span><br>룩 분해 · 원본<br><span class="who">snap to buy</span></div>
+      <div style="padding:14px 14px 0 0;font-size:16px;font-weight:300"><span class="num">03</span><br>취향 · 사이즈 · 예산<br><span class="who">snap to buy</span></div>
+      <div style="padding:14px 14px 0 0;font-size:16px;font-weight:300"><span class="num">04</span><br>총액 승인<br><span class="who">사용자</span></div>
+      <div style="padding:14px 14px 0 0;font-size:16px;font-weight:300"><span class="num">05</span><br>위임장 · 신원 검증<br><span class="who">AIR</span></div>
+      <div style="padding:14px 14px 0 0;font-size:16px;font-weight:300"><span class="num">06</span><br>주문 · 결제<br><span class="who f">Minds</span></div>
+      <div style="padding:14px 14px 0 0;font-size:16px;font-weight:300"><span class="num">07</span><br>남은 아이템 감시<br><span class="who f">Minds</span></div>
+    </div>
+  </div>
+  <div class="bot"><span class="cap m">Redrawn from the Google Cloud partner session · shops and payment are examples, not partners</span><span class="cap m">07</span></div>
+</section>
+
+<!-- 8 BUSINESS & ROADMAP -->
+<section class="slide">
+  <div class="top"><span class="cap">Business · Roadmap</span><span class="logo" style="font-size:26px">snap to <i>buy</i></span></div>
+  <div class="pad" style="display:grid;grid-template-columns:1fr 1fr;gap:110px">
+    <div class="col">
+      <h2>사용자는 무료,<br><span class="t">수익은</span> 판매로</h2>
+      <div style="margin-top:50px"><div class="rule"></div>
+        <div style="display:grid;grid-template-columns:60px 1fr;padding:22px 0;border-bottom:1px solid var(--line)"><span class="num">A</span><div><h3 style="margin:0;font-size:25px">제휴 수수료</h3><p style="margin-top:4px">구매 1건당. 사이즈 추천으로 반품이 줄어 판매자도 이득</p></div></div>
+        <div style="display:grid;grid-template-columns:60px 1fr;padding:22px 0;border-bottom:1px solid var(--line)"><span class="num">B</span><div><h3 style="margin:0;font-size:25px">크리에이터 제휴</h3><p style="margin-top:4px">인플루언서가 룩 아이템을 등록하면 원본 보장, 수수료 공유</p></div></div>
+        <div style="display:grid;grid-template-columns:60px 1fr;padding:22px 0;border-bottom:1px solid var(--line)"><span class="num">C</span><div><h3 style="margin:0;font-size:25px">추천 상품 광고</h3><p style="margin-top:4px">"광고" 표시로 한 줄만, 원본을 가리지 않음</p></div></div>
+        <div style="display:grid;grid-template-columns:60px 1fr;padding:22px 0;border-bottom:1px solid var(--line)"><span class="num">D</span><div><h3 style="margin:0;font-size:25px">트렌드 리포트</h3><p style="margin-top:4px">많이 모이고 팔리는 룩을 익명 통계로 브랜드에 제공</p></div></div>
+      </div>
+    </div>
+    <div class="col">
+      <h2>찾기에서 시작해<br><span class="t">대신 사기</span>로</h2>
+      <div style="margin-top:50px"><div class="rule"></div>
+        <div style="padding:22px 0;border-bottom:1px solid var(--line)"><p class="num">P1 · Now</p><h3 style="margin-top:8px;font-size:25px">찾기</h3><p style="margin-top:4px">룩 모으기 · 외부 검색으로 원본과 내 감성 후보 · 구매 링크와 장바구니</p></div>
+        <div style="padding:22px 0;border-bottom:1px solid var(--line)"><p class="num">P2</p><h3 style="margin-top:8px;font-size:25px">맞춤</h3><p style="margin-top:4px">성별 사이즈표 · 실측 비교 · 아이템별 예산 · 모은 룩과 리뷰로 취향 학습</p></div>
+        <div style="padding:22px 0;border-bottom:2px solid var(--accent)"><p class="num" style="color:var(--accent)">P3 · With partners</p><h3 style="margin-top:8px;font-size:25px">대신 사기</h3><p style="margin-top:4px">제휴 피드로 검색 색인 · AIR 위임장 결제 · Minds 감시와 자동 구매</p></div>
+      </div>
+      <p class="k" style="font-weight:400;margin-top:26px;line-height:1.6">결제사와 구글이 에이전트 결제 표준을 만들고 있고, Minds × VISA 실증이 소개됐다(파트너 세션). 국내 적용은 확인 중.</p>
+    </div>
+  </div>
+  <div class="bot"><span class="cap m">snap to buy</span><span class="cap m">08</span></div>
+</section>
+
+<!-- 9 CLOSING -->
+<section class="slide" style="background:#111;color:#fff">
+  <div class="top"><span class="cap" style="color:#fff">Thank you</span><span class="cap" style="color:#888">Future Commerce Challenge 2026</span></div>
+  <div style="position:absolute;left:120px;top:260px">
+    <p class="logo" style="font-size:160px;line-height:.9">see it.<br>snap it. <i>wear it.</i></p>
+    <p style="font-size:30px;font-weight:300;color:#ddd;margin-top:60px">추천 앱은 보여주고 끝나지만, <b style="font-weight:600;color:#fff">snap to buy는 내 감성대로 대신 끝냅니다.</b></p>
+    <div style="margin-top:50px;display:flex;gap:16px"><span class="btn" style="background:#fff;color:#111">목업 체험하기</span><span class="btn" style="background:transparent;border:1px solid #fff">GitHub</span></div>
+  </div>
+  <div class="bot"><span class="cap" style="color:#888">leebyeongchul.github.io/Future-Commerce-Challenge/mockup</span><span class="cap" style="color:#888">github.com/LEEbyeongchul/Future-Commerce-Challenge</span></div>
+</section>
+
+<script>
+  function fit(){ if(matchMedia('print').matches) return; const z=Math.min(1,(innerWidth-32)/1920); document.querySelectorAll('.slide').forEach(s=>s.style.zoom=z); }
+  addEventListener('resize',fit); fit();
+  addEventListener('beforeprint',()=>document.querySelectorAll('.slide').forEach(s=>s.style.zoom=1));
+</script>
+</body>
+</html>

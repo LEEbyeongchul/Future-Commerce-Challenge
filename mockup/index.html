@@ -457,7 +457,8 @@ table.meas td{text-align:right;padding:6px 0;border-bottom:1px solid var(--line)
         </div>
         <div class="log" id="log">
           <div>› 아이템 <b>4개</b> 인식</div>
-          <div>› 쇼핑몰 <b>38곳</b>에서 같은·비슷한 상품 검색</div>
+          <div>› 출처 링크 → 국내 → 해외 검색으로 <b>원본</b> 찾기</div>
+          <div>› 모은 룩 <b>312장</b>으로 만든 내 취향과 비교</div>
           <div>› 내 사이즈 기록 · 반품 이력 <b>2건</b> 반영</div>
           <div>› 상품 리뷰 <b>1,240건</b>에서 핏·소재 키워드 분석</div>
           <div>› 내 옷장과 비교: 가방 <b>이미 있음</b></div>
@@ -772,7 +773,7 @@ const payTotal = () => payItems().reduce((s,i)=>s+pick(i).price,0);
 /* ---------- side steps ---------- */
 const STEPS = [
   ['룩 모으기','갤러리에 쌓아둔 룩 사진을 한 번에 업로드하고, 핀터레스트·인스타 게시물은 공유하기로 보낸다. 모은 룩이 내 취향 분석의 중심 데이터다.'],
-  ['룩 분해','사진 속 아이템 4개를 인식하고, 38개 쇼핑몰에서 같은 상품과 비슷한 상품을 찾는다. 이미 가진 가방은 뺀다.'],
+  ['룩 분해','사진 속 아이템 4개를 인식하고, 출처 링크 → 국내 쇼핑 검색 → 해외 이미지 검색 순서로 원본을 찾는다. 상품 DB 없이 그때그때 찾고, 이미 가진 가방은 뺀다.'],
   ['사이즈 맞춤','반품 이력과 구매 기록으로 브랜드별 사이즈를 고른다. 위에는 "광고" 표시된 추천 상품 자리, 그 아래 원본 아이템이 나온다.'],
   ['예산 맞춤','룩 전체 예산과 아이템별 최대 금액, 사이즈, 핏(오버핏이면 한 치수 업)을 정한다. 후보를 누르면 핏·실측·리뷰 요약·상세 이미지를 본다.'],
   ['결제 방식 선택','네 가지 방식 중 고르고 승인한다. 무엇을 살지는 snap to buy가 정하고, 주문·결제 실행과 가격 감시는 Minds, 권한·신원 확인은 AIR가 맡는다. 의도 정리 → 위임장(한도·쇼핑몰·15분) → 재고 재확인 → 검증 → 결제 순서로 진행되고, "가격 내려가면 사기"는 품절 임박 기준과 그때 할 일(알림만 / 조금 비싸도 사기)도 정한다. 쇼핑몰은 원본 신체 정보 대신 "L 사이즈 적합: 네"만 받는다.'],
@@ -1203,6 +1204,19 @@ function fit(){
 addEventListener('resize',fit); fit();
 
 autoPick(); renderItems(); go(0);
+(function(){
+  const q = new URLSearchParams(location.hash.slice(1)); if(![...q.keys()].length) return;
+  if(q.get('pay')){ state.pay=q.get('pay'); }
+  if(q.get('s')){ go(+q.get('s')); if(+q.get('s')===1){ timers.forEach(clearTimeout); document.querySelectorAll('#photo .box,#log div').forEach(e=>e.classList.add('on')); document.getElementById('scan').style.display='none'; } }
+  if(q.get('pay')){ renderCheckout(); resetSlide(); }
+  const p=q.get('p');
+  if(p==='mypage') openPanel('mypage');
+  if(p==='upload') openUpload();
+  if(p==='pin'||p==='insta') openShare(p);
+  if(p==='detail') openDetail('knit',0);
+  if(q.get('scroll')){ const el = p ? document.querySelector('.panel.on .scroll') : document.querySelector('.screen.on .scroll'); if(el) el.scrollTop=+q.get('scroll'); }
+  if(q.get('done')){ document.querySelectorAll('#flow5 li').forEach(li=>li.classList.add('ok')); }
+})();
 </script>
 </body>
 </html>
