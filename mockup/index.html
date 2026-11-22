@@ -341,6 +341,19 @@ table.meas td{text-align:right;padding:6px 0;border-bottom:1px solid var(--line)
 .cred{margin-top:8px;background:var(--soft);padding:10px 12px;font-size:12px;display:grid;gap:2px}
 .cred b{font-size:11px;letter-spacing:.06em;font-weight:600}
 .cred small{color:var(--mute);font-size:11px}
+
+.ls{border-top:1px solid var(--line);margin-top:10px;padding-top:6px}
+.lsr{display:grid;grid-template-columns:92px 1fr;gap:10px;align-items:center;padding:7px 0;font-size:12px}
+.lsr > span{color:var(--mute)}
+.lsr select{font:inherit;font-size:12.5px;border:1px solid var(--line);padding:5px 8px;background:#fff;width:max-content}
+.push{margin-top:12px;background:#F7F6F3;border-radius:14px;padding:12px 14px;box-shadow:0 6px 18px -10px rgba(0,0,0,.35)}
+.pushh{display:flex;justify-content:space-between;font-size:11px;color:var(--mute)}
+.pushh b{color:var(--ink);font-weight:600}
+.push p{font-size:12.5px;line-height:1.5;margin-top:6px}
+.pushb{display:flex;gap:6px;margin-top:10px}
+.pushb button{flex:1;height:32px;font-size:11.5px;border:1px solid var(--ink);background:#fff}
+.pushb button:first-child{background:var(--ink);color:#fff}
+.push small{display:block;margin-top:8px;font-size:10.5px;color:var(--mute)}
 </style>
 </head>
 <body>
@@ -457,6 +470,20 @@ table.meas td{text-align:right;padding:6px 0;border-bottom:1px solid var(--line)
           <div class="h" id="shopsTitle">쇼핑몰별 주문</div>
           <div style="margin-top:6px" id="shops"></div>
           <div id="waitNote" class="why" style="margin-top:8px;display:none"></div>
+          <div id="waitSet" style="display:none">
+            <div class="ls">
+              <div class="lsr"><span>품절 임박 기준</span>
+                <select id="lsN"><option value="5">내 사이즈 5개 이하</option><option value="3" selected>내 사이즈 3개 이하</option><option value="1">마지막 1개</option></select></div>
+              <div class="lsr"><span>그때는</span>
+                <div class="chips sm" id="lsAct"><button data-a="alert" class="on">알림만</button><button data-a="buy">1만 원 더 비싸도 사기</button></div></div>
+            </div>
+            <div class="push">
+              <div class="pushh"><b>snap to buy</b><span>지금</span></div>
+              <p id="pushMsg"></p>
+              <div class="pushb"><button data-push="now">지금 사기</button><button data-push="wait">계속 기다리기</button><button data-push="alt">비슷한 후보로</button></div>
+              <small>품절 임박 알림 예시</small>
+            </div>
+          </div>
         </div>
         <div class="perm">
           <div class="h">안심하고 맡기는 결제 <span class="badge">AIR · AP2</span></div>
@@ -639,7 +666,7 @@ const ADS = [
 const sizeOf = i => state.size[i.key];
 // choice: 'orig' or index of alts
 const state = { step:0, budget:150000, choice:{knit:0, denim:0, loafer:'orig'}, pay:'all', payPick:{knit:true, denim:true, loafer:true},
-  caps:{knit:0, denim:0, loafer:0}, size:{knit:'L', denim:'27', loafer:'245'}, fit:{knit:'정핏', denim:'정핏'}, height:163 };
+  caps:{knit:0, denim:0, loafer:0}, size:{knit:'L', denim:'27', loafer:'245'}, fit:{knit:'정핏', denim:'정핏'}, height:163, ls:{n:3, act:'alert'} };
 
 const won = n => n.toLocaleString('ko-KR') + '원';
 const origTotal = ITEMS.reduce((s,i)=>s+i.orig.price,0);
@@ -654,7 +681,7 @@ const STEPS = [
   ['룩 분해','사진 속 아이템 4개를 인식하고, 38개 쇼핑몰에서 같은 상품과 비슷한 상품을 찾는다. 이미 가진 가방은 뺀다.'],
   ['사이즈 맞춤','반품 이력과 구매 기록으로 브랜드별 사이즈를 고른다. 위에는 "광고" 표시된 추천 상품 자리, 그 아래 원본 아이템이 나온다.'],
   ['예산 맞춤','룩 전체 예산과 아이템별 최대 금액, 사이즈, 핏(오버핏이면 한 치수 업)을 정한다. 후보를 누르면 핏·실측·리뷰 요약·상세 이미지를 본다.'],
-  ['결제 방식 선택','네 가지 방식 중 고르고 승인한다. 의도 정리 → 위임장(한도·쇼핑몰·15분) → 재고 재확인 → 검증 → 결제 순서로 진행되고, 쇼핑몰은 원본 신체 정보 대신 "L 사이즈 적합: 네"만 받는다.'],
+  ['결제 방식 선택','네 가지 방식 중 고르고 승인한다. 의도 정리 → 위임장(한도·쇼핑몰·15분) → 재고 재확인 → 검증 → 결제 순서로 진행되고, "가격 내려가면 사기"는 품절 임박 기준과 그때 할 일(알림만 / 조금 비싸도 사기)도 정한다. 쇼핑몰은 원본 신체 정보 대신 "L 사이즈 적합: 네"만 받는다.'],
   ['완료','고른 방식대로 끝낸다. 사지 않은 아이템과 원본 가격은 에이전트가 계속 지켜본다.'],
 ];
 document.getElementById('steps').innerHTML = STEPS.map((s,i)=>
@@ -882,6 +909,16 @@ function renderCheckout(){
   document.getElementById('totalLbl').textContent = mode==='cart' ? '담을 금액' : mode==='wait' ? '목표 금액' : '총 결제';
   document.getElementById('payTotal').innerHTML = mode==='wait' ? `${won(target())} <small style="font-size:13px;color:var(--mute);font-weight:500">이하</small>` : won(t);
   document.getElementById('waitNote').style.display = mode==='wait' ? '' : 'none';
+  document.getElementById('waitSet').style.display = mode==='wait' ? '' : 'none';
+  if(mode==='wait'){
+    const k = ITEMS[0], p = pick(k), gap = Math.max(0, p.price - Math.floor(p.price*0.85/1000)*1000);
+    document.getElementById('lsN').value = String(state.ls.n);
+    document.querySelectorAll('#lsAct button').forEach(b=>b.classList.toggle('on', b.dataset.a===state.ls.act));
+    document.getElementById('pushMsg').innerHTML = state.ls.act==='buy' && gap<=10000
+      ? `찜한 <b>${p.name} ${sizeOf(k)}</b> 사이즈가 <b>${state.ls.n===1?'마지막 1개':state.ls.n+'개'}</b> 남아서, 정해둔 규칙대로 <b>${won(p.price)}</b>에 샀어요.`
+      : `찜한 <b>${p.name} ${sizeOf(k)}</b> 사이즈가 <b>${state.ls.n===1?'마지막 1개':state.ls.n+'개'}</b> 남았어요. 지금 가격은 목표가보다 <b>${won(gap)}</b> 높아요.`;
+    document.querySelector('.pushb').style.display = state.ls.act==='buy' && gap<=10000 ? 'none' : '';
+  }
   document.getElementById('waitNote').innerHTML = `지금 ${won(t)} → <b>${won(target())}</b> 이하가 되면 자동 결제 · 최대 14일 대기 · 품절 임박이면 먼저 물어볼게요`;
   const slide=document.getElementById('slide'); slide.classList.toggle('disabled', list.length===0);
 
@@ -890,7 +927,7 @@ function renderCheckout(){
     all:  ['룩 하나, 결제 한 번.', `쇼핑몰 ${n}곳 주문이 동시에 끝났어요.<br>배송은 모두 11월 25일 도착 예정이에요.`, '주문 완료'],
     some: [`${list.length}개만 골라서 샀어요.`, `나머지 ${ITEMS.length-list.length}개는 찜해두고 가격을 지켜볼게요.`, '주문 완료'],
     cart: ['장바구니에 다 담았어요.', `쇼핑몰 ${n}곳 장바구니에 사이즈까지 맞춰 담았어요.<br>쿠폰이 생기면 결제 전에 알려드려요.`, '장바구니'],
-    wait: ['가격이 내려가면 살게요.', `${won(target())} 이하가 되는 순간 대신 결제할게요.<br>한도와 쇼핑몰 조건은 그대로 지켜요.`, '대기 중'],
+    wait: ['가격이 내려가면 살게요.', `${won(target())} 이하가 되는 순간 대신 결제할게요.<br>품절 임박(${state.ls.n===1?'마지막 1개':'내 사이즈 '+state.ls.n+'개 이하'})이면 ${state.ls.act==='buy'?'1만 원 더 비싸도 바로 살게요':'먼저 알려드릴게요'}.`, '대기 중'],
   }[mode];
   document.getElementById('doneTitle').textContent = D[0];
   document.getElementById('doneSub').innerHTML = D[1];
@@ -902,6 +939,14 @@ function renderCheckout(){
     + ITEMS.filter(i=>!list.includes(i)).map(i=>`<div class="order"><span>${pick(i).name}</span><span class="pill wait">찜 · 가격 지켜보는 중</span></div>`).join('');
 }
 
+document.getElementById('lsN').onchange = e=>{ state.ls.n=+e.target.value; renderCheckout(); };
+document.querySelectorAll('#lsAct button').forEach(b=>b.onclick=()=>{ state.ls.act=b.dataset.a; renderCheckout(); });
+document.querySelectorAll('[data-push]').forEach(b=>b.onclick=()=>{
+  const a=b.dataset.push;
+  if(a==='now'){ state.pay='all'; renderCheckout(); resetSlide(); }
+  else if(a==='alt'){ go(3); }
+  else { b.textContent='계속 지켜볼게요'; }
+});
 /* ---------- slide to pay ---------- */
 (function(){
   const slide=document.getElementById('slide'), knob=document.getElementById('knob'), fill=document.getElementById('sFill'), txt=document.getElementById('sTxt');
