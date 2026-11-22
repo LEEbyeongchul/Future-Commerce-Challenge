@@ -310,7 +310,7 @@
       <div class="lab mono"><b>Collect</b>데이터 수집</div>
       <div class="cells" style="grid-template-columns:repeat(4,1fr)">
         <div class="cell"><h4>모은 룩</h4><p>업로드한 사진, 공유한 핀·게시물. 취향 학습의 주 데이터.</p></div>
-        <div class="cell"><h4>상품 데이터</h4><p>쇼핑몰 제휴 상품 피드. 이미지, 가격, 재고, 사이즈 실측표. 초기에는 쇼핑 검색 API.</p></div>
+        <div class="cell"><h4>상품 정보</h4><p>MVP는 DB 없이 출처 링크·쇼핑 검색·이미지 검색 API로 그때그때. 제휴 후 상품 DB.</p></div>
         <div class="cell"><h4>내 정보</h4><p>가입 때 키·몸무게·평소 사이즈. 이후 구매 기록과 반품 사유가 쌓인다.</p></div>
         <div class="cell"><h4>옷장</h4><p>앱에서 산 옷은 자동 등록, 가진 옷은 사진으로 추가. 중복 구매를 막는다.</p></div>
       </div>
@@ -321,7 +321,7 @@
       <div class="think">
         <div class="pipe">
           <div><span class="k">STEP 1</span><h4>룩 분해</h4><p>이미지 인식으로 옷 영역을 찾아 아이템별로 잘라낸다</p></div>
-          <div><span class="k">STEP 2</span><h4>상품 매칭</h4><p>이미지를 벡터로 바꿔 상품 DB에서 가장 닮은 상품을 찾는다</p></div>
+          <div><span class="k">STEP 2</span><h4>상품 매칭</h4><p>검색으로 찾은 상품을 벡터로 비교해 가장 닮은 것을 고른다</p></div>
           <div><span class="k">STEP 3</span><h4>취향 점수</h4><p>저장해온 룩으로 만든 내 취향과 얼마나 가까운지</p></div>
           <div><span class="k">STEP 4</span><h4>사이즈</h4><p>상품 실측표를 나에게 잘 맞았던 옷의 실측과 비교</p></div>
           <div><span class="k">STEP 5</span><h4>예산 조합</h4><p>예산 안에서 취향 점수 합이 가장 큰 후보 조합</p></div>
@@ -351,7 +351,7 @@
 
   <table style="margin-top:6mm">
     <tr><th style="width:30mm">Principle</th><th>How it works</th><th style="width:52mm">Gets better with</th></tr>
-    <tr><td>상품 매칭</td><td>옷 이미지를 숫자 벡터로 바꾸고, 상품 DB에서 벡터 거리가 가장 가까운 상품을 찾는다. 거의 같으면 원본, 조금 다르면 대체 후보.</td><td>제휴 쇼핑몰이 늘수록 후보가 넓어진다</td></tr>
+    <tr><td>상품 매칭</td><td>검색 API로 받은 상품 사진과 내 사진을 벡터로 바꿔 거리를 비교한다. 거의 같으면 원본, 조금 다르면 대체 후보. MVP는 상품 DB 없이 동작한다.</td><td>제휴 상품 DB가 생기면 더 빠르고 정확해진다</td></tr>
     <tr><td>취향 점수</td><td><b>계속 저장해온 룩 스크린샷·핀</b>으로 만든 “내 취향 벡터”와 후보의 거리. 구매·반품·리뷰로 보정한다. 92% 같은 숫자가 이것이다.</td><td>저장한 룩이 쌓일수록 내 감성에 가까워진다</td></tr>
     <tr><td>사이즈 추천</td><td>브랜드마다 다른 실측을 내 기준으로 환산하고, “작아서 반품” 이력이 있으면 한 치수 올린다.</td><td>반품이 줄수록 판매자도 이득</td></tr>
   </table>
