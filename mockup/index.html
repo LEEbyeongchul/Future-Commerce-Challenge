@@ -360,6 +360,41 @@ table.meas td{text-align:right;padding:6px 0;border-bottom:1px solid var(--line)
 .swaprows div{background:#fff;padding:7px 8px;font-size:11px}
 .swaprows span{display:block;color:var(--mute)}
 .swaprows b{display:block;font-size:12.5px;margin-top:2px}
+
+/* collect looks */
+.collect{border:1px solid var(--ink);padding:14px;margin:0 0 16px}
+.collect .ch{display:flex;justify-content:space-between;align-items:baseline}
+.collect .ch b{font-size:15px}
+.collect .ch span{font-size:12px;color:var(--mute)}
+.collect .ch em{font-style:normal;color:var(--ink);font-weight:700}
+.cbtns{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
+.cbtns button{height:58px;border:1px solid var(--line);background:#fff;font-size:11.5px;font-weight:500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.cbtns button:first-child{background:var(--ink);color:#fff;border-color:var(--ink)}
+.collect p{font-size:11.5px;color:var(--mute);margin-top:8px;line-height:1.5}
+.ugrid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:10px}
+.ugrid div{position:relative;cursor:pointer}
+.ugrid svg{display:block;width:100%;height:auto}
+.ugrid i{position:absolute;right:6px;top:6px;width:20px;height:20px;border-radius:50%;border:1.5px solid #fff;background:rgba(0,0,0,.15)}
+.ugrid div.on i{background:var(--ink);border-color:#fff}
+.ugrid div.on i:after{content:"";position:absolute;left:5px;top:6px;width:7px;height:4px;border-left:1.6px solid #fff;border-bottom:1.6px solid #fff;transform:rotate(-45deg)}
+.ugrid div.on svg{opacity:.85}
+.ures{border-top:1px solid var(--ink);margin-top:14px;padding-top:12px;font-size:13px;line-height:1.6;display:none}
+.ures b{font-weight:700}
+.ures .delta{color:var(--accent);font-weight:600}
+.share{counter-reset:s}
+.share li{list-style:none;display:grid;grid-template-columns:28px 1fr;gap:10px;padding:12px 0;border-top:1px solid var(--line);font-size:13.5px;align-items:center}
+.share li:before{counter-increment:s;content:counter(s);width:24px;height:24px;border-radius:50%;border:1px solid var(--ink);display:grid;place-items:center;font-size:11.5px}
+.share li small{display:block;color:var(--mute);font-size:12px}
+.sheetmock{background:var(--soft);padding:14px;margin-top:6px;display:flex;gap:10px;align-items:center}
+.sheetmock .app{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:10px;font-weight:600;text-align:center;line-height:1.2;flex:none}
+/* taste from saved looks */
+.tstat{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:4px 0 12px}
+.tstat div{padding:10px 0;text-align:center;font-size:11px;color:var(--mute)}
+.tstat div + div{border-left:1px solid var(--line)}
+.tstat b{display:block;font-size:18px;color:var(--ink);font-weight:700}
+.swatch{display:flex;gap:6px;margin-top:4px}
+.swatch i{width:28px;height:28px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.as{font-size:10.5px;color:var(--mute);padding:0 6px}
 </style>
 </head>
 <body>
@@ -384,10 +419,19 @@ table.meas td{text-align:right;padding:6px 0;border-bottom:1px solid var(--line)
       <div class="scroll">
         <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>룩 사진으로 찾기<span class="cam"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="3"/><circle cx="12" cy="13" r="3.5"/><path d="M8.5 6l1.5-2.5h4L15.5 6"/></svg></span></div>
         <div class="banner" id="myBanner"><span>체형·선호 브랜드를 입력하면 사이즈와 추천이 더 정확해져요</span><u>입력하기</u></div>
-        <div class="hello"><h1>저장해둔 룩 <em>24개</em>,<br>오늘 하나 입어볼까요?</h1></div>
+        <div class="hello"><h1>모아둔 룩 <em id="helloCount">312</em>장,<br>오늘 하나 입어볼까요?</h1></div>
+        <div class="collect">
+          <div class="ch"><b>룩 모으기</b><span>모은 룩 <em id="lookCount">312</em>장 · 내 취향의 재료</span></div>
+          <div class="cbtns">
+            <button data-col="upload"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>사진 업로드</button>
+            <button data-col="pin"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E60023" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M11 8c3-1 5 1 4 4-.6 2-3 2.5-3.5 1M11 9l-2.5 10"/></svg>핀터레스트 공유</button>
+            <button data-col="insta"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>인스타 공유</button>
+          </div>
+          <p>갤러리에 쌓아둔 룩 사진을 한 번에 올리고, 핀과 게시물은 공유하기로 보내요. 모을수록 내 감성을 더 잘 알아요.</p>
+        </div>
         <div class="src">
           <span class="chip on"><span class="dotg"></span>Pinterest</span>
-          <span class="chip">캡처</span>
+          <span class="chip">업로드</span>
           <span class="chip">Instagram</span>
           <span class="chip">내 옷장</span>
         </div>
@@ -544,6 +588,18 @@ table.meas td{text-align:right;padding:6px 0;border-bottom:1px solid var(--line)
       </div>
       <div class="scroll">
         <div class="grp" style="border-top:0;padding-top:4px">
+          <h4>저장한 룩으로 본 내 취향 <small>내 취향 분석의 중심</small></h4>
+          <div class="tstat"><div><b id="mpCount">312</b>모은 룩</div><div><b>241</b>업로드</div><div><b>71</b>핀·인스타 공유</div></div>
+          <div class="kwbar"><span>크롭 기장</span><i><b style="width:78%"></b></i><span>78%</span></div>
+          <div class="kwbar"><span>와이드 실루엣</span><i><b style="width:71%"></b></i><span>71%</span></div>
+          <div class="kwbar"><span>아이보리·베이지</span><i><b style="width:64%"></b></i><span>64%</span></div>
+          <div class="kwbar"><span>로퍼·플랫</span><i><b style="width:52%"></b></i><span>52%</span></div>
+          <div class="kwbar"><span>니트 소재</span><i><b style="width:47%"></b></i><span>47%</span></div>
+          <div class="lbl2">자주 저장한 색</div>
+          <div class="swatch"><i style="background:#EFE6D4"></i><i style="background:#D8C3A5"></i><i style="background:#6F86A6"></i><i style="background:#2B2B2B"></i><i style="background:#5A3A26"></i></div>
+          <p class="note">모은 룩 사진들이 공통으로 가진 기장·실루엣·색·소재를 뽑았어요. 대체 후보는 이 감성에 가까운 순서로 골라요.</p>
+        </div>
+        <div class="grp">
           <h4>신체 정보 <small>사이즈 추천에만 써요</small></h4>
           <div class="lbl2" style="margin-top:0">성별 <span style="font-size:11px">· 남녀 사이즈표가 달라서 사이즈 계산에 써요</span></div>
           <div class="chips" data-single data-k="gender" style="margin-bottom:10px"><button class="on">여성</button><button>남성</button><button>선택 안 함</button></div>
@@ -572,7 +628,7 @@ table.meas td{text-align:right;padding:6px 0;border-bottom:1px solid var(--line)
           <div class="chips"><button class="on">ATELIER NOON</button><button>HAZE</button><button class="on">BLUE HOUR</button><button>KORDE</button><button class="on">ROWEN</button><button>DAILY LAB</button><button>+ 추가</button></div>
         </div>
         <div class="grp">
-          <h4>리뷰로 본 내 취향 <small>구매 후기 14개 · 관심 상품 리뷰 1,240개</small></h4>
+          <h4>리뷰로 보정한 취향 <small>구매 후기 14개 · 관심 상품 리뷰 1,240개</small></h4>
           <div class="lbl2" style="margin-top:0">좋아하는 포인트</div>
           <div class="kwbar"><span>도톰한 소재</span><i><b style="width:92%"></b></i><span>92</span></div>
           <div class="kwbar"><span>안 비치는</span><i><b style="width:88%"></b></i><span>88</span></div>
@@ -591,6 +647,31 @@ table.meas td{text-align:right;padding:6px 0;border-bottom:1px solid var(--line)
         </div>
       </div>
       <div class="cta"><button class="btn" id="saveMy">저장하기</button></div>
+    </div>
+
+    <!-- COLLECT: upload -->
+    <div class="panel sheet" id="upP">
+      <div class="top">
+        <span style="width:36px"></span><span class="t">사진 업로드</span>
+        <button class="iconbtn" data-close aria-label="닫기"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <div class="scroll">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><b style="font-size:14px">갤러리 · 최근 항목</b><button id="upAll" style="font-size:12.5px;text-decoration:underline">전체 선택</button></div>
+        <div class="ugrid" id="ugrid"></div>
+        <div class="ures" id="ures"></div>
+        <p class="note" style="font-size:11.5px;color:var(--mute);margin-top:12px;line-height:1.5">올린 사진은 내 보관함에만 있고, 쇼핑몰이나 다른 사람에게 공유되지 않아요. 분석에는 옷 영역의 특징만 써요.</p>
+      </div>
+      <div class="cta"><button class="btn" id="upGo">선택한 12장 올리기</button></div>
+    </div>
+
+    <!-- COLLECT: share guide -->
+    <div class="panel sheet" id="shP">
+      <div class="top">
+        <span style="width:36px"></span><span class="t" id="shT">핀터레스트에서 공유</span>
+        <button class="iconbtn" data-close aria-label="닫기"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <div class="scroll" id="shBody"></div>
+      <div class="cta"><button class="btn" id="shGo">예시 핀 받아보기</button></div>
     </div>
 
     <!-- PRODUCT DETAIL -->
@@ -675,6 +756,8 @@ const ADS = [
   {key:'loafer', brand:'NOVA', name:'레더 페니 로퍼', price:69000, shop:'nova', match:80, color:'#4A3324', ad:true},
 ];
 const sizeOf = i => state.size[i.key];
+const SIM = { knit:[41,33,18], denim:[36,39,22], loafer:[27,12] };   // saved looks similar to each candidate (mock)
+const SIMWHY = { knit:'크롭 기장 아이보리 니트', denim:'와이드 데님', loafer:'로퍼' };
 // choice: 'orig' or index of alts
 const state = { step:0, budget:150000, choice:{knit:0, denim:0, loafer:'orig'}, pay:'all', payPick:{knit:true, denim:true, loafer:true},
   caps:{knit:0, denim:0, loafer:0}, size:{knit:'L', denim:'27', loafer:'245'}, fit:{knit:'정핏', denim:'정핏'}, height:163, ls:{n:3, act:'alert'} };
@@ -688,7 +771,7 @@ const payTotal = () => payItems().reduce((s,i)=>s+pick(i).price,0);
 
 /* ---------- side steps ---------- */
 const STEPS = [
-  ['영감 수집','핀터레스트 좋아요와 캡처가 자동으로 모인다. 처음엔 마이페이지(오른쪽 위)에서 체형·선호 브랜드·스타일을 입력한다.'],
+  ['룩 모으기','갤러리에 쌓아둔 룩 사진을 한 번에 업로드하고, 핀터레스트·인스타 게시물은 공유하기로 보낸다. 모은 룩이 내 취향 분석의 중심 데이터다.'],
   ['룩 분해','사진 속 아이템 4개를 인식하고, 38개 쇼핑몰에서 같은 상품과 비슷한 상품을 찾는다. 이미 가진 가방은 뺀다.'],
   ['사이즈 맞춤','반품 이력과 구매 기록으로 브랜드별 사이즈를 고른다. 위에는 "광고" 표시된 추천 상품 자리, 그 아래 원본 아이템이 나온다.'],
   ['예산 맞춤','룩 전체 예산과 아이템별 최대 금액, 사이즈, 핏(오버핏이면 한 치수 업)을 정한다. 후보를 누르면 핏·실측·리뷰 요약·상세 이미지를 본다.'],
@@ -792,9 +875,9 @@ function renderSwaps(){
           <span class="atag ${a.tag==='추천'?'rec':''}">${a.tag}</span>
           <div class="pic">${icon[i.key](a.color)}</div>
           <div class="ab">${a.brand}</div><div class="an">${a.name}</div>
-          <div class="ap">${won(a.price)}</div><div class="am">취향 ${a.match}% · 상세 ›</div>
+          <div class="ap">${won(a.price)}</div><div class="am">취향 ${a.match}% · 상세 ›</div><div class="as">저장 룩 ${SIM[i.key][ix]}장과 비슷</div>
         </div>`).join('')}</div>
-      ${c!=='orig'?`<div class="reason">${i.alts[c].reason}</div>`:''}
+      ${c!=='orig'?`<div class="reason">${i.alts[c].reason} 모은 룩 중 ${SIMWHY[i.key]} ${SIM[i.key][c]}장과 감성이 비슷해요.</div>`:''}
     </div>`;}).join('');
   document.querySelectorAll('.sw .opt').forEach(o=>o.onclick=()=>{ state.choice[o.dataset.k]='orig'; renderSwaps(); });
   document.querySelectorAll('.sw .altc').forEach(o=>o.onclick=()=>openDetail(o.dataset.k, +o.dataset.c));
@@ -887,7 +970,7 @@ function openDetail(key, c, ad){
     <div class="dh">
       <div class="b">${p.brand} · ${p.shop}${ad?'<span class="adtag">광고</span>':''}</div>
       <h3>${p.name}</h3>
-      <div class="p"><span>${won(p.price)}</span>${p.match?`<small>취향 ${p.match}%</small>`:'<small>원본</small>'}</div>
+      <div class="p"><span>${won(p.price)}</span>${p.match?`<small>취향 ${p.match}%</small>`:'<small>원본</small>'}</div>${(!ad && c!=='orig')?`<p class="note" style="margin-top:6px">모은 룩 312장 중 ${SIMWHY[key]} ${SIM[key][c]}장과 기장·색·실루엣이 비슷해요.</p>`:''}
     </div>
     <div class="grp">
       <h4>핏 정보 <small>내 선택: ${sz}${state.fit[key]&&state.fit[key]!=='정핏'?' · '+state.fit[key]:''}</small></h4>
@@ -1013,6 +1096,48 @@ function renderSwapAlert(mode, list){
       : `<p style="margin-top:10px;color:var(--mute)">그대로 둘게요. 원본 가격은 계속 지켜볼게요.</p>`;
   });
 }
+/* ---------- collect looks ---------- */
+let lookCount = 312;
+const UPV = ['#EFE6D4','#7C2E2A','#2B2B2B','#F2F0EA','#C9BBA4','#6F86A6','#D8C3A5','#3E4A5E','#E9DFCF','#5A3A26','#8A9A7B','#B9A48A'];
+function openUpload(){
+  const g = document.getElementById('ugrid');
+  g.innerHTML = UPV.map((c,k)=>'<div class="on">'+lookSVG({id:200+k,h:400,top:c,btm:['#6F86A6','#2E2C2A','#C9BBA4','#3E4A5E'][k%4],bg1:'#ECEBE7',bg2:'#E1DED8',shoe:['#5A3A26','#1b1b1b'][k%2],bag:['#1E1C1A','#D9CBB2','#8A5A3B'][k%3]})+'<i></i></div>').join('');
+  g.querySelectorAll('div').forEach(d=>d.onclick=()=>{ d.classList.toggle('on'); upCount(); });
+  document.getElementById('ures').style.display='none';
+  const b = document.getElementById('upGo'); b.disabled=false; upCount();
+  openPanel('upP');
+}
+function upCount(){ const n=document.querySelectorAll('#ugrid div.on').length; const b=document.getElementById('upGo'); b.textContent = n ? '선택한 '+n+'장 올리기' : '사진을 골라주세요'; b.style.opacity = n?1:.4; }
+document.getElementById('upAll').onclick = ()=>{ document.querySelectorAll('#ugrid div').forEach(d=>d.classList.add('on')); upCount(); };
+document.getElementById('upGo').onclick = ()=>{
+  const n = document.querySelectorAll('#ugrid div.on').length; if(!n) return;
+  const b = document.getElementById('upGo'); b.innerHTML='<span class="spin"></span>';
+  setTimeout(()=>{
+    const fashion = Math.max(1, n-1); lookCount += fashion;
+    document.getElementById('lookCount').textContent = lookCount; document.getElementById('helloCount').textContent = lookCount; document.getElementById('mpCount').textContent = lookCount;
+    const r = document.getElementById('ures'); r.style.display='block';
+    r.innerHTML = '<b>'+n+'장 올렸어요.</b> 패션 사진 '+fashion+'장을 인식했고, 1장은 옷이 없는 사진이라 뺐어요.<br>내 취향이 업데이트됐어요: <span class="delta">크롭 기장 +2%</span> · <span class="delta">아이보리·베이지 +1%</span>';
+    b.textContent='완료'; setTimeout(closeAll, 1600);
+  }, 1200);
+};
+const SHARE = {
+  pin:  {t:'핀터레스트에서 공유', app:'Pinterest', col:'#E60023', s1:'핀터레스트에서 마음에 드는 핀을 열어요', s2:'공유 버튼을 눌러요', go:'예시 핀 받아보기'},
+  insta:{t:'인스타그램에서 공유', app:'Instagram', col:'#C13584', s1:'인스타에서 마음에 드는 게시물을 열어요', s2:'종이비행기(공유) → 다른 앱으로 공유', go:'예시 게시물 받아보기'},
+};
+function openShare(k){
+  const s = SHARE[k];
+  document.getElementById('shT').textContent = s.t;
+  document.getElementById('shBody').innerHTML = '<ol class="share">'
+    + '<li><span>'+s.s1+'<small>추천 피드, 저장한 보드, 다른 사람 게시물 모두 돼요</small></span></li>'
+    + '<li><span>'+s.s2+'<small>휴대폰 기본 공유 기능이라 별도 제휴 없이 동작해요</small></span></li>'
+    + '<li><span>공유 목록에서 snap to buy를 골라요<div class="sheetmock"><div class="app" style="background:'+s.col+';color:#fff">'+s.app+'</div><span style="font-size:18px">→</span><div class="app" style="background:#000;color:#fff">snap<br>to buy</div><small style="margin-left:4px">사진과 원본 링크가 함께 넘어와요</small></div></span></li>'
+    + '<li><span>바로 룩 분해가 시작되고, 내 취향 데이터에도 쌓여요<small>원본 링크가 있으면 원본 찾기가 더 정확해져요</small></span></li></ol>';
+  document.getElementById('shGo').textContent = s.go;
+  openPanel('shP');
+}
+document.querySelectorAll('[data-col]').forEach(b=>b.onclick=()=>{ const k=b.dataset.col; if(k==='upload') openUpload(); else openShare(k); });
+document.getElementById('shGo').onclick = ()=>{ closeAll(); lookCount++; document.getElementById('lookCount').textContent=lookCount; document.getElementById('helloCount').textContent=lookCount; document.getElementById('mpCount').textContent=lookCount; go(1); };
+
 /* ---------- slide to pay ---------- */
 (function(){
   const slide=document.getElementById('slide'), knob=document.getElementById('knob'), fill=document.getElementById('sFill'), txt=document.getElementById('sTxt');
