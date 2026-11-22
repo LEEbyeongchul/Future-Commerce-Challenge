@@ -2,7 +2,7 @@
 
 > 저장만 해두던 룩을, 오늘 주문하는 옷으로.
 
-**▶ 발표 자료:** https://leebyeongchul.github.io/Future-Commerce-Challenge/slides/deck.html ([PDF](slides/snap-to-buy_발표자료.pdf))
+**▶ 발표 자료:** https://leebyeongchul.github.io/Future-Commerce-Challenge/slides/deck.html ([PDF](slides/snap-to-buy_발표자료.pdf) · [PPT](slides/snap-to-buy_발표자료.pptx))
 **▶ 목업 체험:** https://leebyeongchul.github.io/Future-Commerce-Challenge/mockup/
 **▶ 이어서 작업하려면:** [HANDOVER.md](HANDOVER.md)부터 읽기
 
@@ -23,7 +23,7 @@
 
 | 문서 | 설명 |
 | --- | --- |
-| [발표 자료](slides/deck.html) ([PDF](slides/snap-to-buy_발표자료.pdf)) | 3분 발표용 9장 |
+| [발표 자료](slides/deck.html) ([PDF](slides/snap-to-buy_발표자료.pdf) · [PPT](slides/snap-to-buy_발표자료.pptx)) | 3분 발표용 9장. PPT는 파워포인트에서 바로 수정 가능 |
 | [제출용 소개](docs/제출용_소개.md) | 구글폼에 넣을 3–5문장 |
 | [기획서 (Markdown)](docs/기획서.md) · [PDF](docs/snap-to-buy_기획서.pdf) | 문제, 흐름, 기능, 차별점, 아키텍처, 결제, 수익, 로드맵, 예상 질문 |
 | [목업](https://leebyeongchul.github.io/Future-Commerce-Challenge/mockup/) ([소스](mockup/index.html)) | 클릭형 목업 |

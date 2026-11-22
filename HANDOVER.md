@@ -10,7 +10,7 @@
 
 | 항목 | 상태 | 위치 |
 | --- | --- | --- |
-| 발표 자료 (9장, 3분용) | 완성 | `slides/deck.html` · `slides/snap-to-buy_발표자료.pdf` |
+| 발표 자료 (9장, 3분용) | 완성 | `slides/deck.html`(웹) · `slides/snap-to-buy_발표자료.pdf` · **`slides/snap-to-buy_발표자료.pptx`(파워포인트 수정용)** |
 | 클릭형 목업 | 완성·배포 | `mockup/index.html` · https://leebyeongchul.github.io/Future-Commerce-Challenge/mockup/ |
 | 기획서 | 최신 | `docs/기획서.md` · `docs/snap-to-buy_기획서.pdf` |
 | 제출용 소개 3–5문장 | 완성 | `docs/제출용_소개.md` |
@@ -56,6 +56,7 @@ docs/
   내일_체크리스트.md
 tools/
   build.ps1          PDF·PNG 전부 다시 만들기
+  make_pptx.js       발표 자료 PPT 생성 (pptxgenjs)
   md2html.js         Markdown → 인쇄용 HTML 변환
 ```
 
@@ -63,7 +64,8 @@ tools/
 
 | 고칠 것 | 파일 | 다시 만들기 |
 | --- | --- | --- |
-| 발표 자료 문구·디자인 | `slides/deck.html` | `tools\build.ps1 -Only deck` |
+| 발표 자료 (웹·PDF) | `slides/deck.html` | `tools\build.ps1 -Only deck` |
+| 발표 자료 (PPT) | 파워포인트에서 `slides/snap-to-buy_발표자료.pptx`를 직접 수정 | 처음부터 다시 만들 때만 `npm install pptxgenjs` 후 `node tools/make_pptx.js` (직접 고친 내용은 덮어써짐) |
 | 목업 화면·데이터 | `mockup/index.html` (아래 참고) | 덱 캡처도 바꾸려면 `-Only shots,deck` |
 | 기획서 PDF | `docs/snap-to-buy_기획서.html` (7페이지 고정, 넘치지 않게 주의) | `-Only docs` |
 | Markdown 문서 | `docs/*.md` | `-Only docs` |
