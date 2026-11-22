@@ -13,6 +13,12 @@
 | [기획서 (Markdown)](docs/기획서.md) | 문제, 서비스 흐름, 기능, 차별점, 인프라, 수익 모델, 로드맵, 예상 질문 |
 | [기획서 (PDF)](docs/snap-to-buy_기획서.pdf) | 공유·발표용 A4 6페이지 |
 | [기획서 (HTML 원본)](docs/snap-to-buy_기획서.html) | PDF 디자인 원본. 수정 후 브라우저에서 PDF로 인쇄 |
+| [목업](https://leebyeongchul.github.io/Future-Commerce-Challenge/mockup/) | 클릭형 목업 ([소스](mockup/index.html)) |
+| [기술 가이드](docs/기술_가이드.pdf) ([md](docs/기술_가이드.md)) | 용어, 아키텍처, 데이터 파이프라인, 모델과 알고리즘 |
+| [쟁점 정리](docs/쟁점_정리.pdf) ([md](docs/쟁점_정리.md)) | 쟁점별 해결법과 한계 |
+| [참고 저장소 분석](docs/참고_저장소_분석.pdf) ([md](docs/참고_저장소_분석.md)) | 공개 쇼핑 에이전트 저장소에서 참고할 점과 반영 계획 |
+| [발표 전 반영안](docs/발표전_반영안.pdf) ([md](docs/발표전_반영안.md)) | README 초안, 데모 범위 고지, 예상 질문 보강 |
+| [당일 체크리스트](docs/내일_체크리스트.md) | 오리엔테이션 질문, 일정, 예상 질문 답변 |
 
 ## 서비스 흐름
 
